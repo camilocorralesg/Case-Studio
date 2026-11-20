@@ -1,0 +1,103 @@
+<style is:global>
+/* ===== Contact: one short form on a screen of its own. The four services to tick, as the elements they are all over the page,
+   and one bar with the name, the email or WhatsApp and the button. What the visitor bonds in the Fórmula comes ticked here ===== */
+.contact{position:relative}
+/* every "Empezar mi proyecto" lands here: the form whole and in the middle of the screen */
+.contact--tabla{--ck-line:rgba(var(--edge-rgb),.3);--ck-fill:var(--cell);display:grid;align-items:center;min-height:100vh;min-height:100svh;background:var(--night);color:#fff}
+.contact--tabla .contact__in{grid-template-rows:auto;row-gap:0}
+.ck-head{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:14px;text-align:center;text-wrap:balance}
+.ck-head>*{grid-column:1/-1}
+.ck-head .lead{max-width:30em;margin-inline:auto;color:#b3bfd3}
+.contact--tabla .ck-form{grid-column:2/12;grid-row:auto;display:grid;gap:18px;min-width:0;margin-top:clamp(24px,4.5vh,48px)}
+.ck-form input{caret-color:var(--ice)}
+/* the services: an element each, ticked in blue */
+.ck-need{display:grid;min-width:0;margin:0;padding:0;border:0}
+.ck-need legend{width:100%;margin-bottom:12px;padding:0;text-align:center;font:600 clamp(17px,1.3vw,20px)/1.2 var(--head);letter-spacing:-.01em}
+.ck-ch{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;border-radius:20px;transition:box-shadow var(--d-fade) ease}
+.ck-c{position:relative;display:flex;min-width:0}
+/* the box itself stays on top, also while its tile is pressed (the scale lifts the tile into a layer of its own) */
+.ck-c input{position:absolute;inset:0;z-index:1;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.ck-c span{flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;min-height:116px;padding:10px 12px 13px;border-radius:16px;background:var(--ck-fill);box-shadow:inset 0 0 0 1px var(--ck-line);color:#cdd8f2;font:500 15px/1.2 var(--body);transition:background-color var(--d-fade) ease,box-shadow var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.ck-c b{display:flex;flex-direction:column;justify-content:space-between;flex:none;width:46px;height:46px;padding:5px 6px;border-radius:10px;background:var(--night);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.5);font:600 20px/.86 var(--sym);letter-spacing:-.04em;color:#fff;transition:background-color var(--d-fade) ease,color var(--d-fade) ease}
+.ck-c b i{font:400 10px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
+.ck-c input:checked+span{background:var(--cobalt);color:#fff;box-shadow:inset 0 0 0 1.5px var(--ice)}
+.ck-c input:checked+span b{background:#fff;color:var(--deep);box-shadow:none}
+.ck-c input:checked+span b i{color:#33487f}
+@media (hover:hover) and (pointer:fine){.ck-c input:not(:checked):hover+span{color:#fff;box-shadow:inset 0 0 0 1px rgba(var(--ice-rgb),.6)}}
+.ck-c input:active+span{transform:scale(.97)}
+.ck-c input:focus-visible+span{outline:2px solid var(--focus);outline-offset:3px}
+/* the bar: the name, the contact and the button, in one line */
+.ck-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;padding:8px;border-radius:22px;background:var(--ck-fill);box-shadow:inset 0 0 0 1px var(--ck-line)}
+.ck-in{position:relative;display:grid;min-width:0}
+.ck-in+.ck-in{box-shadow:inset 1px 0 0 rgba(var(--edge-rgb),.25)}
+.ck-in label{position:absolute;left:18px;top:11px;z-index:1;font:500 13px/1 var(--body);color:#8fa3cf;pointer-events:none}
+.ck-in input{width:100%;min-height:64px;padding:31px 18px 12px;border:0;border-radius:14px;background:transparent;color:#fff;font:400 17px/1.35 var(--body);transition:box-shadow var(--d-fade) ease,background-color var(--d-fade) ease}
+.ck-in input:focus{outline:none;background:#0d1d4a;box-shadow:inset 0 0 0 1.5px var(--focus)}
+/* the browser's own autofill keeps the bar's colours */
+.ck-in input:-webkit-autofill{-webkit-text-fill-color:#fff;-webkit-box-shadow:0 0 0 100px #0d1d4a inset;caret-color:var(--ice)}
+.ck-bar .btn{min-height:56px;margin-left:8px;padding:0 30px;font-size:16px}
+/* what is missing is marked where it is, as well as said under the bar */
+.ck-need.is-missing .ck-ch{box-shadow:0 0 0 2px var(--night),0 0 0 3.5px var(--ice)}
+/* an error is not the focus: a white ring, and its label lit with the little square of "Disponibles" */
+.ck-in input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px #fff}
+.ck-in:has(input[aria-invalid="true"]) label{color:#fff}
+.ck-in:has(input[aria-invalid="true"]) label::before{content:"";display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:1.5px;background:var(--sky);vertical-align:1px}
+/* after "Listo" the button rests until something changes */
+.contact.is-sent [type="submit"]{opacity:.45;pointer-events:none}
+.ck-ok{display:flex;justify-content:center;align-items:flex-start;gap:10px;min-height:1.5em;margin:0;font-size:15px;line-height:1.45;color:var(--ice);text-align:center;text-wrap:balance}
+.contact.is-sent .ck-ok{color:#fff}
+.contact.is-sent .ck-ok::before{content:"";flex:none;width:22px;height:22px;margin-top:-1px;border-radius:6px;background:var(--cobalt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.4 6.3 4.9 8.7 9.6 3.6' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50%/13px no-repeat;box-shadow:inset 0 0 0 1px var(--ice)}
+@media (max-width:860px){
+  .contact--tabla .ck-form{grid-column:1/-1}
+  .ck-ch{grid-template-columns:1fr 1fr}
+  .ck-c span{min-height:100px}
+  /* stacked, the bar lets go of its box: each field shows its own, as the services above it, so it is clear where to write */
+  .ck-bar{grid-template-columns:1fr;gap:10px;padding:0;border-radius:0;background:none;box-shadow:none}
+  .ck-in+.ck-in{box-shadow:none}
+  .ck-in input{background:var(--ck-fill);box-shadow:inset 0 0 0 1px var(--ck-line)}
+  .ck-in input:-webkit-autofill{-webkit-box-shadow:inset 0 0 0 1px var(--ck-line),0 0 0 100px #0d1d4a inset}
+  .ck-bar .btn{width:100%;justify-content:center;margin:4px 0 0}
+}
+</style>
+
+<script is:inline>
+/* ---------- the contact form ---------- */
+/* the four services, with the symbols Servicios and the Fórmula give them; the name is what the request says */
+const NEEDS = [['Sitios web', 'Sw'], ['Tiendas en línea', 'Ti'], ['Redes sociales', 'Rs'], ['Marca', 'Ma']];
+
+const FORMS = {
+  tabla(ct) {
+    const say = (t) => (window.LANG && LANG.cur === 'en' && window.I18N && I18N.tr(t)) || t;
+    const form = ct.querySelector('.contact__form');
+    form.innerHTML = `<fieldset class="ck-need"><legend>¿Qué necesitas?</legend><div class="ck-ch">${NEEDS.map(([t, s], i) => `<label class="ck-c"><input type="checkbox" name="need" value="${t}" data-sym="${s}"><span><b aria-hidden="true"><i>${zOf(s)}</i>${s}</b>${t}</span></label>`).join('')}</div></fieldset>
+      <div class="ck-bar"><div class="ck-in"><label for="c-name">Nombre</label><input id="c-name" name="name" autocomplete="name" aria-describedby="c-ok" required></div><div class="ck-in"><label for="c-mail">Correo o WhatsApp</label><input id="c-mail" name="contact" autocapitalize="off" spellcheck="false" enterkeyhint="send" aria-describedby="c-ok" required></div><button class="btn btn--white" type="submit">Enviar solicitud <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <p class="contact__ok ck-ok" id="c-ok" role="status" aria-live="polite"></p>`;
+    const ok = form.querySelector('.ck-ok'), need = form.querySelector('.ck-need'), name = form.querySelector('#c-name'), mail = form.querySelector('#c-mail'), send = form.querySelector('[type=submit]');
+    const mark = (el, bad) => { if (bad) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid'); };
+    /* a contact we can answer: an email, or a number of seven digits or more */
+    const reachable = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || v.replace(/\D/g, '').length >= 7;
+    /* any change clears the answer and the mark of what it fixes, and wakes the button */
+    const input = (e) => {
+      ct.classList.remove('is-sent'); send.removeAttribute('aria-disabled'); ok.textContent = '';
+      const t = e && e.target;
+      if (t && t.name === 'need') need.classList.remove('is-missing');
+      else if (t && t.value.trim()) mark(t, false);
+    };
+    const submit = (e) => {
+      e.preventDefault();
+      /* a request already sent rests until something changes */
+      if (ct.classList.contains('is-sent')) return;
+      const needs = [...form.querySelectorAll('[name=need]:checked')], n = name.value.trim(), c = mail.value.trim();
+      need.classList.toggle('is-missing', !needs.length); mark(name, !n); mark(mail, !c || !reachable(c));
+      if (!needs.length) { ok.textContent = say('Elige al menos una opción de lo que necesitas.'); form.querySelector('[name=need]').focus(); return; }
+      if (!n) { ok.textContent = say('Escribe tu nombre para saber a quién responder.'); name.focus(); return; }
+      if (!c) { ok.textContent = say('Deja un correo o un WhatsApp para responderte.'); mail.focus(); return; }
+      if (!reachable(c)) { ok.textContent = say('Revisa el correo o el número para poder responderte.'); mail.focus(); return; }
+      ct.classList.add('is-sent'); send.setAttribute('aria-disabled', 'true');
+      ok.textContent = say(`Listo, ${n}. Pediste: ${needs.map((x) => x.value).join(', ')}. En este prototipo la solicitud todavía no se envía.`);
+    };
+    form.addEventListener('input', input); form.addEventListener('submit', submit);
+    return () => { form.removeEventListener('input', input); form.removeEventListener('submit', submit); };
+  }
+};
+</script>

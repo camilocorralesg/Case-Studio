@@ -1,0 +1,445 @@
+<style is:global>
+/* ===== The detail: a project opens over the page, grown out of its screen in the wheel.
+   One bar on top: the element, the name and the address on the left; its tools and the way out on the right. Below it the site,
+   live, takes the stage over its own first screens (they hold the place while it loads), and its story stands beside it on a
+   lit panel, short; the site can take the whole width. Behind both, the table at night of the hero ===== */
+html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
+.xs{position:fixed;inset:0;z-index:2147483000;color:#fff;color-scheme:dark}
+.xs[hidden]{display:none}
+.xs :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.xs-bg{position:absolute;inset:0;overflow:hidden;background:var(--night);opacity:0;transition:opacity var(--d-state) ease}
+.xs.is-in .xs-bg{opacity:1;transition-duration:var(--d-move)}
+.xs-grid{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76'%3E%3Crect x='6.5' y='6.5' width='63' height='63' rx='11' fill='none' stroke='rgb(118,166,255)' stroke-opacity='.11'/%3E%3C/svg%3E") 0 0/76px 76px;-webkit-mask-image:radial-gradient(85% 85% at 26% 62%,#000 30%,transparent 78%);mask-image:radial-gradient(85% 85% at 26% 62%,#000 30%,transparent 78%)}
+.xs-light{position:absolute;inset:0;background:radial-gradient(55% 62% at 14% 92%,rgba(var(--glow-rgb),.34),rgba(var(--glow-rgb),0) 70%),radial-gradient(42% 52% at 96% 4%,rgba(var(--sky-rgb),.14),rgba(var(--sky-rgb),0) 70%),radial-gradient(130% 95% at 50% 50%,rgba(var(--night-rgb),0) 55%,rgba(var(--night-rgb),.74))}
+.xs-in{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr);gap:14px;height:100%;padding:max(14px,env(safe-area-inset-top,0px)) max(16px,var(--gutter),env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(16px,var(--gutter),env(safe-area-inset-left,0px))}
+
+/* an element lit from inside, as the hero draws them: a cobalt core, a sheen on top, an ice edge (the wheel of Proyectos uses it too) */
+.lit{position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;border-radius:14px;color:#fff;
+  background:var(--lit);
+  box-shadow:inset 0 0 0 1px rgba(170,204,255,.62),inset 0 1px 0 rgba(232,240,255,.4),0 22px 44px -22px rgba(0,0,0,.85)}
+.lit i{font:500 11px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:#dbe7ff}
+.lit b{font-family:var(--sym);font-weight:600;letter-spacing:-.045em;line-height:.8;color:#fff}
+
+/* the bar: a lit tile laid flat, with soft corners; its buttons are small tiles too */
+.xs-bar{display:flex;align-items:center;gap:12px;min-height:58px;padding:8px 8px 8px 9px;border-radius:16px;background:linear-gradient(180deg,rgba(160,196,255,.09),rgba(0,4,16,.16)),#0a1433;box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.22),inset 0 1px 0 rgba(220,232,255,.12)}
+.xs-addr{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+.xs-mark{width:40px;height:40px;padding:4px 5px 5px;border-radius:10px}
+.xs-mark i{font-size:8.5px}
+.xs-mark b{font-size:18px}
+.xs-where{display:grid;gap:2px;min-width:0;line-height:1.2}
+.xs-where b{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xs-where span{font-size:13px;color:#9fb3d9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xs-tools{display:flex;align-items:center;gap:6px;flex:none}
+.xs-tool{display:grid;place-items:center;flex:none;width:42px;height:42px;padding:0;border:0;border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.16);color:#fff;text-decoration:none;cursor:pointer;transition:background-color var(--d-hover) ease,transform var(--d-hover) var(--ease-out)}
+.xs-tool svg{width:16px;height:16px}
+/* each tool says what it does: its name, the same as its label, comes under it with the cursor or the focus */
+.xs-tool{position:relative}
+.xs-tool::after{content:attr(aria-label);position:absolute;top:calc(100% + 8px);right:0;z-index:5;padding:6px 9px;border-radius:7px;background:#fff;color:var(--deep);font:500 12px/1 var(--font);white-space:nowrap;opacity:0;transform:translateY(-4px);transition:opacity var(--d-fade) ease,transform var(--d-state) var(--ease-out);pointer-events:none}
+@media (hover:hover) and (pointer:fine){.xs-tool:hover::after{opacity:1;transform:none}}
+.xs-tool:focus-visible::after{opacity:1;transform:none}
+.xs-tool:active{transform:scale(.94)}
+.xs-tool[aria-pressed="true"]{background:var(--cobalt-deep);box-shadow:inset 0 0 0 1px rgba(170,204,255,.6)}
+.xs-sep{flex:none;width:1px;height:24px;margin:0 4px;background:rgba(var(--edge-rgb),.22)}
+.xs-close{background:#fff;color:var(--night);box-shadow:none}
+
+.xs-main{display:grid;grid-template-columns:minmax(0,1fr) clamp(320px,25vw,400px);gap:clamp(14px,1.4vw,22px);min-height:0;transition:grid-template-columns var(--d-move) var(--ease-io)}
+.xs.is-wide .xs-main{grid-template-columns:minmax(0,1fr) 0px;column-gap:0}
+
+/* the site: the live page over its own first screens, which hold the place while it loads */
+.xs-view{position:relative;min-width:0;min-height:0;border-radius:18px;overflow:hidden;background:#0b0c10;box-shadow:0 0 0 1px rgba(160,196,255,.18),0 50px 120px -50px #000;transform-origin:0 0}
+.xs-scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.xs-scroll::-webkit-scrollbar{display:none}
+.xs-scroll:focus-visible{outline-offset:-2px;border-radius:18px}
+/* while the large strip arrives, its first screen is already there: the small poster, stretched (--pf, set in setStrip) */
+.xs-strip{position:relative;width:100%;overflow:hidden;background:var(--pf,none) 50% 0/100% auto no-repeat}
+.xs-strip img{position:absolute;left:0;top:0;width:100%;height:auto;max-width:none}
+.xs-live{position:absolute;inset:0;z-index:2;width:100%;height:100%;border:0;background:#fff;opacity:0;visibility:hidden;transition:opacity var(--d-state) ease,visibility 0s linear var(--d-state)}
+.xs-view.is-live .xs-live{opacity:1;visibility:visible;transition:opacity var(--d-state) ease}
+.xs-ticks{position:absolute;right:14px;top:50%;z-index:3;display:flex;flex-direction:column;gap:8px;translate:0 -50%}
+.xs-view.is-live .xs-ticks,.xs-view.is-framed .xs-ticks{display:none}
+.xs-tick{display:grid;place-items:center;width:42px;height:42px;padding:0;border:0;border-radius:10px;background:rgba(4,9,26,.86);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.28);color:var(--ice);font:500 12px/1 var(--mono);cursor:pointer;transition:background-color var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.xs-tick[aria-current="true"]{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62);color:#fff}
+.xs-tick:active{transform:scale(.94)}
+.xs-note{position:absolute;left:16px;bottom:16px;z-index:3;display:flex;align-items:center;gap:12px;flex-wrap:wrap;max-width:calc(100% - 32px);padding:10px 10px 10px 16px;border-radius:14px;background:rgba(4,9,26,.92);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.28);font-size:13.5px;line-height:1.45;color:#dbe6ff}
+.xs-note[hidden]{display:none}
+.xs-note .btn{min-height:40px;padding:0 16px;font-size:14px}
+/* the story: short, on a panel lit from its lower corner like an element of the hero */
+.xs-panel{position:relative;min-width:0;min-height:0;overflow:hidden;border-radius:22px;background:radial-gradient(120% 60% at 100% 100%,rgba(var(--cobalt-rgb),.42),rgba(var(--cobalt-rgb),0) 62%),radial-gradient(90% 50% at 0% 0%,rgba(var(--sky-rgb),.12),rgba(var(--sky-rgb),0) 60%),linear-gradient(180deg,#0a1433,#060b1f);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.22);transition:opacity var(--d-state) ease}
+.xs.is-wide .xs-panel{opacity:0;pointer-events:none}
+.xs-panel-in{display:flex;flex-direction:column;gap:20px;height:100%;min-width:290px;overflow-y:auto;padding:26px 24px 22px;scrollbar-width:none}
+.xs-panel-in::-webkit-scrollbar{display:none}
+.xs-head{display:grid;gap:18px}
+.xs-el{width:104px;height:104px;padding:11px 12px 13px;border-radius:20px}
+.xs-el i{font-size:12px}
+.xs-el b{font-size:50px}
+.xs-id{display:grid;gap:6px;min-width:0}
+.xs-id h2{font-family:var(--head);font-size:clamp(30px,2.6vw,40px);font-weight:600;letter-spacing:-.035em;line-height:1}
+.xs-kind{font-size:16px;line-height:1.3;color:var(--ice)}
+.xs-lead{font-size:16.5px;line-height:1.5;color:#c9d3ea}
+.xs-chips{display:flex;flex-wrap:wrap;gap:6px}
+.xs-chips li{padding:7px 11px;border-radius:9px;background:rgba(var(--edge-rgb),.1);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.16);font-size:13px;line-height:1.25;color:#dbe6ff}
+.xs-more{padding-top:4px;border-radius:14px;background:rgba(8,17,44,.55);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.18)}
+.xs-more summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:600;color:#dbe6ff;cursor:pointer;list-style:none;transition:background-color var(--d-hover) ease}
+.xs-more summary::-webkit-details-marker{display:none}
+.xs-more summary svg{width:14px;height:14px;transition:transform var(--d-fade) var(--ease-out)}
+.xs-more[open] summary svg{transform:rotate(180deg)}
+.xs-feats{display:grid;gap:8px;padding:2px 14px 14px;font-size:14px;line-height:1.45;color:#d6deef}
+.xs-feats li{position:relative;padding-left:20px}
+.xs-feats li::before{content:"";position:absolute;left:0;top:.45em;width:9px;height:9px;border-radius:3px;background:radial-gradient(circle at 50% 62%,#a9ccff,var(--cobalt) 72%);box-shadow:0 0 0 1px rgba(170,204,255,.5)}
+.xs-acts{display:grid;gap:10px;margin-top:auto}
+.xs-visits{display:grid;gap:8px}
+.xs-visit{width:100%}
+/* the neighbours carry their own site, so you go on by what you see */
+.xs-sibs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.xs-sib{display:grid;gap:8px;min-width:0;padding:7px 7px 10px;border:0;border-radius:14px;background:rgba(8,17,44,.6);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.28);color:#fff;font:inherit;text-align:left;cursor:pointer;transition:background-color var(--d-hover) ease,transform var(--d-hover) var(--ease-out)}
+.xs-sib img{display:block;width:100%;aspect-ratio:800/414;border-radius:9px;object-fit:cover;object-position:0 0}
+.xs-sib span:last-child{display:grid;gap:2px;min-width:0;padding:0 3px}
+.xs-sib small{font-size:12px;color:#8ea6d6}
+.xs-sib span:last-child b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xs-sib:active{transform:scale(.98)}
+@media (hover:hover) and (pointer:fine){
+  .xs-tool:hover{background:rgba(255,255,255,.12)}
+  .xs-tool[aria-pressed="true"]:hover{background:color-mix(in oklab,var(--cobalt),#000 10%)}
+  .xs-close:hover{background:#e3e9f7}
+  .xs-tick:not([aria-current="true"]):hover{background:rgba(21,65,184,.5)}
+  .xs-more summary:hover{background:rgba(255,255,255,.04)}
+  .xs-sib:hover{background:rgba(21,65,184,.42)}
+}
+
+/* the bar and the story come in after the site has grown; they leave first */
+@keyframes xsUp{from{opacity:0;transform:translate3d(0,14px,0)}}
+.xs.is-told :is(.xs-bar,.xs-panel){animation:xsUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 70ms + 150ms)}
+.xs.is-told .xs-panel-in>*{animation:xsUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 45ms + 240ms)}
+.xs:not(.is-in) :is(.xs-bar,.xs-panel){opacity:0;transition:opacity var(--d-hover) ease}
+.xs.is-swap :is(.xs-panel-in,.xs-view,.xs-addr){opacity:0;transition:opacity var(--d-hover) ease}
+@media (prefers-reduced-motion:reduce){.xs-bg,.xs-main,.xs-view .xs-live,.xs-view.is-live .xs-live{transition:none}.xs.is-told :is(.xs-bar,.xs-panel,.xs-panel-in>*){animation:none}}
+
+/* a tour fills its frame; the strip inside moves by itself */
+.tour{display:block;position:relative;overflow:hidden;background:#0b0c10}
+.tour>img{position:absolute;left:50%;top:0;height:calc(100% * var(--f,5));width:auto;max-width:none;transform:translate3d(-50%,0,0);will-change:transform}
+
+/* on a phone the detail is one sheet that scrolls: the bar stays on top, then the name, the site and its story */
+@media (max-width:900px){
+  .xs-in{display:block;overflow-y:auto;overscroll-behavior:contain;padding:0 0 max(32px,env(safe-area-inset-bottom,0px))}
+  .xs-bar{position:sticky;top:max(10px,env(safe-area-inset-top,0px));z-index:4;margin:10px 12px 0;min-height:54px}
+  .xs-main{display:flex;flex-direction:column;gap:16px;padding:18px 16px 0}
+  .xs-panel,.xs-panel-in{display:contents}
+  .xs-head{order:1;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px}
+  .xs-view{order:2;flex:none;height:min(72vh,640px)}
+  /* on a phone the finger scrolls the site: no numbers over it, and the note sits on solid ground */
+  .xs-ticks{display:none}
+  .xs-note{background:#04091a}
+  .xs-lead,.xs-chips,.xs-more,.xs-acts{order:3}
+  .xs-wide,.xs-sep{display:none}
+  .xs-el{width:76px;height:76px;padding:8px 9px 10px;border-radius:15px}
+  .xs-el b{font-size:36px}
+  .xs.is-told .xs-panel-in>*{animation:none}
+}
+</style>
+
+<div class="xs" hidden role="dialog" aria-modal="true" aria-labelledby="xs-name">
+  <div class="xs-bg" aria-hidden="true"><span class="xs-grid"></span><span class="xs-light"></span></div>
+  <div class="xs-in">
+    <div class="xs-bar" style="--k:0">
+      <span class="xs-addr"><span class="lit xs-mark" aria-hidden="true"><i></i><b></b></span><span class="xs-where"><b></b><span></span></span></span>
+      <span class="xs-tools">
+        <button class="xs-tool xs-reload" type="button" aria-label="Volver a cargar el sitio"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13 2.6v2.9h-2.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <a class="xs-tool xs-new" target="_blank" rel="noopener" aria-label="Abrir el sitio en una pestaña nueva"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button class="xs-tool xs-wide" type="button" aria-pressed="false" aria-label="Ver el sitio a todo el ancho"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <span class="xs-sep" aria-hidden="true"></span>
+        <button class="xs-tool xs-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+      </span>
+    </div>
+    <div class="xs-main">
+      <div class="xs-view">
+        <div class="xs-scroll" tabindex="0"><div class="xs-strip"></div></div>
+        <iframe class="xs-live" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div class="xs-ticks"></div>
+        <p class="xs-note" hidden><span></span><a class="btn btn--white xs-out" target="_blank" rel="noopener">Abrir en pestaña nueva <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+      </div>
+      <aside class="xs-panel" style="--k:1"><div class="xs-panel-in">
+        <header class="xs-head" style="--k:0"><span class="lit xs-el" aria-hidden="true"><i></i><b></b></span><div class="xs-id"><h2 id="xs-name"></h2><p class="xs-kind"></p></div></header>
+        <p class="xs-lead" style="--k:1"></p>
+        <ul class="xs-chips" style="--k:2"></ul>
+        <details class="xs-more" style="--k:3"><summary><span>Lo que construimos</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="xs-feats"></ul></details>
+        <div class="xs-acts" style="--k:4">
+          <div class="xs-visits"></div>
+          <nav class="xs-sibs" aria-label="Otros proyectos"><button class="xs-sib xs-prev" type="button"></button><button class="xs-sib xs-next" type="button"></button></nav>
+        </div>
+      </div></aside>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+/* the real projects. Each has a poster (img) and a tour: a strip of real screens of the site that scrolls by itself; most have a
+   second one as a phone sees the site (cel, from herramientas/recorridos.py). Weed Honey asks for the visitor's age before it opens */
+window.PROJECTS = [
+  { id: 'duches', sym: 'Ld', name: 'Los Duches', kind: 'Menú y pedidos en línea', url: 'https://losduches.com/', n: 4, cel: true, cat: 'Restaurantes',
+    lead: 'Sitio para un restaurante de hamburguesas, sánduches de autor y papas cargadas en Laureles. El cliente arma su pedido en la web y lo envía listo por WhatsApp, a domicilio o para recoger.',
+    facts: ['Restaurantes', 'Laureles, Medellín', 'Menú + pedidos', 'Español'],
+    feats: ['Menú digital con hamburguesas, Duches y papas cargadas', 'Armado del pedido directamente en la web', 'Envío del pedido listo por WhatsApp', 'Opciones de domicilio o para recoger'] },
+  { id: 'neuralnet', sym: 'Nn', name: 'NeuralNet', kind: 'Sitio corporativo de inteligencia artificial', url: 'https://www.neuralnet.com.co/', n: 3, cel: true, cat: 'Tecnología',
+    lead: 'Sitio del ecosistema NeuralNet, que reúne sus dos líneas de inteligencia artificial para empresas: NeuralBI y NeuralFin.',
+    facts: ['Inteligencia artificial', 'Colombia', 'Sitio corporativo', ''],
+    feats: ['Portada con texto en movimiento', 'Entrada a las dos líneas del grupo: NeuralBI y NeuralFin', 'Selector de idioma'] },
+  { id: 'neuralbi', sym: 'Nb', name: 'NeuralBI', kind: 'Sitio corporativo bilingüe', url: 'https://www.neuralnet.com.co/NeuralBI', n: 4, cel: true, cat: 'Tecnología',
+    lead: 'Sitio corporativo bilingüe para una firma que construye tableros de Power BI, apps a medida y agentes de IA para empresas. El reto era explicar servicios muy técnicos de forma clara y verse a la altura de clientes corporativos.',
+    facts: ['Consultoría tecnológica', 'Colombia · clientes internacionales', 'Sitio corporativo / B2B', 'Español e inglés'],
+    feats: ['Diseño oscuro y tecnológico con animaciones que explican cada servicio', 'Secciones por producto: Power BI, Power Apps, Power Automate y Copilot Studio', 'Proceso de trabajo en tres fases y soluciones por industria', 'Tablero de ejemplo interactivo y preguntas frecuentes', 'Formulario para agendar una auditoría'] },
+  { id: 'akua', sym: 'Ak', name: 'AKUA Residencia', kind: 'Landing de proyecto inmobiliario', url: 'https://akua-apartamentos.vercel.app/', n: 4, cel: true, cat: 'Inmobiliario',
+    lead: 'Página de ventas para un proyecto de vivienda y comercio en Medellín. Todo está pensado para captar compradores e inversionistas: tipologías con precios, galería de renders y formularios de cotización.',
+    facts: ['Finca raíz', 'La Pilarica, Medellín', 'Landing de ventas', 'Español'],
+    feats: ['Formulario de cotización visible desde la primera pantalla', 'Comparador de apartamentos tipo A y B con áreas y precios', 'Galería de 14 renders interiores en pantalla completa', 'Mapa con sitios cercanos y argumentos de inversión', 'Sección de locales comerciales con disponibilidad'] },
+  { id: 'weedhoney', sym: 'Wh', name: 'Weed Honey', kind: 'Sitio de marca y tienda', url: 'https://www.weedhoney.co/', n: 4, cel: true, cat: 'E-commerce', embed: false,
+    lead: 'Sitio para una marca de bebidas funcionales con CBD. La idea era crear una experiencia divertida y llamativa que presentara cada sabor como un producto propio y permitiera pedir por paquetes.',
+    facts: ['Bebidas', 'Medellín', 'Sitio de marca + tienda', 'Español'],
+    feats: ['Portada animada con la identidad de la marca', 'Presentación de los tres sabores con sus beneficios', 'Selector de sabor y paquetes de 6, 12 o 24 latas con carrito', 'Tabla nutricional e ingredientes por producto', 'Información legal y de licencias visible'] },
+  { id: 'mimarte', sym: 'Mi', name: 'Mimarte', kind: 'Tienda en línea de jabones artesanales', url: 'https://mimarte.com.co/', n: 4, cel: true, cat: 'E-commerce',
+    lead: 'Tienda virtual para una marca de jabones artesanales hechos en frío. Buscábamos una experiencia cálida y sensorial que transmitiera lo natural del producto y facilitara comprar y pedir por WhatsApp.',
+    facts: ['Cuidado personal', 'Medellín', 'E-commerce', 'Español'],
+    feats: ['Catálogo con filtros por categoría, favoritos y carrito de compras', 'Diagnóstico de piel que recomienda la barra ideal', 'Formulario para diseñar un jabón a la medida, enviado por WhatsApp', 'Sección de bodas, eventos y regalos corporativos'] }
+/* each tour comes in the widths a screen may need (herramientas/recorridos.py): the computer's at 800 and 1600, the phone's at 390, 585
+   and 780; img is its first screen, small, for the thumbnails of the detail */
+].map((p) => Object.assign(p, { img: `assets/pf-${p.id}.jpg`, tour: `assets/tour-${p.id}.webp`, tourHi: `assets/tour-${p.id}-1600.webp`,
+  cel: p.cel ? `assets/tour-${p.id}-cel.webp` : '', celLo: p.cel ? `assets/tour-${p.id}-cel-390.webp` : '', celHi: p.cel ? `assets/tour-${p.id}-cel-780.webp` : '' }));
+/* brands whose social media the team has run */
+window.BRANDS = [
+  { name: 'Weed Honey', sym: 'Wh', nets: [['Instagram', '@weedhoney.co', 'https://www.instagram.com/weedhoney.co/'], ['TikTok', '@weedhoney.co', 'https://www.tiktok.com/@weedhoney.co']], bg: 'linear-gradient(150deg,#FFFDF7,#F6ECD6)', fg: '#B07F24',
+    tag: 'Bebidas con CBD con una voz fresca y relajada, alineada con su sitio web.', lead: 'Llevamos la identidad que diseñamos para su sitio web a Instagram y TikTok, para que redes y tienda hablaran el mismo idioma y vendieran juntas.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok', 'Coherencia visual entre redes y sitio web'] },
+  { name: 'Agilcash', sym: 'Ag', nets: [['Instagram', '@agilcash.co', 'https://www.instagram.com/agilcash.co/'], ['TikTok', '@agilcash.co', 'https://www.tiktok.com/@agilcash.co']], bg: 'linear-gradient(150deg,#115450,#0B3D3A)', fg: '#FFFFFF',
+    tag: 'Una plataforma para pasar dólares digitales a pesos, explicada de forma clara y cercana.', lead: 'Agilcash convierte dólares digitales a pesos colombianos. Nuestro reto fue hacer que un tema financiero se entendiera fácil y generara confianza en Instagram y TikTok.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok'] },
+  { name: 'La Miguería', sym: 'Lm', nets: [['Instagram', '@lamigueria', 'https://www.instagram.com/lamigueria/']], bg: 'linear-gradient(150deg,#77513F,#5C3D30)', fg: '#F4E7D4',
+    tag: 'Una panadería con una comunidad de más de 280 mil seguidores en Instagram.', lead: 'Acompañamos a La Miguería en Instagram, donde su comunidad supera los 280 mil seguidores, con contenido que antoja y conversaciones que no se quedan sin respuesta.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Speedo Colombia', sym: 'Sp', nets: [['Instagram', '@speedocolombia', 'https://www.instagram.com/speedocolombia/']], bg: 'linear-gradient(150deg,#FFFFFF,#F2F2F2)', fg: '#E2231A',
+    tag: 'La marca de natación en el país, con más de 70 mil seguidores en Instagram.', lead: 'Trabajamos con Speedo Colombia, la cuenta local de la marca de trajes de baño y accesorios de natación, cuidando una comunidad de más de 70 mil seguidores en Instagram.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: "O'Neill Colombia", sym: "O'", nets: [['Instagram', '@oneillcolombia', 'https://www.instagram.com/oneillcolombia/']], bg: 'linear-gradient(150deg,#000000,#161616)', fg: '#FFFFFF',
+    tag: 'Ropa de surf y playa con tienda en línea y envíos a toda Colombia.', lead: "Para O'Neill Colombia, la marca de ropa de surf y playa, trabajamos en Instagram para conectar el espíritu de la marca con su tienda en línea.",
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Graduados EAFIT', sym: 'Ea', nets: [['Instagram', '@graduadoseafit', 'https://www.instagram.com/graduadoseafit/']], bg: 'linear-gradient(150deg,#2447E0,#1734BE)', fg: '#FFFFFF',
+    tag: 'El canal de una comunidad de más de 70.000 egresados de la universidad.', lead: 'Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] }
+];
+const host = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+/* the real site opens live inside the detail. Not inside claude.ai, which does not let a page show other sites, and not on
+   127.0.0.1, where the tools check the built page and must not load other sites. On localhost (npm run dev) it does */
+const LIVE = !/claude|anthropic|^127\.0\.0\.1$/.test(location.hostname);
+
+/* a tour is one tall image of n screens plus the first one again; it rests on each screen and glides to the next, like someone
+   scrolling the site. Tours play only while they are on screen; a manual one (data-manual) plays when its owner says so */
+/* the strip of a tour: its widths (srcset) and how wide it is drawn there (sizes), so each screen takes what it needs, 2x on a retina
+   screen and never three times what it shows; it loads when it comes near, with its size known before it arrives */
+const tourSrcset = (p, cel) => (cel ? `${p.celLo} 390w, ${p.cel} 585w, ${p.celHi} 780w` : `${p.tour} 800w, ${p.tourHi} 1600w`);
+const tourHTML = (p, cls, attr, cel, sizes) => `<span class="tour${cls ? ' ' + cls : ''}" style="--f:${p.n + 1}" data-n="${p.n}"${attr ? ' ' + attr : ''}><img src="${cel ? p.cel : p.tour}" srcset="${tourSrcset(p, cel)}" sizes="${sizes || '100vw'}" width="${cel ? 585 : 800}" height="${(cel ? 1266 : 414) * (p.n + 1)}" alt="" loading="lazy" decoding="async" draggable="false"></span>`;
+const Tours = (() => {
+  const live = new Map();
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { const a = live.get(e.target); if (a) { if (e.isIntersecting) a.play(); else a.pause(); } }), { rootMargin: '12% 0px' }) : null;
+  const start = (root) => {
+    if (RM || !root) return () => {};
+    const made = [];
+    root.querySelectorAll('.tour').forEach((t, i) => {
+      if (live.has(t)) return;
+      const n = +t.dataset.n, img = t.firstElementChild, hold = 1900, move = 950, total = n * (hold + move), kf = [];
+      for (let k = 0; k <= n; k++) {
+        const tr = `translate3d(-50%,${(-k * 100 / (n + 1)).toFixed(4)}%,0)`;
+        if (k < n) kf.push({ transform: tr, offset: k * (hold + move) / total }, { transform: tr, offset: (k * (hold + move) + hold) / total, easing: MOTION.ease('io') });
+        else kf.push({ transform: tr, offset: 1 });
+      }
+      const a = img.animate(kf, { duration: total, iterations: Infinity, delay: -((i * 733) % total) });
+      a.pause(); live.set(t, a); made.push(t);
+      if (t.hasAttribute('data-manual')) return;
+      if (io) io.observe(t); else a.play();
+    });
+    return () => made.forEach((t) => { const a = live.get(t); if (a) a.cancel(); live.delete(t); if (io) io.unobserve(t); });
+  };
+  return { start, get: (t) => live.get(t) };
+})();
+window.Tours = Tours;
+
+/* the detail. Viewer.show(i, from, list, back): opens project i of the list (PROJECTS), grown out of the node "from"; when it closes,
+   back(j) says which node takes back the project j the visitor ended on. Esc closes, the arrows go to the neighbours, Tab stays inside */
+const Viewer = (() => {
+  const el = document.querySelector('.xs'), $ = (s) => el.querySelector(s), root = document.documentElement;
+  const view = $('.xs-view'), scroll = $('.xs-scroll'), strip = $('.xs-strip'), frame = $('.xs-live');
+  const img = strip.appendChild(Object.assign(document.createElement('img'), { alt: '', decoding: 'async' }));
+  const ticks = $('.xs-ticks'), note = $('.xs-note'), wide = $('.xs-wide'), more = $('.xs-more');
+  const EXT = '<svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /* the first sentence of the text: the story stays short and nothing is rewritten */
+  const firstLine = (t) => (t.match(/^.*?\.(?=\s|$)/) || [t])[0];
+  /* the live site's own scrollbar (white on Windows) goes just past the rounded edge, where it is cut. With a mouse it is at least
+     12 px, for sites that draw a thin one of their own; on a phone scrollbars float over the page and nothing changes */
+  const bar = (() => { const d = document.createElement('div'); d.style.cssText = 'position:absolute;top:-999px;width:100px;height:100px;overflow:scroll'; document.body.appendChild(d); const w = d.offsetWidth - d.clientWidth; d.remove(); return w; })();
+  const over = FINE ? Math.max(bar, 12) : bar;
+  if (over > 0) frame.style.width = `calc(100% + ${over}px)`;
+  let list = [], cur = 0, open = false, src = null, back = null, last = null, anim = null, swap = 0, auto = 0, touched = false, slow = 0, want = '';
+  const item = () => list[cur];
+  const n = () => item().n;
+  const screenH = () => strip.offsetHeight / n();
+  const maxTop = () => Math.max(0, scroll.scrollHeight - scroll.clientHeight);
+  const framed = () => LIVE && item().embed !== false;
+  const mark = () => {
+    const top = scroll.scrollTop, k = top >= maxTop() - 2 ? n() - 1 : Math.min(n() - 1, Math.round(top / Math.max(1, screenH())));
+    ticks.querySelectorAll('.xs-tick').forEach((t, i) => { if (i === k) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+  };
+  const stopAuto = () => { clearInterval(auto); auto = 0; };
+  /* a tour walks by itself, one screen at a time, until it is touched */
+  const startAuto = () => {
+    stopAuto(); touched = false;
+    if (RM || framed()) return;
+    auto = setInterval(() => {
+      if (touched || !open || scroll.scrollTop >= maxTop() - 2) { stopAuto(); return; }
+      scroll.scrollTo({ top: Math.min((Math.round(scroll.scrollTop / screenH()) + 1) * screenH(), maxTop()), behavior: 'smooth' });
+    }, 3400);
+  };
+  ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((ev) => scroll.addEventListener(ev, () => { touched = true; stopAuto(); }, { passive: true }));
+  scroll.addEventListener('scroll', () => requestAnimationFrame(mark), { passive: true });
+  /* the live page fades in over the tour once it has loaded; a page that is left is unloaded, so it stops running */
+  frame.addEventListener('load', () => {
+    if (!open || !want || frame.getAttribute('src') !== want) return;
+    clearTimeout(slow); view.classList.add('is-live'); note.hidden = true;
+  });
+  const unload = () => { want = ''; const s = frame.getAttribute('src'); if (s && s !== 'about:blank') frame.src = 'about:blank'; };
+  const goLive = () => {
+    view.classList.remove('is-live'); clearTimeout(slow);
+    const p = item();
+    if (!framed()) {
+      unload(); view.classList.remove('is-framed');
+      note.firstElementChild.textContent = p.embed === false
+        ? `${p.name} no se deja abrir dentro de otra página. Este es su recorrido.`
+        : 'En el sitio publicado aquí se abre el sitio en vivo. Este es su recorrido.';
+      note.hidden = false; return;
+    }
+    view.classList.add('is-framed'); note.hidden = true;
+    frame.title = `Sitio de ${p.name}`;
+    want = p.url; frame.src = p.url;
+    /* a site that takes too long keeps showing its tour, with the way out */
+    slow = setTimeout(() => { if (!view.classList.contains('is-live')) { note.firstElementChild.textContent = `${p.name} está tardando en cargar. Mientras tanto, este es su recorrido.`; note.hidden = false; view.classList.remove('is-framed'); } }, 9000);
+  };
+  const sib = (b, x, label) => {
+    b.innerHTML = `<img src="${x.img}" width="320" height="166" alt="" decoding="async"><span><small>${label}</small><b>${x.name}</b></span>`;
+    b.setAttribute('aria-label', `${label}: ${x.name}`);
+  };
+  /* the strip: on a phone, the site as a phone sees it, when it has its phone tour */
+  const PHONE = matchMedia('(max-width:900px)');
+  /* the detail draws its strip as wide as its view: on a computer about three quarters of the screen, on a phone all of it */
+  const setStrip = () => {
+    const p = item(), cel = PHONE.matches && p.cel, src = cel ? p.celHi : p.tourHi;
+    strip.style.aspectRatio = cel ? `585 / ${1266 * p.n}` : `800 / ${414 * p.n}`;
+    strip.style.setProperty('--pf', cel ? 'none' : `url('${new URL(p.img, document.baseURI).href}')`);
+    if (img.getAttribute('src') !== src) { img.sizes = cel ? '100vw' : '75vw'; img.srcset = tourSrcset(p, cel); img.src = src; }
+  };
+  PHONE.addEventListener('change', () => { if (!el.hidden) setStrip(); });
+  const fill = () => {
+    const p = item(), N = list.length;
+    el.querySelectorAll('.xs-mark, .xs-el').forEach((e) => { e.firstElementChild.textContent = zOf(p.sym); e.lastElementChild.textContent = p.sym; });
+    $('.xs-where b').textContent = p.name; $('.xs-where span').textContent = host(p.url);
+    $('.xs-new').href = p.url; $('.xs-out').href = p.url;
+    $('#xs-name').textContent = p.name; $('.xs-kind').textContent = p.kind; $('.xs-lead').textContent = firstLine(p.lead);
+    $('.xs-chips').innerHTML = p.facts.slice(0, 3).filter(Boolean).map((f) => `<li>${f}</li>`).join('');
+    $('.xs-feats').innerHTML = p.feats.map((x) => `<li>${x}</li>`).join('');
+    more.open = false;
+    $('.xs-visits').innerHTML = `<a class="btn btn--white xs-visit" href="${p.url}" target="_blank" rel="noopener">Visitar sitio ${EXT}</a>`;
+    sib($('.xs-prev'), list[(cur + N - 1) % N], 'Anterior'); sib($('.xs-next'), list[(cur + 1) % N], 'Siguiente');
+    setStrip();
+    scroll.setAttribute('aria-label', `Pantallas de ${p.name}`);
+    ticks.innerHTML = Array.from({ length: p.n }, (_, i) => `<button class="xs-tick" type="button" aria-label="Pantalla ${i + 1} de ${p.n}">${i + 1}</button>`).join('');
+    ticks.querySelectorAll('.xs-tick').forEach((t, i) => t.addEventListener('click', () => { touched = true; stopAuto(); scroll.scrollTo({ top: Math.min(i * screenH(), maxTop()), behavior: RM ? 'auto' : 'smooth' }); }));
+  };
+  /* the screen of the wheel is where this one starts: same place, same size, same screen of the site */
+  const screenOf = (node) => {
+    const t = node && node.querySelector('.tour'), im = t && t.firstElementChild;
+    if (!im) return 0;
+    const per = im.offsetHeight / (+t.dataset.n + 1), y = new DOMMatrixReadOnly(getComputedStyle(im).transform).m42;
+    return per ? Math.round(-y / per) % +t.dataset.n : 0;
+  };
+  const radius = (node) => parseFloat(getComputedStyle(node).borderTopLeftRadius) || 16;
+  /* the view at the size and place of the node it grows from: scaled down to cover it, and cut to its shape from the top left */
+  const between = (A, r0, out) => {
+    const B = view.getBoundingClientRect(), s = Math.max(A.width / B.width, A.height / B.height);
+    const cx = Math.max(0, B.width - A.width / s), cy = Math.max(0, B.height - A.height / s), r = radius(view);
+    const small = { transform: `translate(${(A.left - B.left).toFixed(1)}px,${(A.top - B.top).toFixed(1)}px) scale(${s.toFixed(4)})`, clipPath: `inset(0px ${cx.toFixed(1)}px ${cy.toFixed(1)}px 0px round ${(r0 / s).toFixed(1)}px)` };
+    const big = { transform: 'none', clipPath: `inset(0px 0px 0px 0px round ${r}px)` };
+    return view.animate(out ? [big, small] : [small, big], out ? { duration: MOTION.d('move'), easing: MOTION.ease('io'), fill: 'forwards' } : { duration: MOTION.d('enter'), easing: MOTION.ease('out') });
+  };
+  const tell = () => { el.classList.remove('is-told'); void el.offsetWidth; el.classList.add('is-told'); };
+  const setWide = (on) => {
+    el.classList.toggle('is-wide', on); wide.setAttribute('aria-pressed', String(on));
+    wide.setAttribute('aria-label', on ? 'Ver el sitio con su historia' : 'Ver el sitio a todo el ancho');
+  };
+  /* the page keeps its width while the detail is open: the place of its scrollbar is held, so nothing behind moves */
+  const lock = (on) => {
+    if (on) root.style.setProperty('--xs-sbw', `${Math.max(0, innerWidth - root.clientWidth)}px`);
+    root.classList.toggle('xs-on', on);
+  };
+  const show = (i, from, items, onBack) => {
+    if (open) return false;
+    list = items || PROJECTS; cur = i; src = from || null; back = onBack || null; last = document.activeElement; open = true;
+    if (anim) { anim.cancel(); anim = null; }
+    const A = !RM && src ? src.getBoundingClientRect() : null;
+    setWide(false); fill();
+    el.hidden = false; lock(true);
+    scroll.scrollTop = screenOf(src) * screenH(); mark();
+    if (A) { src.style.visibility = 'hidden'; anim = between(A, radius(src), false); }
+    requestAnimationFrame(() => { el.classList.add('is-in'); tell(); });
+    $('.xs-close').focus({ preventScroll: true });
+    /* the live page starts loading as the screen grows */
+    goLive(); startAuto();
+    return true;
+  };
+  const close = () => {
+    if (!open) return;
+    open = false; stopAuto(); clearTimeout(swap); clearTimeout(slow); el.classList.remove('is-swap');
+    const target = back ? back(cur) : src;
+    if (src && src !== target) src.style.visibility = '';
+    view.classList.remove('is-live');
+    el.classList.remove('is-in', 'is-told');
+    const finish = () => {
+      el.hidden = true; lock(false);
+      unload(); view.classList.remove('is-framed'); setWide(false);
+      if (anim) { anim.cancel(); anim = null; }
+      if (target) target.style.visibility = '';
+      if (last && last.isConnected) last.focus({ preventScroll: true });
+    };
+    if (RM || !target || !target.isConnected) { finish(); return; }
+    target.style.visibility = 'hidden';
+    $('.xs-in').scrollTop = 0;
+    scroll.scrollTop = Math.round(scroll.scrollTop / screenH()) * screenH();
+    if (anim) anim.cancel();
+    anim = between(target.getBoundingClientRect(), radius(target), true);
+    anim.onfinish = finish;
+  };
+  /* to a neighbour without closing: the story and the site fade, change and come back */
+  const go = (d) => {
+    if (!open) return;
+    el.classList.add('is-swap'); stopAuto(); clearTimeout(swap);
+    swap = setTimeout(() => {
+      cur = (cur + d + list.length) % list.length; fill(); scroll.scrollTop = 0; $('.xs-in').scrollTop = 0; $('.xs-panel-in').scrollTop = 0;
+      mark();
+      el.classList.remove('is-swap'); tell(); goLive(); startAuto();
+    }, RM ? 0 : 150);
+  };
+  $('.xs-close').addEventListener('click', close);
+  $('.xs-prev').addEventListener('click', () => go(-1));
+  $('.xs-next').addEventListener('click', () => go(1));
+  $('.xs-reload').addEventListener('click', () => { if (framed()) goLive(); else { scroll.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); startAuto(); } });
+  wide.addEventListener('click', () => setWide(!el.classList.contains('is-wide')));
+  /* while it is open the detail owns the keyboard: Esc closes, the arrows go to the neighbours, Tab stays inside */
+  addEventListener('keydown', (e) => {
+    if (!open) return;
+    e.stopImmediatePropagation();
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowRight' && e.target !== scroll) go(1);
+    else if (e.key === 'ArrowLeft' && e.target !== scroll) go(-1);
+    else if (e.key === 'Tab') {
+      const f = [...el.querySelectorAll('button,a[href],summary,iframe,[tabindex="0"]')].filter((x) => x.offsetParent !== null && getComputedStyle(x).visibility !== 'hidden'), a = document.activeElement, i = f.indexOf(a);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  }, true);
+  return { show, close };
+})();
+</script>

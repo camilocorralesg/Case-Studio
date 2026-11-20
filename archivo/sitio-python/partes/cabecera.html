@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CaSe Studio | Sitios web, tiendas en línea, redes y marca</title>
+<meta name="description" content="CaSe Studio es un estudio de Medellín: sitios web, tiendas en línea, redes sociales y marca, hechos por el mismo equipo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Hanken+Grotesk:wght@300..800&family=IBM+Plex+Mono:wght@400;500&family=Martian+Mono:wdth,wght@75..112.5,300..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 208 100'%3E%3Crect width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='108' width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='122' y='14' width='72' height='72' rx='5' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  /* CaSe Studio web. Vercel's monochrome discipline and hairlines, Apple's quiet gallery and pills.
+     Layout idea: full-bleed pages with thin gutters, one authored motion moment per page. */
+  --paper:#fafafa; --surface:#ffffff; --mist:#f4f4f5; --hair:#e8e8e8; --line:#d4d4d4;
+  --ink:#171717; --ink-2:#4a4a4a; --muted:#666666; --night:#0b0b0c; --night-2:#161618;
+  --calcio:#f0531c; --selenio:#1e6bff; --action:#155eef; --ok:#1f7a3a;
+  /* round two: white, black and blue */
+  --abyss:#04060b; --deep:#0a1f5c; --blue:#1e6bff; --blue-2:#3d8bff; --ice:#e8f0ff; --ice-2:#cfe0ff; --steel:#9aa8bd;
+  --dot:"Doto", var(--mono, ui-monospace), monospace;
+  --font:"Funnel Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"Martian Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --gutter:clamp(16px, 2.4vw, 40px);
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+  --r-card:14px; --r-media:20px;
+  --t-display:calc(clamp(44px, 6.4vw, 96px) * var(--hs, 1));
+  --t-h2:calc(clamp(32px, 3.6vw, 56px) * var(--hs, 1));
+  /* type set: Funnel Display for headlines and element symbols, Funnel Sans for text, Martian Mono (narrowed) for atomic numbers and data */
+  --body:var(--font);
+  --head:"Funnel Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sym:"Funnel Display", ui-sans-serif, system-ui, sans-serif;
+  --head-w:500; --head-ls:-.035em; --head-lh:1; --hs:1;
+  --t-lead:clamp(17px, 1.32vw, 21px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;color-scheme:light}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;caret-color:var(--action);
+  scrollbar-color:#c4c4c4 transparent;scrollbar-width:thin}
+::selection{background:rgba(30,107,255,.2)}
+:focus-visible{outline:2px solid var(--action);outline-offset:2px;border-radius:6px}
+img,svg,canvas{display:block;max-width:100%}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+h1,h2,h3{text-wrap:balance;font-weight:500}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{padding-inline:var(--gutter)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.display{font-family:var(--head);font-size:var(--t-display);line-height:var(--head-lh);letter-spacing:var(--head-ls);font-weight:var(--head-w)}
+.h2{font-family:var(--head);font-size:var(--t-h2);line-height:calc(var(--head-lh) + .05);letter-spacing:calc(var(--head-ls) * .75);font-weight:var(--head-w)}
+.lead{font-family:var(--body);font-size:var(--t-lead);line-height:1.45;color:var(--ink-2);max-width:34em}
+/* the two other finalists, kept on the type bar to compare in place. Only Martian Mono has a width axis, so the stretch touches nothing else */
+html{font-stretch:87.5%}
+html[data-type="schibsted"]{--font:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--head:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--sym:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--mono:"IBM Plex Mono", ui-monospace, monospace;--head-w:600;--head-ls:-.04em}
+html[data-type="newsreader"]{--font:"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;--head:"Newsreader", Georgia, serif;--sym:"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;--head-w:400;--head-ls:-.025em;--head-lh:1.04;--hs:1.04}
+
+/* logo (symbols live at the top of body) */
+.logo{display:block;height:26px;width:auto;aspect-ratio:3.837;color:var(--ink);fill:currentColor;transition:color 200ms ease}
+.logo--dark{color:#fff}
+
+/* navigation: 64px, words draw a 1px line under them */
+.nav{position:relative;z-index:5;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-inline:var(--gutter)}
+.nav__home{display:flex;align-items:center;min-height:44px;text-decoration:none}
+.nav__links{display:flex;gap:28px;font-size:15px}
+.nav__links a{position:relative;color:var(--ink-2);text-decoration:none;padding-block:10px;transition:color 150ms ease}
+.nav__links a::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform 150ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .nav__links a:hover{color:var(--ink)}
+  .nav__links a:hover::after{transform:scaleX(1);transform-origin:left}
+}
+.nav--dark .nav__links a{color:#c9c9cc}
+@media (hover:hover) and (pointer:fine){.nav--dark .nav__links a:hover{color:#fff}}
+@media (max-width:860px){.nav__links{display:none}}
+
+/* buttons: step 1px up on hover, sink and press on click */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;
+  border:1px solid transparent;font:500 15px/1 var(--font);letter-spacing:-.01em;text-decoration:none;cursor:pointer;white-space:nowrap;
+  transition:transform 150ms var(--ease-out),background-color 150ms ease,border-color 150ms ease,color 150ms ease}
+.btn--sm{min-height:44px;padding:0 18px;font-size:14px}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--white{background:#fff;color:var(--ink)}
+.btn--ghost-dark{background:transparent;color:#fff;border-color:rgba(255,255,255,.28)}
+.btn .arr{width:14px;height:14px;transition:transform 150ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-1px)}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn--ink:hover{background:#2e2e2e}
+  .btn--white:hover{background:#ececec}
+  .btn--ghost-dark:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+}
+.btn:active{transform:translateY(1px) scale(.985);transition-duration:90ms}
+
+/* hero entrance: lines rise out of masks, then the lead and actions, the picture settles; about 1.1 s, once */
+.ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.ln>span{display:inline-block}
+.is-entering .ln>span{animation:lnUp 700ms var(--ease-out) both;animation-delay:calc(var(--i,0)*80ms)}
+.is-entering .up{animation:fadeUp 520ms var(--ease-out) both;animation-delay:calc(260ms + var(--i,0)*60ms)}
+@keyframes lnUp{from{transform:translateY(112%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}}
+@keyframes settle{from{transform:scale(.98)}}
+
+/* a scroll moment: a tall section whose stage stays on screen while the page scrolls natively */
+.moment{position:relative;height:var(--mh,260vh)}
+.moment__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+
+/* shared client-site mockups (fictional clients) */
+
+/* contact: the anchor every main action scrolls to */
+.contact{background:var(--mist);padding:clamp(72px,10vw,140px) 0}
+.contact__in{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto auto 1fr;column-gap:20px;row-gap:22px}
+.contact__in h2{grid-column:1/7}
+.contact__in .lead{grid-column:1/6}
+.contact__form{grid-column:7/13;grid-row:1/4;display:grid;gap:14px;align-content:start}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;color:var(--ink-2)}
+.field input{font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;
+  transition:border-color 140ms ease,box-shadow 140ms ease}
+.field input:focus{outline:none;border-color:var(--action);box-shadow:0 0 0 3px rgba(21,94,239,.16)}
+.contact__form .btn{justify-self:start}
+.contact__ok{min-height:1.5em;font-size:15px;color:var(--ok)}
+.contact__mail{grid-column:1/7;align-self:end;font-size:15px;color:var(--ink-2)}
+@media (max-width:860px){
+  .contact__in{grid-template-columns:1fr;grid-template-rows:none}
+  .contact__in h2,.contact__in .lead,.contact__form,.contact__mail{grid-column:1/-1;grid-row:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .is-entering .ln>span,.is-entering .up{animation:none}
+  .btn,.btn .arr,.nav__links a::after{transition-property:background-color,border-color,color,opacity}
+}
+
+/* the font picker at the bottom: a prototype aid that goes away once the type set is chosen */
+.proto-picker{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2147483647;display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(10,10,10,0.82);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset,0 8px 24px rgba(0,0,0,0.24),0 2px 6px rgba(0,0,0,0.12);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;line-height:1;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+.proto-picker-highlight{position:absolute;top:4px;left:0;height:28px;border-radius:999px;background:rgba(255,255,255,0.12);will-change:transform}
+.proto-picker[data-ready] .proto-picker-highlight{transition:transform 250ms cubic-bezier(0.23,1,0.32,1),width 250ms cubic-bezier(0.23,1,0.32,1)}
+@media (prefers-reduced-motion:reduce){.proto-picker[data-ready] .proto-picker-highlight{transition:none}}
+.proto-picker-item{position:relative;display:flex;align-items:center;height:28px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:rgba(255,255,255,0.55);font:inherit;cursor:pointer;transition:color 150ms ease-out}
+.proto-picker-item:hover{color:rgba(255,255,255,0.85)}
+.proto-picker-item:active{transform:scale(0.97)}
+.proto-picker-item:focus-visible{outline:2px solid rgba(255,255,255,0.4);outline-offset:2px}
+.proto-picker-item[data-active]{color:#fff}
+.proto-picker-divider{width:1px;height:16px;margin:0 4px;background:rgba(255,255,255,0.12)}
+.proto-picker-replay{padding:0 10px;font-size:14px}
+</style>
+<script>
+/* shared runtime */
+window.VARIANTS = [];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const range = (p, a, b) => clamp01((p - a) / (b - a));            /* 0..1 inside [a, b] */
+const easeIO = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const lerp = (a, b, t) => a + (b - a) * t;
+/* Scroll moment: progress 0..1 of a .moment section while its stage is pinned. Native scroll, one read a frame. */
+function moment(section, update) {
+  let raf = 0;
+  const calc = () => {
+    raf = 0;
+    const r = section.getBoundingClientRect();
+    const total = section.offsetHeight - window.innerHeight;
+    update(total > 0 ? clamp01(-r.top / total) : 1);
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(calc); };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  calc();
+  return () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+}
+</script>
+</head>

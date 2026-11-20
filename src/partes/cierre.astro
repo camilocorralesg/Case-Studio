@@ -1,0 +1,138 @@
+---
+import Flecha from '../components/Flecha.astro';
+---
+<style is:global>
+/* ===== Closing: the way back of the hero. The hero ends with the table turning into the logo; here the logo forms (Ca and Se come
+   in, and Tú falls into the place between them) and goes back into the periodic table, each one to its real place: Ca to 20, Se to 34
+   and Tú to the first place of a period that opens, 119, the element nobody has made yet. Each landing lights a ring of places
+   around it, as Ca and Se do when they land in the hero; then the table lights up from Tú and the words come under it ===== */
+.zb{background:var(--night);color:#fff}
+.zb-stick{--pt:clamp(76px,11vh,108px);--pb:clamp(28px,4.4vh,48px)}
+.zb-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 50% at 50% 46%,rgba(var(--glow-rgb),.34),rgba(var(--glow-rgb),0) 70%)}
+/* the table, in its own pixels (--t a place, --g the gap, --r8 how open the eighth period is), moved as one piece */
+.zb-cam{position:absolute;left:0;top:0;transform-origin:0 0}
+.zb-grid{--t:44px;--g:4px;display:grid;grid-template-columns:repeat(18,var(--t));grid-template-rows:repeat(7,var(--t)) var(--r8,0px) calc(var(--t) * .45) repeat(2,var(--t));gap:var(--g)}
+.zb-c{position:relative;display:grid;place-items:center;border-radius:14%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);color:rgba(255,255,255,.52);font:600 calc(var(--t) * .36)/1 var(--sym);font-style:normal;letter-spacing:-.03em;transition:background-color var(--d-state) ease,color var(--d-state) ease,box-shadow var(--d-state) ease}
+.zb-c.on{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.42)}
+/* a landing lights a ring of places that opens around it (--w, set while the ring passes) */
+.zb-c::after{content:"";position:absolute;inset:0;border-radius:inherit;background:#fff;opacity:calc(var(--w,0) * .62);pointer-events:none}
+.zb-slot{border:1.5px dashed rgba(255,255,255,.85);box-shadow:none;opacity:0}
+/* the logo and Tú, over the table. Ca and Se are the mark itself; while a piece flies it lifts off the blue with a soft shadow (--fly) */
+.zb-layer{position:absolute;inset:0;z-index:2;pointer-events:none}
+.zb-t{position:absolute;left:0;top:0;width:var(--B,200px);height:var(--B,200px);transform-origin:0 0;will-change:transform}
+/* a tile of the section's blue behind each one: the letters of Ca are cut out and Se is an outline, and over the lit table the cells
+   would show through them */
+.zb-back{fill:var(--cobalt)}
+.zb-ca,.zb-se{fill:#fff;filter:drop-shadow(0 calc(var(--fly,0) * 16px) calc(var(--fly,0) * 18px) rgba(2,8,40,calc(var(--fly,0) * .45)))}
+.zb-you{display:flex;flex-direction:column;justify-content:flex-end;padding:calc(var(--B,200px) * .09) calc(var(--B,200px) * .1);border-radius:9%;color:#fff;font:600 calc(var(--B,200px) * .42)/.86 var(--sym);font-style:normal;letter-spacing:-.04em;
+  background:radial-gradient(70% 60% at 30% 20%,rgba(var(--sky-rgb),.55),rgba(var(--sky-rgb),0) 72%),linear-gradient(#0d2a80,#071546);
+  box-shadow:inset 0 0 0 1px rgba(160,196,255,.5),0 calc(var(--fly,0) * 18px) calc(var(--fly,0) * 30px) calc(var(--fly,0) * -12px) rgba(2,8,40,calc(var(--fly,0) * .55))}
+.zb-you small{position:absolute;left:10%;top:8%;font:500 calc(var(--B,200px) * .085)/1 var(--mono);letter-spacing:0}
+.zb-you b{display:block;font:inherit}
+.zb-you em{margin-top:6%;font:500 calc(var(--B,200px) * .075)/1 var(--body);font-style:normal;letter-spacing:0;color:var(--ice);white-space:nowrap}
+.zb-gap{position:absolute;left:0;top:0;width:var(--B,200px);height:var(--B,200px);border:2px dashed rgba(255,255,255,.7);border-radius:9%;transform-origin:0 0}
+/* its place in the new period: the number in the mono, the name in the sans */
+.zb-call{position:absolute;left:0;top:0;font:500 clamp(12px,1.05vw,15px)/1 var(--font);color:#fff;white-space:nowrap;opacity:0}
+.zb-call i{margin-right:.6em;font-family:var(--mono);font-style:normal;font-variant-numeric:tabular-nums;color:var(--ice)}
+/* the words, under the table */
+/* the last call before the form: its line and its button (the final phrase that came after it went on 17 November 2026) */
+.zz-copy{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);bottom:var(--pb);display:grid;justify-items:center;gap:clamp(18px,3vh,28px);text-align:center}
+.zz-copy .h2{max-width:11em;text-wrap:balance}
+@media (prefers-reduced-motion:reduce){.zb-c{transition:none}}
+</style>
+
+<template id="tpl-zb"><section class="moment zb" aria-labelledby="zb-h" style="--mh:260vh"><div class="moment__stick zb-stick">
+  <div class="zb-cam" aria-hidden="true"><div class="zb-grid"></div></div>
+  <div class="zb-layer" aria-hidden="true"><span class="zb-gap"></span><svg class="zb-t zb-ca" viewBox="0 0 100 100"><rect class="zb-back" width="100" height="100" rx="9"></rect><use href="#mark-cut" width="208" height="100"></use></svg><i class="zb-t zb-you"><small>119</small><b>Tú</b><em>Tu marca</em></i><svg class="zb-t zb-se" viewBox="108 0 100 100"><rect class="zb-back" x="108" width="100" height="100" rx="9"></rect><use href="#mark-cut" width="208" height="100"></use></svg><span class="zb-call"><i>119</i>Tu marca</span></div>
+  <div class="zz-copy"><h2 class="h2" id="zb-h">El elemento que falta es tu marca.</h2><a class="btn btn--white" href="#contacto">Empezar mi proyecto <Flecha /></a></div>
+</div></section></template>
+
+<script is:inline>
+/* the periodic table: its 118 symbols in order, and where each one stands. Rows 1 to 7 are the periods, 8 the one that opens for
+   119, 9 a gap, and 10 and 11 the lanthanides and actinides */
+const ZB_SYM = 'H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og'.split(' ');
+const zbWhere = (z) => {
+  if (z === 1) return [1, 1]; if (z === 2) return [1, 18];
+  if (z <= 4) return [2, z - 2]; if (z <= 10) return [2, z + 8];
+  if (z <= 12) return [3, z - 10]; if (z <= 18) return [3, z];
+  if (z <= 36) return [4, z - 18]; if (z <= 54) return [5, z - 36];
+  if (z <= 56) return [6, z - 54]; if (z === 57) return [6, 3]; if (z <= 71) return [10, z - 54]; if (z <= 86) return [6, z - 68];
+  if (z <= 88) return [7, z - 86]; if (z === 89) return [7, 3]; if (z <= 103) return [11, z - 86]; return [7, z - 100];
+};
+/* the top left corner of a place, in the table's own pixels (r8: how open the eighth period is) */
+const zbAt = (r, c, t, g, r8) => [(c - 1) * (t + g), r <= 8 ? (r - 1) * (t + g) : 7 * (t + g) + r8 + g + t * .45 + g + (r - 10) * (t + g)];
+
+addSection('tabla', 'tpl-zb', 5, (root) => {
+  const sec = root.querySelector('.zb'), stick = sec.querySelector('.zb-stick'), cam = sec.querySelector('.zb-cam'), grid = sec.querySelector('.zb-grid');
+  grid.innerHTML = ZB_SYM.map((s, i) => { const [r, c] = zbWhere(i + 1); return `<i class="zb-c" data-r="${r}" data-c="${c}" style="grid-area:${r}/${c}">${s}</i>`; }).join('') + '<i class="zb-c zb-slot" style="grid-area:8/1"></i>';
+  const cells = [...grid.querySelectorAll('.zb-c:not(.zb-slot)')], slot = grid.querySelector('.zb-slot'), copy = sec.querySelector('.zz-copy'), offs = [];
+  const ca = sec.querySelector('.zb-ca'), se = sec.querySelector('.zb-se'), you = sec.querySelector('.zb-you'), gap = sec.querySelector('.zb-gap'), call = sec.querySelector('.zb-call');
+  const on = (n, ev, fn) => { n.addEventListener(ev, fn); offs.push(() => n.removeEventListener(ev, fn)); };
+  const back = (x) => 1 + 2.4 * (x - 1) ** 3 + 1.4 * (x - 1) ** 2;
+  const put = (el, x, y, s, rot, o) => { el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${rot.toFixed(2)}deg) scale(${s.toFixed(4)})`; el.style.opacity = o.toFixed(3); };
+  /* a flight from one box to another ([x, y, size]), rising a little on the way */
+  const fly = (a, b, f, lift) => { const e = easeIO(f); return [lerp(a[0], b[0], e), lerp(a[1], b[1], e) - Math.sin(Math.PI * e) * lift, lerp(a[2], b[2], e)]; };
+  const show = (n, k) => { n.style.opacity = k.toFixed(3); n.style.transform = `translate3d(0,${((1 - k) * 16).toFixed(1)}px,0)`; n.style.visibility = k > .001 ? '' : 'hidden'; };
+  let L = null, last = 0, fixed, full = false, rip = false;
+  const layout = () => {
+    const W = stick.clientWidth, H = stick.clientHeight, tall = innerWidth < 860, g = tall ? 2 : 4;
+    if (!W || !H) return;
+    const pt = Math.min(108, Math.max(76, H * .11)), pb = Math.min(48, Math.max(28, H * .044)), ch = copy.offsetHeight;
+    const t = Math.max(12, Math.floor(Math.min((W * (tall ? .94 : .86) - 17 * g) / 18, (H - pt - pb - ch - 40 - 11 * g) / 11.45)));
+    grid.style.setProperty('--t', `${t}px`); grid.style.setProperty('--g', `${g}px`);
+    const bw = 18 * t + 17 * g, bo = 11.45 * t + 11 * g, x0 = (W - bw) / 2, y0 = tall ? Math.max(pt + 8, (H - bo - ch - 36) / 2) : pt + 6;
+    cam.style.transform = `translate3d(${x0.toFixed(1)}px,${y0.toFixed(1)}px,0)`;
+    /* on a phone the words come right under the table, so the two read together */
+    copy.style.top = tall ? `${(y0 + bo + 28).toFixed(1)}px` : ''; copy.style.bottom = tall ? 'auto' : '';
+    /* the logo, over the middle of the table: Ca, the place of Tú and Se, with the mark's own gap between them */
+    const B = Math.round(tall ? Math.min(W * .26, H * .14) : Math.min(W * .16, H * .25, 230)), gp = B * .08, cx = W / 2, cy = y0 + bo * (tall ? .5 : .46);
+    sec.style.setProperty('--B', `${B}px`);
+    const home = { ca: [cx - 1.5 * B - gp, cy - B / 2], you: [cx - B / 2, cy - B / 2], se: [cx + B / 2 + gp, cy - B / 2] };
+    cells.forEach((c) => { const [x, y] = zbAt(+c.dataset.r, +c.dataset.c, t, g, t); c.d0 = Math.min(1, Math.hypot(x0 + x + t / 2 - cx, y0 + y + t / 2 - cy) / (W * .55)); c.d1 = Math.hypot(+c.dataset.r - 8, +c.dataset.c - 1) / 19; });
+    /* how far Ca and Se come from as they settle: less on a phone, where the logo already fills the width */
+    L = { H, t, g, x0, y0, B, home, slide: tall ? .2 : .5 }; full = false;
+    render(last);
+  };
+  /* the rings: where each piece lands, when, for how long and how far its ring travels (in places) */
+  const RINGS = [{ r: 4, c: 2, at: .44, len: .09, reach: 6 }, { r: 4, c: 16, at: .48, len: .09, reach: 6 }, { r: 8, c: 1, at: .56, len: .13, reach: 13 }];
+  const rings = (q) => {
+    const act = RINGS.map((x) => ({ ...x, w: range(q, x.at, x.at + x.len) })).filter((x) => x.w > 0 && x.w < 1);
+    if (!act.length) { if (rip) { cells.forEach((c) => c.style.removeProperty('--w')); rip = false; } return; }
+    rip = true;
+    cells.forEach((c) => {
+      let v = 0;
+      act.forEach((x) => { const d = Math.hypot(+c.dataset.r - x.r, +c.dataset.c - x.c); v = Math.max(v, Math.exp(-((d - x.w * x.reach) ** 2) / 1.3) * (1 - x.w)); });
+      c.style.setProperty('--w', v.toFixed(3));
+    });
+  };
+  const render = (p) => {
+    last = p; if (!L) return;
+    const q = fixed !== undefined ? fixed : p, { H, t, g, x0, y0, B, home } = L;
+    const open = easeIO(range(q, .38, .48)), r8 = open * t;
+    grid.style.setProperty('--r8', `${r8.toFixed(1)}px`); slot.style.opacity = open.toFixed(3);
+    const dest = (r, c) => { const [x, y] = zbAt(r, c, t, g, r8); return [x0 + x, y0 + y, t]; };
+    /* the table appears around the logo, from the middle out */
+    if (q < .42 || !full) { cells.forEach((c) => { c.style.opacity = easeOut(range(q, .14 + .14 * c.d0, .22 + .14 * c.d0)).toFixed(3); }); full = q >= .42; }
+    /* the logo: Ca and Se are there from the start and settle, with the place between them; Tú falls into it */
+    const k = easeOut(range(q, 0, .12)), d = range(q, .04, .16), fCa = range(q, .3, .44), fSe = range(q, .34, .48), fYou = range(q, .4, .56), side = (1 - k) * B * L.slide;
+    const a = fly([home.ca[0] - side, home.ca[1], B], dest(4, 2), fCa, H * .06);
+    const b = fly([home.se[0] + side, home.se[1], B], dest(4, 16), fSe, H * .06);
+    const y = fly([home.you[0], home.you[1] - (1 - back(d)) * B * 2.4, B], dest(8, 1), fYou, H * .1);
+    put(ca, a[0], a[1], a[2] / B, 0, .3 + .7 * k); put(se, b[0], b[1], b[2] / B, 0, .3 + .7 * k);
+    put(you, y[0], y[1], y[2] / B, (1 - Math.min(1, d * 1.3)) * -20, easeOut(range(q, .04, .07)));
+    ca.style.setProperty('--fly', Math.sin(Math.PI * fCa).toFixed(3)); se.style.setProperty('--fly', Math.sin(Math.PI * fSe).toFixed(3)); you.style.setProperty('--fly', Math.sin(Math.PI * fYou).toFixed(3));
+    put(gap, home.you[0], home.you[1], 1, 0, 1 - easeOut(range(q, .16, .26)));
+    const c8 = dest(8, 1); put(call, c8[0] + t + 10, c8[1] + t / 2 - 7, 1, 0, easeOut(range(q, .58, .66)));
+    cells[19].style.visibility = fCa >= 1 ? 'hidden' : ''; cells[33].style.visibility = fSe >= 1 ? 'hidden' : '';
+    rings(q);
+    cells.forEach((c) => c.classList.toggle('on', q >= .56 + .12 * c.d1));
+    show(copy, easeOut(range(q, .64, .76)));
+  };
+  on(window, 'resize', layout);
+  if (document.fonts) document.fonts.ready.then(() => { if (stick.isConnected) layout(); });
+  /* with reduced motion the closing is one still screen: everything in its place and the words under it */
+  if (RM) { fixed = 1; layout(); return () => offs.forEach((f) => f()); }
+  const stop = moment(sec, render); layout();
+  return () => { stop(); offs.forEach((f) => f()); };
+});
+</script>

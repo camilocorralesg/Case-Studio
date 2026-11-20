@@ -1,0 +1,159 @@
+<style>
+/* the page root and the bits the hero shares with the rest */
+.v{position:relative;background:var(--paper);color:var(--ink);overflow-x:clip}
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.arr{width:14px;height:14px;flex:none}
+
+/* pause control for anything that keeps moving */
+.pause{display:inline-grid;place-items:center;flex:none;width:36px;height:36px;padding:0;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);cursor:pointer;transition:transform 150ms var(--ease-out),background-color 150ms ease,border-color 150ms ease}
+.pause svg{width:14px;height:14px}
+.pause .i-play,.pause[data-paused="1"] .i-pause{display:none}
+.pause[data-paused="1"] .i-play{display:block}
+@media (hover:hover) and (pointer:fine){.pause:hover{background:var(--mist);border-color:#b8b8b8}}
+.pause:active{transform:scale(.94)}
+.pause--dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff}
+@media (hover:hover) and (pointer:fine){.pause--dark:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}}
+
+.proto-picker .proto-picker-item{white-space:nowrap}
+.type-picker .tp-label{padding:0 8px 0 10px;color:rgba(255,255,255,.4);font-size:12px;letter-spacing:.02em}
+/* the picker scrolls sideways on narrow screens instead of running off both edges */
+@media (max-width:860px){
+  .proto-picker{max-width:calc(100vw - 16px);overflow-x:auto;scrollbar-width:none}
+  .proto-picker::-webkit-scrollbar{display:none}
+  .proto-picker-item{flex:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .moment{height:auto!important}
+  .pause{display:none}
+}
+
+/* the hero is its own scroll moment: the stage stays while the page scrolls */
+.hx{position:relative;height:var(--hh,200vh)}
+.hx__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate}
+.hx__vis{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%}
+.hx .nav{position:absolute;top:0;left:0;right:0;z-index:6}
+.hx__copy{position:relative;z-index:2;will-change:transform,opacity}
+.hx__say{position:absolute;z-index:3;left:50%;top:50%;width:min(19em,calc(100% - 2*var(--gutter)));transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
+.hx__pause{position:absolute;z-index:6;right:var(--gutter);bottom:20px}
+.is-entering .vis-in{animation:visIn 1600ms var(--ease-out) both}
+@keyframes visIn{from{opacity:0}}
+
+/* client wordmarks: fictional placeholders until there are real ones */
+
+@media (prefers-reduced-motion:reduce){
+  .moment__stick.is-flow{position:static;height:auto;overflow:visible;padding-block:clamp(64px,10vw,120px)}
+  .hx{height:auto!important}
+  .is-entering .vis-in{animation:none}
+}
+</style>
+<script>
+/* runs a looping animation only while it is on screen, the tab is visible and nobody pressed pause */
+function onVisible(el, cb) {
+  const io = new IntersectionObserver(([e]) => cb(e.isIntersecting), { threshold: 0 });
+  io.observe(el);
+  return () => io.disconnect();
+}
+function runner(btn, area, play, stop) {
+  let user = false, vis = true, on = false;
+  const sync = () => {
+    const want = !RM && !user && vis && !document.hidden;
+    if (want !== on) { on = want; want ? play() : stop(); }
+  };
+  const toggle = () => {
+    user = !user;
+    if (btn) {
+      btn.dataset.paused = user ? '1' : '';
+      btn.setAttribute('aria-label', user ? 'Reanudar animación' : 'Pausar animación');
+    }
+    sync();
+  };
+  if (btn) btn.addEventListener('click', toggle);
+  const unobs = onVisible(area, (v) => { vis = v; sync(); });
+  document.addEventListener('visibilitychange', sync);
+  sync();
+  return {
+    pause() { if (!user) toggle(); },
+    cleanup() {
+      if (btn) btn.removeEventListener('click', toggle);
+      unobs();
+      document.removeEventListener('visibilitychange', sync);
+      if (on) { on = false; stop(); }
+    }
+  };
+}
+/* jump to a point inside a scroll moment (used by "link to scroll" lists) */
+/* service buttons that pre-fill the contact message */
+
+
+/* WebGL: one full-screen triangle and a fragment shader */
+
+
+/* time loop + scroll progress + pause, shared by every hero */
+function drive({ area, btn, sec, frame, scroll, onPlay, onStop }) {
+  let t = 0, p = 0, raf = 0, last = 0, playing = false, q = 0;
+  const paint = () => { q = 0; frame(t, p); };
+  const queue = () => { if (!q && !playing) q = requestAnimationFrame(paint); };
+  const tick = (now) => { t += Math.min(50, now - last) / 1000; last = now; frame(t, p); raf = requestAnimationFrame(tick); };
+  const r = runner(btn, area,
+    () => { playing = true; cancelAnimationFrame(q); q = 0; last = performance.now(); raf = requestAnimationFrame(tick); if (onPlay) onPlay(); },
+    () => { playing = false; cancelAnimationFrame(raf); queue(); if (onStop) onStop(); });
+  /* with reduced motion the hero stays at rest: headline on screen, one still frame */
+  const stop = RM ? (scroll && scroll(0), () => {}) : moment(sec, (v) => { p = v; if (scroll) scroll(v); queue(); });
+  if (RM) { t = 4; queue(); }
+  return { cleanup() { r.cleanup(); stop(); cancelAnimationFrame(raf); cancelAnimationFrame(q); }, kick: queue };
+}
+/* the headline leaves, the statement arrives */
+function copyOut(copy, say, p, sa = .5, sb = .74) {
+  const o = easeIO(range(p, .05, .4));
+  copy.style.opacity = (1 - o).toFixed(3);
+  copy.style.transform = `translate3d(0,${(-o * 56).toFixed(1)}px,0)`;
+  copy.style.visibility = o >= 1 ? 'hidden' : '';
+  if (say) {
+    const s = easeOut(range(p, sa, sb));
+    say.style.opacity = s.toFixed(3);
+    say.style.transform = `translate(-50%,calc(-50% + ${((1 - s) * 26).toFixed(1)}px))`;
+  }
+}
+/* sections after the hero register here; order decides where each one goes */
+window.PAGES = {};
+function addSection(id, tpl, order, init) { (PAGES[id] = PAGES[id] || []).push({ tpl, order, init }); }
+/* the nav sits on dark or on light depending on what is behind it */
+
+/* the two logo tiles as sprites, drawn from the logo's own outlines (100 units a side) */
+function markSprites() {
+  const P = [...document.querySelectorAll('#mark-cut path')].map((p) => new Path2D(p.getAttribute('d')));
+  const K = 3;
+  const mk = (draw) => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 100 * K;
+    const g = c.getContext('2d');
+    g.scale(K, K);
+    draw(g);
+    return c;
+  };
+  return {
+    ca: mk((g) => {
+      const gr = g.createLinearGradient(0, 0, 100, 100);
+      gr.addColorStop(0, '#ffffff'); gr.addColorStop(1, '#c4d8ff');
+      g.fillStyle = gr; g.fill(P[0], 'evenodd');
+    }),
+    se: mk((g) => {
+      g.translate(-108, 0);
+      g.fillStyle = 'rgba(8,22,70,.8)'; g.beginPath(); g.roundRect(112, 4, 92, 92, 5); g.fill();
+      g.fillStyle = '#c2d6ff'; g.fill(P[1]); g.fill(P[2]); g.fill(P[3]);
+    })
+  };
+}
+/* smoothed pointer in 0..1 over an element */
+function pointer(el, ease = .08) {
+  const m = { x: .5, y: .5, tx: .5, ty: .5, in: 0, tin: 0 };
+  const mv = (e) => { const r = el.getBoundingClientRect(); m.tx = (e.clientX - r.left) / r.width; m.ty = (e.clientY - r.top) / r.height; m.tin = 1; };
+  const lv = () => { m.tin = 0; };
+  if (FINE && !RM) { el.addEventListener('pointermove', mv); el.addEventListener('pointerleave', lv); }
+  m.step = () => { m.x += (m.tx - m.x) * ease; m.y += (m.ty - m.y) * ease; m.in += (m.tin - m.in) * ease; };
+  m.off = () => { el.removeEventListener('pointermove', mv); el.removeEventListener('pointerleave', lv); };
+  return m;
+}
+</script>

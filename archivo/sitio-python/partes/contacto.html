@@ -1,0 +1,166 @@
+<style>
+/* ===== Contact: the visitor chooses what they need instead of describing it ===== */
+.contact{position:relative}
+/* the name and the contact are elements that fill when you complete them */
+.contact--tabla{background:#02040a;color:#fff}
+.contact--tabla .lead,.contact--tabla .contact__mail{color:#b3bfd3}
+.contact--tabla .field{grid-template-columns:72px 1fr;column-gap:16px;row-gap:2px;align-items:center;padding:12px;border-radius:16px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);transition:background-color 320ms ease}
+.contact--tabla .field::before{content:attr(data-sym);grid-row:1/3;display:grid;place-items:center;aspect-ratio:1;border-radius:11px;background:#02040a;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);font:600 28px/1 var(--sym);letter-spacing:-.04em;transition:background-color 320ms ease,color 320ms ease}
+.contact--tabla .field label{color:#a9bff5}
+.contact--tabla .field :is(input,textarea){border:0;background:transparent;color:#fff;padding:4px 0}
+.contact--tabla .field :is(input,textarea):focus{box-shadow:none}
+.contact--tabla .field:focus-within{box-shadow:inset 0 0 0 2px #cfe0ff}
+.contact--tabla .field.is-full{background:#1e55e0}
+.contact--tabla .field.is-full::before{background:#fff;color:var(--deep)}
+.contact--tabla .field.is-full label{color:#e3ebff}
+.contact--tabla .btn--ink{background:#fff;color:var(--ink)}
+.contact--tabla .contact__ok{color:#8fd6a8}
+
+.ask{gap:clamp(18px,2.8vh,30px)}
+.ask fieldset{display:grid;gap:10px;min-width:0;margin:0;padding:0;border:0}
+.ask legend{padding:0;margin-bottom:10px;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.6vw,24px) * var(--hs,1));line-height:1.1;letter-spacing:-.015em}
+.ask-hint{margin-top:-4px;font-size:14px;color:var(--ask-dim)}
+.ask-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:start}
+.ask-lb{padding-top:15px;font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ask-dim)}
+.ask-opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;display:inline-flex}
+.opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:var(--opt-r,999px);background:var(--opt-bg,transparent);color:var(--opt-fg,inherit);box-shadow:inset 0 0 0 1px var(--opt-line);font-size:15px;line-height:1.15;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease,transform 200ms var(--ease-out)}
+.opt b{display:none}
+.opt input:checked+span{background:var(--opt-on-bg);color:var(--opt-on-fg);box-shadow:inset 0 0 0 1px var(--opt-on-bg)}
+.opt input:focus-visible+span{outline:2px solid var(--opt-focus,#7fb0ff);outline-offset:2px}
+.opt input:active+span{transform:scale(.96)}
+@media (hover:hover) and (pointer:fine){.opt input:not(:checked):hover+span{box-shadow:inset 0 0 0 1px var(--opt-hover,currentColor)}}
+.ask-who{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ask-end{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.ask-end .contact__ok{flex:1;min-width:15em;min-height:0}
+@media (max-width:860px){.ask-row{grid-template-columns:1fr;gap:6px}.ask-lb{padding-top:0}.ask-who{grid-template-columns:1fr}}
+
+/* options are elements and the choice is a formula */
+.contact--tabla{--ask-dim:#8fa3cf;--opt-focus:#cfe0ff}
+.contact--tabla .ask-need .ask-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.contact--tabla .ask-when .ask-opts{display:grid;grid-template-columns:repeat(3,minmax(96px,150px));gap:8px}
+.contact--tabla .opt{display:flex}
+.contact--tabla .opt span{flex:1;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:10px;min-height:92px;padding:9px 10px;border-radius:12px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.5);font-size:12.5px;line-height:1.2;color:#cdd8f2}
+.contact--tabla .opt b{display:block;font:600 30px/.9 var(--sym);letter-spacing:-.04em;color:#fff}
+.contact--tabla .opt input:checked+span{background:#1e55e0;color:#fff;box-shadow:inset 0 0 0 2px #cfe0ff}
+.contact--tabla .ask-row{grid-template-columns:1fr;gap:6px}.contact--tabla .ask-lb{padding-top:6px}
+.tb-f{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:36px;font-size:14px;color:#b3bfd3}
+.tb-f .mono{padding:8px 10px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);color:#fff}
+
+/* ===== Forms, second pass: numbered steps and, beside the options, a live picture of what the visitor has chosen ===== */
+.contact__in{grid-template-rows:auto auto 1fr auto}
+.contact__in .ask{grid-row:1/5}
+.ask>*{min-width:0}
+.ask-no{margin-right:10px;font:400 13px/1 var(--mono);letter-spacing:0;color:var(--ask-ac,var(--blue));vertical-align:.18em}
+.ask-leg{margin-bottom:-6px;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.6vw,24px) * var(--hs,1));line-height:1.1;letter-spacing:-.015em}
+.ask-side{grid-column:1/6;position:relative;align-self:center;min-width:0}
+.ask-note{font-size:14px;color:var(--ask-dim)}
+.ask-end .btn{min-height:54px;padding:0 28px;font-size:16px}
+.ask-end .contact__ok{order:3;flex:1 1 100%;min-width:0}
+@media (max-width:860px){.contact__in{grid-template-rows:none}.contact__in .ask{grid-row:auto}.ask-side{grid-column:1/-1}}
+
+/* the formula builds up, tile by tile */
+.contact--tabla{--ask-ac:#7fb0ff}
+.contact--tabla .ask-need .ask-opts{grid-template-columns:repeat(auto-fill,minmax(108px,1fr))}
+.contact--tabla .opt span{min-height:104px}
+.contact--tabla .tb-f{display:none}
+.contact--tabla .ask-side{align-self:center;display:grid;gap:14px}
+.tb-big{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:120px}
+.tb-big b{display:grid;align-content:space-between;width:clamp(74px,7vw,104px);aspect-ratio:1/1.06;padding:9px 10px;border-radius:12px;background:#1e55e0;box-shadow:inset 0 0 0 2px #cfe0ff;font:600 clamp(28px,3vw,44px)/.9 var(--sym);letter-spacing:-.04em;animation:tbin 420ms var(--ease-out) both}
+.tb-big b small{font:400 11px/1 var(--mono);letter-spacing:0;color:#dbe7ff}
+.tb-big b.q{background:none;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.4);color:#5d73a8;animation:none}
+.tb-big em{font:400 22px/1 var(--mono);font-style:normal;color:#7f8ba3}
+.tb-big b.res{background:#fff;color:#0a1f5c;box-shadow:none}.tb-big b.res small{color:#33487f}
+@keyframes tbin{from{opacity:0;transform:translateY(-22px) rotateX(60deg)}}
+.tb-cap{font-size:15px;color:#b3bfd3}
+@media (prefers-reduced-motion:reduce){.tb-big b{animation:none}}
+</style>
+
+<script>
+/* ---------- forms ---------- */
+const NEEDS = [
+  ['Web', [['Sitio corporativo', 'un sitio corporativo', 'Sc'], ['Tienda en línea', 'una tienda en línea', 'Tl'], ['Landing de ventas', 'una landing de ventas', 'Lv'], ['Menú y pedidos', 'un menú con pedidos', 'Mp'], ['Rediseño de mi sitio', 'rediseñar mi sitio', 'Rd']]],
+  ['Redes', [['Manejo de redes', 'manejo de redes', 'Mr'], ['Community manager', 'community manager', 'Cm'], ['Fotografía de producto', 'fotos de producto', 'Fp'], ['Parrilla de contenido', 'una parrilla de contenido', 'Pc']]],
+  ['Marca', [['Logo e identidad', 'el logo y la identidad de mi marca', 'Li']]],
+  ['Plus', [['Motion graphics', 'motion graphics', 'Mg'], ['Contenido con IA', 'contenido con IA', 'Ai']]]
+];
+const WHEN = [['Lo antes posible', 'Ya'], ['En uno o dos meses', '2m'], ['Sin afán', 'Sa']];
+
+function Ask(ct, onChange) {
+  const form = ct.querySelector('.contact__form');
+  form.classList.add('ask');
+  form.innerHTML = `<fieldset class="ask-g ask-need"><legend>¿Qué necesitas?</legend><p class="ask-hint">Elige una o varias opciones.</p>
+    ${NEEDS.map(([g, items]) => `<div class="ask-row"><span class="ask-lb">${g}</span><div class="ask-opts">${items.map(([t, ph, sy]) => `<label class="opt"><input type="checkbox" name="need" value="${t}" data-ph="${ph}" data-sym="${sy}"><span><b aria-hidden="true">${sy}</b>${t}</span></label>`).join('')}</div></div>`).join('')}</fieldset>
+    <fieldset class="ask-g ask-when"><legend>¿Para cuándo?</legend><div class="ask-opts">${WHEN.map(([t, sy]) => `<label class="opt"><input type="radio" name="when" value="${t}"><span><b aria-hidden="true">${sy}</b>${t}</span></label>`).join('')}</div></fieldset>
+    <div class="ask-who"><div class="field"><label for="c-name">Nombre</label><input id="c-name" name="name" autocomplete="name" required></div><div class="field"><label for="c-mail">Correo o WhatsApp</label><input id="c-mail" name="contact" required></div></div>
+    <div class="ask-end"><button class="btn btn--ink" type="submit">Enviar solicitud</button><p class="contact__ok" role="status" aria-live="polite"></p></div>`;
+  const ok = form.querySelector('.contact__ok'), q = (s) => form.querySelector(s);
+  const state = () => ({ needs: [...form.querySelectorAll('[name=need]:checked')], when: (q('[name=when]:checked') || {}).value || '', name: q('#c-name').value.trim(), contact: q('#c-mail').value.trim() });
+  const change = () => { ct.classList.remove('is-sent'); ok.textContent = ''; if (onChange) onChange(state(), false); };
+  const submit = (e) => {
+    e.preventDefault();
+    const s = state();
+    if (!s.needs.length) { ok.textContent = 'Elige al menos una opción de lo que necesitas.'; q('[name=need]').focus(); return; }
+    if (!s.name) { ok.textContent = 'Escribe tu nombre para saber a quién responder.'; q('#c-name').focus(); return; }
+    if (!s.contact) { ok.textContent = 'Deja un correo o un WhatsApp para responderte.'; q('#c-mail').focus(); return; }
+    ct.classList.add('is-sent');
+    ok.textContent = `Listo, ${s.name}. Pediste: ${s.needs.map((n) => n.value).join(', ')}${s.when ? ' · ' + s.when.toLowerCase() : ''}. En este prototipo la solicitud todavía no se envía.`;
+    if (onChange) onChange(s, true);
+  };
+  form.addEventListener('input', change); form.addEventListener('submit', submit);
+  if (onChange) onChange(state(), false);
+  return { form, state, off: () => { form.removeEventListener('input', change); form.removeEventListener('submit', submit); } };
+}
+const FORMS = {
+  tabla(ct) {
+    let line;
+    const a = Ask(ct, (st) => {
+      if (line) line.innerHTML = st.needs.length ? `<span class="mono">${st.needs.map((x) => x.dataset.sym).join(' + ')}</span> es tu fórmula` : 'Toca los elementos que necesitas y arma tu fórmula.';
+      ct.querySelectorAll('.ask-who .field').forEach((f) => f.classList.toggle('is-full', !!f.querySelector('input').value.trim()));
+    });
+    a.form.querySelector('.ask-need').insertAdjacentHTML('beforeend', '<p class="tb-f" aria-live="polite">Toca los elementos que necesitas y arma tu fórmula.</p>');
+    line = a.form.querySelector('.tb-f');
+    a.form.querySelector('.ask-need .ask-hint').remove();
+    [...ct.querySelectorAll('.ask-who .field')].forEach((f, i) => { f.dataset.sym = ['No', 'Co'][i]; });
+    return a.off;
+  }
+};
+
+/* ---------- the panel beside the options: a live picture of what the visitor has chosen ---------- */
+(() => {
+  const state = (form) => ({ needs: [...form.querySelectorAll('[name=need]:checked')], when: (form.querySelector('[name=when]:checked') || {}).value || '', name: form.querySelector('#c-name').value.trim(), contact: form.querySelector('#c-mail').value.trim() });
+  const upgrade = (id, fn) => {
+    const base = FORMS[id];
+    FORMS[id] = (ct) => {
+      const off = base(ct), form = ct.querySelector('.contact__form'), side = document.createElement('div');
+      side.className = 'ask-side';
+      form.querySelectorAll('legend').forEach((l, i) => l.insertAdjacentHTML('afterbegin', `<span class="ask-no">0${i + 1}</span>`));
+      const who = form.querySelector('.ask-who');
+      who.insertAdjacentHTML('beforebegin', '<p class="ask-leg"><span class="ask-no">03</span>¿A quién le respondemos?</p>'); ct.querySelector('.contact__mail').before(side);
+      form.querySelector('.ask-end').insertAdjacentHTML('beforeend', '<p class="ask-note">Te escribimos por el medio que nos dejes.</p>');
+      const update = fn(ct, form, side), run = () => update(state(form), ct.classList.contains('is-sent'));
+      const later = () => requestAnimationFrame(run);
+      form.addEventListener('input', run); form.addEventListener('submit', later);
+      run();
+      return () => { if (typeof off === 'function') off(); form.removeEventListener('input', run); form.removeEventListener('submit', later); };
+    };
+  };
+  
+  
+  
+  
+  upgrade('tabla', (ct, form, side) => {
+    side.innerHTML = '<div class="tb-big" aria-hidden="true"></div><p class="tb-cap" aria-live="polite"></p>';
+    const big = side.firstElementChild, cap = side.lastElementChild; let last = null;
+    return (s) => {
+      const key = s.needs.map((x) => x.dataset.sym).join('+');
+      if (key !== last) {
+        last = key;
+        big.innerHTML = s.needs.length ? s.needs.map((x, i) => `${i ? '<em>+</em>' : ''}<b><small>0${i + 1}</small>${x.dataset.sym}</b>`).join('') + '<em>→</em><b class="res"><small>tu</small>Tm</b>' : '<b class="q"><small>01</small>?</b><em>+</em><b class="q"><small>02</small>?</b><em>→</em><b class="q"><small>tu</small>Tm</b>';
+      }
+      cap.textContent = s.needs.length ? `${s.needs.map((x) => x.value).join(' + ')}: la fórmula de tu marca.` : 'Toca los elementos de la derecha y tu fórmula se arma aquí.';
+    };
+  });
+})();
+</script>

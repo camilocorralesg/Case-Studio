@@ -1,0 +1,59 @@
+<style>
+/* ===== Brands whose social media the team has run: a second period of six elements ===== */
+.br{background:var(--br-bg);color:var(--br-fg)}
+.br-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-content:center;row-gap:clamp(20px,4vh,44px);padding:clamp(84px,12vh,120px) var(--gutter) clamp(28px,5vh,56px)}
+.br-stick::before{content:"";position:absolute;inset:0;background:var(--br-glow,none);pointer-events:none}
+.br-head{grid-column:1/8;position:relative;display:grid;gap:12px}
+.br-head .lead{color:var(--br-body);max-width:34em}
+.br-stage{grid-column:1/-1;position:relative}
+.br-it{position:relative;display:grid;align-content:space-between;justify-items:start;gap:10px;padding:clamp(12px,1.3vw,18px);border:0;border-radius:var(--br-r,18px);background:var(--bg);color:var(--fg);font-family:var(--font);text-align:left;cursor:pointer;box-shadow:0 0 0 1px var(--br-edge,rgba(255,255,255,.12)),0 30px 60px -34px var(--br-shadow,rgba(0,0,0,.7));will-change:transform,opacity}
+.br-it i{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;box-shadow:inset 0 0 0 1.5px currentColor;font:600 15px/1 var(--head);font-style:normal}
+.br-it b{font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.9vw,30px) * var(--hs,1));line-height:1;letter-spacing:-.02em}
+.br-it span{font:400 12px/1.2 var(--mono);opacity:.82}
+.br-it em{font:400 12px/1 var(--mono);font-style:normal;padding:6px 9px;border-radius:99px;background:color-mix(in srgb,currentColor 13%,transparent);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.br-it:focus-visible{outline:2px solid var(--br-focus,#7fb0ff);outline-offset:3px}
+.br--tab{--br-bg:#02040a;--br-fg:#fff;--br-body:#b3bfd3;--br-r:14px;--br-edge:rgba(118,166,255,.5);--br-shadow:rgba(30,107,255,.5);--br-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+
+.br-m-tiles .br-stage{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1vw,16px);perspective:1400px}
+.br-m-tiles .br-it{aspect-ratio:1/1.12;transform-origin:50% 0}
+.br-m-tiles .br-it i{width:auto;height:auto;border-radius:0;box-shadow:none;font:600 clamp(34px,4.4vw,68px)/.9 var(--sym);letter-spacing:-.04em}
+.br-m-tiles .br-it b{font-family:var(--font);font-weight:500;font-size:clamp(13px,1.1vw,16px);letter-spacing:0;line-height:1.2}
+.br-m-tiles .br-it::before{content:attr(data-no);font:400 12px/1 var(--mono);opacity:.8}
+.br-m-tiles .br-it em{display:none}
+.br-cap{grid-column:1/-1;position:relative;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--br-body)}
+.br-cap .mono{padding:6px 9px;border-radius:7px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);color:#cfe0ff}
+
+@media (max-width:860px){
+  .br-head{grid-column:1/-1;text-align:left;justify-items:start}
+  .br-m-tiles .br-stage{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .br-m-tiles .br-it span{display:none}
+}
+</style>
+
+<template id="tpl-br"><section class="moment br" id="marcas" aria-labelledby="br-h" style="--mh:250vh"><div class="moment__stick br-stick is-flow">
+  <div class="br-head"><h2 class="h2" id="br-h">Marcas con las que hemos trabajado en redes</h2><p class="lead">Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.</p></div>
+  <div class="br-stage"></div>
+</div></section></template>
+
+<script>
+function initBrands(theme, mode) {
+  return (root) => {
+    const sec = root.querySelector('.br'); sec.classList.add('br--' + theme, 'br-m-' + mode);
+    const stage = sec.querySelector('.br-stage'), offs = [];
+    const nets = (b) => b.nets.map((x) => x[0]).join(' + ');
+    const card = (b, i, extra) => `<button class="br-it" type="button" data-i="${i}" data-no="0${i + 1}" style="--bg:${b.bg};--fg:${b.fg};--r:${[-7, 5, -4, 6, -5, 8][i]}" aria-label="Ver el trabajo con ${b.name}"><i>${b.sym}</i><b>${b.name}</b>${extra || ''}<span>${nets(b)}</span><em>${b.nets[0][1]}</em></button>`;
+    stage.innerHTML = BRANDS.map((b, i) => card(b, i)).join('');
+    stage.insertAdjacentHTML('afterend', '<p class="br-cap"><span class="mono">We + Ag + Mi + Sp + O\' + Ea</span>seis comunidades atendidas por el mismo equipo</p>');
+    const its = [...stage.querySelectorAll('.br-it')];
+    const open = (e) => { const b = e.target.closest('[data-i]'); if (b) Viewer.show(+b.dataset.i, b, BRANDS); };
+    stage.addEventListener('click', open); offs.push(() => stage.removeEventListener('click', open));
+    
+    const off = moment(sec, (p0) => {
+      const p = RM ? 1 : p0;
+      its.forEach((el, i) => { const k = easeOut(range(p, .08 + i * .07, .34 + i * .07)); el.style.opacity = k.toFixed(3); el.style.transform = `translate3d(0,${((1 - k) * -46).toFixed(1)}vh,0) rotateX(${((1 - k) * 68).toFixed(1)}deg)`; });
+    });
+    return () => { offs.forEach((f) => f()); if (typeof off === 'function') off(); };
+  };
+}
+addSection('tabla', 'tpl-br', 2.5, initBrands('tab', 'tiles'));
+</script>

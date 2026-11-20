@@ -1,0 +1,59 @@
+<style>
+/* ===== The last line: how the studio got its name, with the motion of each hero ===== */
+.ou{background:var(--ou-bg);color:var(--ou-fg);overflow:clip}
+.ou-stick{display:grid;place-content:center;justify-items:center;gap:clamp(26px,6vh,64px);padding:clamp(70px,12vh,150px) var(--gutter);text-align:center}
+.ou-stick::before{content:"";position:absolute;inset:0;background:var(--ou-glow,none);pointer-events:none}
+.ou-say{position:relative;max-width:12em;will-change:transform,opacity;font-family:var(--ou-font,var(--head));font-weight:var(--ou-w,var(--head-w));font-size:calc(clamp(38px,8vw,132px) * var(--hs,1) * var(--ou-s,1));line-height:.98;letter-spacing:var(--ou-ls,var(--head-ls,-.03em));text-wrap:balance}
+.ou-say span{display:inline-block;will-change:transform,opacity}
+.ou-eq{position:relative;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(22px,3vw,48px) * var(--hs,1));line-height:1.15;letter-spacing:-.02em;white-space:nowrap;color:var(--ou-dim);will-change:transform,opacity}
+.ou-eq b{font-weight:inherit;color:var(--ou-ac)}
+.ou-eq i{display:inline-block;overflow:hidden;max-width:calc(var(--n) * 1ch * var(--o,1));font-style:normal;white-space:pre;vertical-align:bottom}
+.ou-eq .y{color:var(--ou-ac)}
+.ou--tabla{--ou-bg:#02040a;--ou-fg:#fff;--ou-dim:#8fa3cf;--ou-ac:#fff;--ou-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.36),rgba(30,107,255,0) 72%)}
+.ou--tabla .ou-say{perspective:900px}
+.ou--tabla .ou-eq{font-size:clamp(24px,3.2vw,52px);gap:.02em}
+.ou--tabla .ou-eq b{position:relative;display:inline-grid;place-items:end start;width:1.86em;height:1.86em;padding:0 0 .12em .2em;border-radius:.2em;background:#fff;color:#0a1f5c;font-weight:600;letter-spacing:-.04em;line-height:1}
+.ou--tabla .ou-eq b+i+i+b{background:none;color:#fff;box-shadow:inset 0 0 0 .1em #fff}
+.ou--tabla .ou-eq b::before{content:attr(data-no);position:absolute;left:.75em;top:.55em;font:400 .26em/1 var(--mono);letter-spacing:0}
+.ou--tabla .ou-eq i{padding-left:.16em}
+@media (max-width:860px){.ou-say{font-size:calc(clamp(34px,10.5vw,60px) * var(--hs,1) * var(--ou-s,1))}.ou-eq{font-size:22px}.ou--tabla .ou-eq{font-size:21px}}
+</style>
+
+<template id="tpl-ou"><section class="moment ou" aria-labelledby="ou-t" style="--mh:270vh"><div class="moment__stick ou-stick is-flow">
+  <p class="sr-only" id="ou-t">Uno lo diseña, el otro lo hace vender. Camilo más Sebastián: CaSe Studio.</p>
+  <p class="ou-say" aria-hidden="true"></p>
+  <p class="ou-eq" aria-hidden="true"><b data-no="20">Ca</b><i class="x" style="--n:4.6">milo</i><i class="x" style="--n:3.4"> + </i><b data-no="34">Se</b><i class="x" style="--n:7.6">bastián</i><i class="y" style="--n:7.6"> Studio</i></p>
+</div></section></template>
+
+<script>
+/* ---------- the last line ---------- */
+const OU_SAY = { es: [['Uno', 'lo', 'diseña,', 'el', 'otro', 'lo', 'hace', 'vender.'], [2, 7]], en: [['One', 'designs', 'it,', 'the', 'other', 'makes', 'it', 'sell.'], [1, 7]] };
+let OU_WORDS = OU_SAY.es[0];
+
+function initOutro(sec, id) {
+  const say = sec.querySelector('.ou-say'), eq = sec.querySelector('.ou-eq'), stick = sec.querySelector('.ou-stick');
+  const [ouW, ouH] = OU_SAY[(window.LANG && window.LANG.cur) || 'es']; OU_WORDS = ouW;
+  say.innerHTML = OU_WORDS.map((w, i) => `<span${ouH.includes(i) ? ' class="hl"' : ''}>${w}</span>`).join(' ');
+  const words = [...say.children], xs = [...eq.querySelectorAll('.x')], y = eq.querySelector('.y');
+  let beam = null, ring = null;
+  
+  
+  const word = {
+    tabla: (el, k) => { el.style.opacity = k.toFixed(3); el.style.transform = `rotateX(${((1 - k) * -86).toFixed(1)}deg) translate3d(0,${((1 - k) * 22).toFixed(1)}px,0)`; }
+  }[id];
+  const off = moment(sec, (p0) => {
+    const p = RM ? 1 : p0;
+    words.forEach((el, i) => word(el, easeOut(range(p, .05 + i * .035, .2 + i * .035)), i));
+    const ka = easeOut(range(p, .4, .54)), kc = easeIO(range(p, .58, .86));
+    eq.style.opacity = ka.toFixed(3);
+    eq.style.transform = `translate3d(0,${((1 - ka) * 30).toFixed(1)}px,0) scale(${(1 + kc * (.7)).toFixed(3)})`;
+    say.style.opacity = (RM ? 1 : 1 - kc * .5).toFixed(3); say.style.transform = `translate3d(0,${(kc * -3).toFixed(2)}vh,0) scale(${(1 - kc * .1).toFixed(3)})`;
+    xs.forEach((el) => { el.style.setProperty('--o', (1 - kc).toFixed(3)); el.style.opacity = (1 - kc).toFixed(3); });
+    y.style.setProperty('--o', kc.toFixed(3)); y.style.opacity = kc.toFixed(3);
+    if (beam) { const kb = range(p, .02, .46); beam.style.transform = `translate3d(0,${((kb - .5) * 70).toFixed(1)}vh,0) scaleX(${Math.sin(Math.PI * kb).toFixed(3)})`; beam.style.opacity = Math.sin(Math.PI * kb).toFixed(3); }
+    if (ring) { const kr = easeOut(range(p, .84, .97)); ring.style.opacity = (kr * .9).toFixed(3); ring.style.transform = `rotate(${(-12 - (1 - kr) * 30).toFixed(1)}deg) scale(${(1.7 - kr * .7).toFixed(3)})`; }
+    
+  });
+  return () => { if (typeof off === 'function') off(); };
+}
+</script>

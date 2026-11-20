@@ -1,0 +1,247 @@
+---
+import Flecha from '../components/Flecha.astro';
+import Pausa from '../components/Pausa.astro';
+---
+<style is:global>
+/* ===== Projects: the six sites stand on a wheel, lit screens on the night floor of the hero. The one in front stands in the light
+   and plays its tour; the others turn away into the dark. It is dragged, thrown, turned with the arrows or with its elements, and
+   it settles on the nearest site. "Ver proyecto" (or the screen in front) grows the site into the detail (visor.astro).
+   Like Fórmula, it is not pinned to the scroll: it comes in once, when it is seen, and the visitor moves it (user's call) ===== */
+.ru{position:relative;overflow-x:clip;background-color:var(--night);color:#fff}
+.ru :focus-visible{outline-color:var(--focus)}
+.ru-in{position:relative;display:flex;flex-direction:column;gap:clamp(14px,2.6vh,28px);min-height:100vh;min-height:100svh;padding:clamp(76px,11vh,108px) var(--gutter) clamp(40px,7vh,72px)}
+.ru-in::before{content:"";position:absolute;left:0;right:0;bottom:0;height:70%;background:radial-gradient(60% 80% at 50% 100%,rgba(var(--glow-rgb),.26),rgba(var(--glow-rgb),0) 72%);pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 45%,transparent 96%);mask-image:linear-gradient(transparent,#000 45%,transparent 96%)}
+.ru-head{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:10px 32px;flex-wrap:wrap}
+.ru-ctl{display:flex;gap:10px}
+/* with reduced motion the tours do not move: nothing to pause */
+@media (prefers-reduced-motion:reduce){.ru-ctl .ru-pause{display:none}}
+.ru-btn{display:grid;place-items:center;flex:none;width:46px;height:46px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.28);color:#fff;cursor:pointer;transition:background-color var(--d-hover) ease,transform var(--d-hover) var(--ease-out)}
+.ru-btn svg{width:18px;height:18px}
+.ru-btn:active{transform:scale(.94)}
+/* the stage, and the light the front site stands in, like the core of a lit element */
+.ru-stage{position:relative;z-index:1;flex:1;min-height:clamp(280px,50vh,620px);perspective:1800px;perspective-origin:50% 40%;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+/* grabbed, the wheel gives a little under the hand */
+.ru-stage{transition:scale var(--d-state) var(--ease-out)}
+.ru-stage.is-drag{cursor:grabbing;scale:.985}
+@media (prefers-reduced-motion:reduce){.ru-stage.is-drag{scale:none}}
+.ru-stage:focus-visible{outline-offset:6px}
+.ru-stage::before{content:"";position:absolute;left:50%;top:44%;width:min(80vw,1120px);height:84%;translate:-50% -50%;background:radial-gradient(closest-side,rgba(48,118,255,.32),rgba(var(--cobalt-rgb),.1) 60%,rgba(var(--cobalt-rgb),0));pointer-events:none}
+/* the sites are clean screens: rounded, an edge of light, the sheen of the hero's elements on top and a soft reflection on the floor */
+.ru-card{--cw:min(56vw,780px,calc((100svh - 480px) * 1.932));position:absolute;left:50%;top:44%;width:var(--cw);padding:0;border:0;border-radius:16px;background:none;color:#fff;font:inherit;cursor:pointer;translate:-50% -50%;will-change:transform}
+/* the long shadow lives on its own, under the screen: the tour moves inside the screen, and a shadow drawn with it would be painted again on every frame */
+.ru-card::before{content:"";position:absolute;left:0;right:0;top:0;aspect-ratio:800/414;border-radius:16px;box-shadow:0 44px 90px -40px rgba(0,0,0,.92);pointer-events:none}
+/* a screen is never an empty hole: its first screen (the small poster) is there until its tour arrives and fades in over it */
+.ru-screen{position:relative;display:block;aspect-ratio:800/414;border-radius:16px;overflow:hidden;background:#0b0c10 var(--pf) 50% 0/cover no-repeat;box-shadow:0 0 0 1px rgba(160,196,255,.16);-webkit-box-reflect:below 14px linear-gradient(transparent 64%,rgba(255,255,255,.15))}
+.ru-screen .tour{position:absolute;inset:0}
+/* the hand grabs the wheel, not the picture: a screen's image is never dragged out of it (17 November 2026) */
+.ru-stage img{-webkit-user-drag:none;user-select:none}
+.ru-sheen{position:absolute;inset:0;z-index:2;border-radius:inherit;background:linear-gradient(180deg,rgba(160,196,255,.11),rgba(160,196,255,0) 32%);box-shadow:inset 0 1px 0 rgba(220,232,255,.24);pointer-events:none}
+.ru-dim{position:absolute;inset:0;z-index:3;background:var(--night);opacity:0;pointer-events:none}
+.ru-card:focus-visible{outline:2px solid var(--focus);outline-offset:6px}
+/* below: the element in front with its name, the elements to go to any site, and the way in */
+.ru-foot{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px 28px}
+.ru-now{display:flex;align-items:center;gap:16px;min-width:0}
+.ru-el{width:62px;height:62px;padding:7px 8px 8px}
+.ru-el b{font-size:28px}
+.ru-txt{display:grid;gap:4px;min-width:0}
+.ru-txt b{font-size:clamp(20px,1.7vw,26px);font-weight:600;letter-spacing:-.025em;line-height:1.1}
+.ru-txt span{font-size:clamp(14px,1.05vw,16px);color:#b3bfd3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ru-dots{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+.ru-dot{display:flex;flex-direction:column;justify-content:space-between;width:44px;height:44px;padding:5px 6px 6px;border:0;border-radius:10px;background:var(--cell);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.55);color:#fff;font:inherit;text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.ru-dot i{font:500 10px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
+.ru-dot b{font:600 17px/.8 var(--sym);letter-spacing:-.04em}
+.ru-dot[aria-current="true"]{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62)}
+.ru-dot[aria-current="true"] i{color:var(--ice)}
+.ru-dot:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){
+  .ru-card.is-on .ru-screen{transition:box-shadow var(--d-fade) ease}
+  .ru-card.is-on:hover .ru-screen{box-shadow:0 0 0 1px rgba(190,214,255,.4)}
+  .ru-btn:hover{background:rgba(255,255,255,.14)}
+  .ru-dot:not([aria-current="true"]):hover{background:#12245a}
+}
+/* the entrance: one rise, in order, from the resting layout, the first time the section is seen; nothing waits on the scroll */
+@keyframes ruUp{from{opacity:0;transform:translate3d(0,26px,0)}}
+.ru.is-pre .ru-a{opacity:0}
+.ru.is-in .ru-a{animation:ruUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 70ms)}
+@media (max-width:900px){
+  .ru-foot{grid-template-columns:minmax(0,1fr);justify-items:start;gap:14px}
+  .ru-dots{justify-content:flex-start}
+}
+/* on a phone the screens stand up as phones and play each site as a phone sees it (its phone tour, herramientas/recorridos.py);
+   the stage is as tall as the screen in front and its reflection, so its name follows right after. A site without a phone tour
+   keeps its computer screen, lying in the middle (chosen on 15 November 2026: "Rueda en teléfono") */
+@media (max-width:700px){
+  .ru-in{min-height:0}
+  .ru-stage{flex:none;min-height:0;height:calc(min(50vw,230px) * 844 / 390 + 44px)}
+  .ru-card{--cw:min(50vw,230px);top:46%;border-radius:26px}
+  .ru-card::before,.ru-screen{aspect-ratio:390/844;border-radius:26px}
+  .ru-screen .tour.is-wide{inset:auto 0;top:50%;aspect-ratio:800/414;translate:0 -50%}
+  /* behind it, its own first screen, blurred and dark, so the phone is not an empty hole while its tour arrives (or beside a
+     computer screen lying down) */
+  .ru-screen{background-image:none}
+  .ru-screen::before{content:"";position:absolute;inset:-30px;background:var(--pf) 50% 50%/cover no-repeat;filter:blur(22px) brightness(.45)}
+  .ru-el{width:52px;height:52px}
+  .ru-el b{font-size:23px}
+}
+</style>
+
+<template id="tpl-ru"><section class="ru" id="proyectos" aria-labelledby="ru-h"><div class="ru-in">
+  <div class="ru-head ru-a" style="--k:0"><h2 class="h2" id="ru-h">Proyectos</h2><div class="ru-ctl"><Pausa clase="ru-btn ru-pause" /><button class="ru-btn ru-prev" type="button" aria-label="Proyecto anterior"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="ru-btn ru-next" type="button" aria-label="Proyecto siguiente"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
+  <div class="ru-stage ru-a" style="--k:1" tabindex="0" role="region" aria-roledescription="carrusel" aria-label="Proyectos"></div>
+  <div class="ru-foot ru-a" style="--k:2">
+    <div class="ru-now" aria-live="polite"><span class="lit ru-el" aria-hidden="true"><i></i><b></b></span><span class="ru-txt"><b></b><span></span></span></div>
+    <div class="ru-dots"></div>
+    <button class="btn btn--white ru-open" type="button">Ver proyecto <Flecha /></button>
+  </div>
+</div></section></template>
+
+<script is:inline>
+/* the wheel: each site has its place on a curve that goes round; pos is the site in front (fractional while it turns) */
+addSection('tabla', 'tpl-ru', 2, (root) => {
+  const sec = root.querySelector('.ru'), stage = sec.querySelector('.ru-stage'), dots = sec.querySelector('.ru-dots');
+  const now = sec.querySelector('.ru-now'), nowEl = now.querySelector('.ru-el'), nowTxt = now.querySelector('.ru-txt');
+  const P = PROJECTS, N = P.length, offs = [];
+  const on = (el, ev, fn, opt) => { el.addEventListener(ev, fn, opt); offs.push(() => el.removeEventListener(ev, fn, opt)); };
+  /* the tour a screen plays: on a phone, the site as a phone sees it, or its computer screen lying down if it has no phone tour */
+  const phone = matchMedia('(max-width:700px)');
+  /* sizes: how wide a card is drawn (min(56vw, 780px) on a computer, min(50vw, 230px) on a phone) */
+  const face = (p) => (!phone.matches ? tourHTML(p, '', 'data-manual', false, '(min-width:1393px) 780px, 56vw') : p.cel ? tourHTML(p, 'is-cel', 'data-manual', true, '(min-width:460px) 230px, 50vw') : tourHTML(p, 'is-wide', 'data-manual', false, '100vw'));
+  const wide = (p) => phone.matches && !p.cel;
+  stage.innerHTML = P.map((p, i) => `<button class="ru-card" type="button" aria-label="${i + 1} de ${N}: ${p.name}, ${p.kind}"><span class="ru-screen${wide(p) ? ' is-wide' : ''}" style="--pf:url('${new URL(p.img, document.baseURI).href}')">${face(p)}<span class="ru-sheen"></span><span class="ru-dim"></span></span></button>`).join('');
+  dots.innerHTML = P.map((p, i) => `<button class="ru-dot" type="button" aria-label="Ir a ${p.name}"><i>${zOf(p.sym)}</i><b>${p.sym}</b></button>`).join('');
+  const cards = [...stage.children], screens = cards.map((c) => c.querySelector('.ru-screen'));
+  let tours = cards.map((c) => c.querySelector('.tour'));
+  const dims = cards.map((c) => c.querySelector('.ru-dim')), marks = [...dots.children];
+
+  /* the section comes in once, when a good part of it is seen; with reduced motion it is simply there */
+  let io = null;
+  if (!RM) {
+    sec.classList.add('is-pre');
+    /* coming in, the wheel turns half a site into its place: before anyone touches it, it shows that it turns */
+    io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); sec.classList.remove('is-pre'); sec.classList.add('is-in'); if (!drag && Math.abs(pos) < .01) { pos = -.5; paint(); go(0); } } }, { threshold: .28 });
+    io.observe(sec);
+  }
+  let stopT = Tours.start(sec);
+  /* the strips of the sites around the front are asked for a screen and a half before the wheel is seen, and a strip that arrives
+     while its screen is already seen fades in over its poster */
+  const near = () => { const j = Math.max(0, k); [j, (j + 1) % N, (j + N - 1) % N].forEach((i) => { const im = tours[i] && tours[i].firstElementChild; if (im && im.loading === 'lazy') im.loading = 'eager'; }); };
+  const arrive = () => { if (RM) return; tours.forEach((t) => { const im = t && t.firstElementChild; if (!im || im.complete) return; im.style.opacity = '0'; im.addEventListener('load', () => { im.style.transition = `opacity ${MOTION.d('enter')}ms ${MOTION.ease('out')}`; im.style.opacity = ''; }, { once: true }); }); };
+  let soon = null;
+  if ('IntersectionObserver' in window) { soon = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { soon.disconnect(); soon = null; near(); } }, { rootMargin: '150% 0px' }); soon.observe(sec); }
+  arrive();
+  /* only the site in front plays, and only while the wheel is on screen and its detail is closed. lean: how much the screens lean
+     with the speed of a turn (a throw, an arrow), in degrees; they stand straight again as it settles */
+  let pos = 0, k = -1, drag = null, swallow = false, seen = false, held = false, user = false, lean = 0;
+  const play = () => tours.forEach((t, i) => { const a = Tours.get(t); if (a) { if (seen && !held && !user && i === k) a.play(); else a.pause(); } });
+  /* the site in front loops while the wheel is on screen: the pause holds it, and the wheel keeps it held until it is pressed again */
+  const pz = sec.querySelector('.ru-pause');
+  if (pz) on(pz, 'click', () => { user = !user; pz.dataset.paused = user ? '1' : ''; pz.setAttribute('aria-label', user ? 'Reanudar animación' : 'Pausar animación'); play(); });
+  const stopV = onVisible(sec, (v) => { seen = v; play(); });
+
+  const wrap = (d) => ((((d % N) + N) % N) + N / 2) % N - N / 2;
+  const say = (j, quiet) => {
+    const p = P[j];
+    nowEl.firstElementChild.textContent = zOf(p.sym); nowEl.lastElementChild.textContent = p.sym;
+    nowTxt.firstElementChild.textContent = p.name; nowTxt.lastElementChild.textContent = `${p.kind} · ${p.facts[1]}`;
+    marks.forEach((d, i) => { if (i === j) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+    if (!quiet && !RM) now.animate([{ opacity: 0, transform: 'translate3d(0,6px,0)' }, { opacity: 1, transform: 'none' }], { duration: MOTION.d('state'), easing: MOTION.ease('out') });
+  };
+  const paint = () => {
+    const cw = cards[0].offsetWidth;
+    cards.forEach((c, i) => {
+      const d = wrap(i - pos), a = Math.abs(d), s = Math.sign(d);
+      const x = s * (a <= 1 ? a * cw * .64 : cw * .64 + (a - 1) * cw * .26), z = -Math.min(a, 2.6) * cw * .36, ry = -Math.max(-1, Math.min(1, d)) * 36;
+      c.style.transform = `translate3d(${x.toFixed(1)}px,0,${z.toFixed(1)}px) rotateY(${(ry + lean).toFixed(2)}deg)`;
+      c.style.zIndex = String(100 - Math.round(a * 10));
+      c.style.opacity = a < 2.1 ? '1' : Math.max(0, 1 - (a - 2.1) / .6).toFixed(3);
+      dims[i].style.opacity = (Math.min(1, a) * .56).toFixed(3);
+      const front = a < .5; c.classList.toggle('is-on', front); c.tabIndex = front ? 0 : -1;
+    });
+    const j = ((Math.round(pos) % N) + N) % N;
+    if (j !== k) { const first = k < 0; k = j; say(k, first); play(); }
+  };
+  /* the wheel goes to its target like a spring with no bounce: quick, and it keeps the speed of a throw */
+  const sp = (() => {
+    let raf = 0, v = 0, last = 0, target = 0;
+    const step = (t) => {
+      const dt = Math.min(.032, (t - (last || t)) / 1000); last = t;
+      const kk = 170, c = 2 * Math.sqrt(kk);
+      v += (-(pos - target) * kk - v * c) * dt;
+      const nx = pos + v * dt;
+      if (Math.abs(nx - target) < .0006 && Math.abs(v) < .003) { pos = target; lean = 0; paint(); raf = 0; last = 0; v = 0; return; }
+      /* the screens trail the turn a little, as a thing that is carried does */
+      pos = nx; lean = Math.max(-5, Math.min(5, -v * .6)); paint(); raf = requestAnimationFrame(step);
+    };
+    return {
+      go(t, v0) { target = t; if (v0 !== undefined) v = v0; if (!raf) raf = requestAnimationFrame(step); },
+      stop() { cancelAnimationFrame(raf); raf = 0; last = 0; v = 0; lean = 0; },
+      get target() { return target; }, get moving() { return !!raf; }
+    };
+  })();
+  const go = (t, v0) => { if (RM) { sp.stop(); pos = t; paint(); return; } sp.go(t, v0); };
+  const base = () => Math.round(sp.moving ? sp.target : pos);
+  const toSite = (i) => { const b = base(); go(b + wrap(i - b)); };
+  /* opening: the screen in front becomes the detail. Closing: the wheel turns to the project the visitor ended on, and its screen
+     takes it back */
+  const open = () => {
+    const back = (j) => { sp.stop(); const b = Math.round(pos); pos = b + wrap(j - b); paint(); held = false; play(); return screens[j]; };
+    if (Viewer.show(k, screens[k], P, back)) { held = true; play(); }
+  };
+  on(sec.querySelector('.ru-prev'), 'click', () => go(base() - 1));
+  on(sec.querySelector('.ru-next'), 'click', () => go(base() + 1));
+  on(sec.querySelector('.ru-open'), 'click', open);
+  marks.forEach((d, i) => on(d, 'click', () => toSite(i)));
+  /* the arrows turn it while it has the focus */
+  on(stage, 'keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(base() - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); go(base() + 1); }
+  });
+  /* dragged and thrown: it follows the finger, keeps the speed it was let go with and settles on the nearest site. It is grabbed
+     anywhere, the screens too: their images never start a drag of their own (which ended the turn after 3 px), and once it moves
+     the wheel keeps the pointer, so letting go outside the window still lets it go */
+  on(stage, 'dragstart', (e) => e.preventDefault());
+  on(stage, 'pointerdown', (e) => { swallow = false; if (e.button !== 0) return; drag = { x: e.clientX, p0: pos, lx: e.clientX, t: performance.now(), v: 0, id: e.pointerId, moved: false }; });
+  on(window, 'pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (e.pointerType === 'mouse' && !e.buttons) { end(); return; }
+    const dx = e.clientX - drag.x;
+    if (!drag.moved) { if (Math.abs(dx) < 6) return; drag.moved = true; sp.stop(); stage.classList.add('is-drag'); try { stage.setPointerCapture(drag.id); } catch (_) { /* the pointer is already gone */ } }
+    const unit = cards[0].offsetWidth * .64, t = performance.now();
+    drag.v = -((e.clientX - drag.lx) / unit) / Math.max(.001, (t - drag.t) / 1000); drag.lx = e.clientX; drag.t = t;
+    pos = drag.p0 - dx / unit; paint();
+  });
+  const end = () => {
+    if (!drag) return;
+    const d = drag; drag = null; if (!d.moved) return;
+    swallow = true; stage.classList.remove('is-drag');
+    /* a soft throw settles on the next site, a strong one carries over two or three */
+    const v = Math.max(-9, Math.min(9, d.v));
+    go(Math.round(pos + v * .3), v);
+  };
+  on(window, 'pointerup', end); on(window, 'pointercancel', end);
+  /* a trackpad's sideways swipe (or the wheel with Shift) turns it too, and when the fingers stop it settles on the nearest site;
+     up and down stay the page's own scroll */
+  let still = 0;
+  on(stage, 'wheel', (e) => {
+    const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.shiftKey ? e.deltaY : 0;
+    if (!dx) return;
+    e.preventDefault(); sp.stop();
+    pos += (e.deltaMode === 1 ? dx * 16 : dx) / (cards[0].offsetWidth * .64); paint();
+    clearTimeout(still); still = setTimeout(() => go(Math.round(pos)), 140);
+  }, { passive: false });
+  cards.forEach((c, i) => on(c, 'click', () => { if (swallow) { swallow = false; return; } if (Math.abs(wrap(i - pos)) < .5) open(); else toSite(i); }));
+  on(window, 'resize', paint);
+  /* crossing the width of a phone (a tablet turned, a window made narrower) the screens change their tour; their shape changes in
+     the styles */
+  on(phone, 'change', () => {
+    stopT();
+    cards.forEach((c, i) => { c.querySelector('.tour').outerHTML = face(P[i]); screens[i].classList.toggle('is-wide', wide(P[i])); });
+    tours = cards.map((c) => c.querySelector('.tour'));
+    if (!soon) near();
+    arrive();
+    stopT = Tours.start(sec); play(); paint();
+  });
+  paint();
+  return () => { if (io) io.disconnect(); if (soon) soon.disconnect(); clearTimeout(still); stopT(); stopV(); sp.stop(); offs.forEach((f) => f()); };
+});
+</script>

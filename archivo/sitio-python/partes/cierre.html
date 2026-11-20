@@ -1,0 +1,31 @@
+<style>
+/* ===== Closing: the hero's own idea comes back to ask for the project ===== */
+.zz-copy{position:relative;z-index:2;display:grid;justify-items:center;gap:22px;text-align:center;padding:0 var(--gutter);will-change:transform,opacity}
+/* the element that was missing */
+.zb{background:#02040a;color:#fff}
+.zb-stick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(28px,6vh,60px)}
+.zb-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 50% at 50% 46%,rgba(30,107,255,.34),rgba(30,107,255,0) 70%)}
+.zb-row{position:relative;display:flex;align-items:center;gap:clamp(8px,1.2vw,18px);--s:min(22vw,230px)}
+.zb-row>svg{width:var(--s);height:var(--s);fill:#fff;will-change:transform}
+.zb-slot{position:relative;width:var(--s);height:var(--s);border-radius:9%;border:2px dashed rgba(118,166,255,.5)}
+.zb-you{position:absolute;inset:-2px;border-radius:9%;background:linear-gradient(#3d8bff,#1e55e0);display:flex;flex-direction:column;justify-content:space-between;padding:12%;will-change:transform;font:600 calc(var(--s) * .4)/.86 var(--sym);letter-spacing:-.04em}
+.zb-you span{font:500 calc(var(--s) * .085)/1 var(--mono);letter-spacing:0}
+</style>
+
+<template id="tpl-zb"><section class="moment zb" aria-labelledby="zb-h" style="--mh:260vh"><div class="moment__stick zb-stick"><div class="zb-row" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#mark-cut" width="208" height="100"></use></svg><div class="zb-slot"><div class="zb-you"><span>01</span>Tú</div></div><svg viewBox="108 0 100 100"><use href="#mark-cut" width="208" height="100"></use></svg></div><div class="zz-copy"><h2 class="h2" id="zb-h">El elemento que falta es tu marca.</h2><a class="btn btn--white" href="#contacto">Empezar mi proyecto {{ARR}}</a></div></div></section></template>
+
+<script>
+const fadeIn = (el, p, a, b) => { const e = RM ? 1 : easeOut(range(p, a, b)); el.style.opacity = e.toFixed(3); el.style.transform = `translate3d(0,${((1 - e) * 22).toFixed(1)}px,0)`; };
+
+/* the missing element drops in */
+addSection('tabla', 'tpl-zb', 5, (root) => {
+  const sec = root.querySelector('.zb'), you = sec.querySelector('.zb-you'), tiles = [...sec.querySelectorAll('.zb-row>svg')], copy = sec.querySelector('.zz-copy');
+  return moment(sec, (p) => {
+    const k = RM ? 1 : easeOut(range(p, .1, .5)), b = RM ? 0 : Math.sin(Math.PI * range(p, .44, .62));
+    you.style.transform = `translate3d(0,${((k - 1) * 260).toFixed(1)}%,0) rotate(${((1 - k) * -24).toFixed(2)}deg)`;
+    you.style.opacity = range(p, .08, .2) || (RM ? 1 : 0);
+    tiles.forEach((t, i) => { t.style.transform = `translate3d(${((i ? 1 : -1) * (1 - k) * 34 + (i ? 1 : -1) * b * -6).toFixed(1)}%,0,0)`; });
+    fadeIn(copy, p, .52, .74);
+  });
+});
+</script>

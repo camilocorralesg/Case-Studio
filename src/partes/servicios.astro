@@ -1,0 +1,150 @@
+---
+/* The four services. The sentence of each one is real copy (docs/contenido.md), split where its animation (escenas.astro)
+   changes step: while the picture tells a step, that stretch of the sentence lights up. The sentence is the script. */
+const SERV = [
+  { k: 'Sw', z: '21', name: 'Sitios web', bits: ['Cargan rápido,', 'se leen bien en el celular', 'y llevan a tu cliente a escribirte.'] },
+  { k: 'Ti', z: '22', name: 'Tiendas en línea', bits: ['Catálogo,', 'carrito', 'y pagos', 'conectados con tu inventario.'] },
+  { k: 'Rs', z: '23', name: 'Redes sociales', bits: ['Calendario del mes,', 'fotos, videos y textos', 'listos para publicar.'] },
+  { k: 'Ma', z: '24', name: 'Marca', bits: ['Logo,', 'colores', 'y tipografías', 'con una guía corta para usarlos.'] }
+].map((s) => ({ ...s, desc: s.bits.join(' ') }));
+---
+<style is:global>
+/* Services on lab paper (leaving the hero, the paper is laid tile by tile: color.astro). The list on one side; on the other, one
+   large picture that tells the service in front, step by step, while the scroll moves it. Nothing is written under the picture:
+   the service's own sentence, in the list, lights up stretch by stretch with it. Choosing comes right after, in the formula
+   (formula.astro) */
+.v-tab .f2{background-color:var(--lab);color:#0a1020}
+.v-tab .f2-stick{display:flex;flex-direction:column;gap:clamp(16px,3vh,32px);padding:clamp(76px,11vh,108px) var(--gutter) clamp(28px,4.4vh,48px)}
+.v-tab .f2-stick::before{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:radial-gradient(60% 80% at 50% 100%,rgba(var(--sky-rgb),.14),rgba(var(--sky-rgb),0) 72%);pointer-events:none}
+/* the lead goes under the title at every width (from 1680 up it jumped to the far right corner, up to 1000 px away from it) */
+.v-tab .f2-head{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.v-tab .f2-head .lead{max-width:24em;color:#4a5878}
+.v-tab .f2-body{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,8fr);gap:clamp(20px,3vw,56px)}
+
+/* the list: the element in front is lit, and only it says its sentence */
+.v-tab .f2-list{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0}
+.v-tab .f2-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:12px 14px;border-radius:18px;transition:background-color var(--d-state) var(--ease-out),box-shadow var(--d-state) var(--ease-out)}
+/* the rows that wait dim their words, never their elements: an element is always drawn whole */
+@media (prefers-reduced-motion:no-preference){.v-tab .f2-row:not(.on) h3{color:#5b6680}}
+.v-tab .f2-row.on{opacity:1;background:#fff;box-shadow:inset 0 0 0 1px rgba(var(--deep-rgb),.12),0 24px 40px -30px rgba(var(--deep-rgb),.35)}
+.v-tab .f2-el{display:flex;flex-direction:column;justify-content:space-between;width:clamp(54px,4.4vw,68px);aspect-ratio:1;padding:7px 8px;border-radius:12px;background:var(--cell);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.55);transition:background-color var(--d-state) var(--ease-out),box-shadow var(--d-state) var(--ease-out)}
+.v-tab .f2-el i{font:400 10px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost);transition:color var(--d-state) ease}
+.v-tab .f2-el b{font:600 clamp(22px,1.9vw,30px)/.84 var(--sym);letter-spacing:-.045em}
+.v-tab .f2-row.on .f2-el{background:var(--cobalt);box-shadow:inset 0 0 0 1.5px rgba(var(--ice-rgb),.55)}
+.v-tab .f2-row.on .f2-el i{color:var(--ice)}
+.v-tab .f2-txt{min-width:0}
+.v-tab .f2-txt h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(19px,1.6vw,26px);letter-spacing:-.025em;line-height:1.1;transition:color var(--d-state) ease}
+.v-tab .f2-fold{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--d-state) var(--ease-io)}
+.v-tab .f2-fold>p{min-height:0;overflow:hidden;padding-top:6px;color:#4a5878;font-size:clamp(15px,1.15vw,18px);line-height:1.42;max-width:28em}
+/* the stretch being told gets the ink and a blue marker that runs under it with the scroll; what is told stays in ink */
+.v-tab .f2-bit{color:#6b7790;background:linear-gradient(transparent 60%,rgba(var(--sky-rgb),.26) 60%) 0 0/calc(var(--k,0) * 100%) 100% no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:color var(--d-fade) ease}
+.v-tab .f2-bit.on,.v-tab .f2-bit.done{color:#0a1020}
+.v-tab .f2-row.on .f2-fold{grid-template-rows:1fr}
+.v-tab .f2-still{display:none}
+
+/* the stage: the picture alone, with no board. Its cards float in a frame that opens onto the hero's light (encuadre.astro), which
+   moves with the scroll. Its shadow is short and dies out inside the section: a longer one would be cut at the section's edge
+   and leave a line across the page when the next section arrives */
+.v-tab .f2-stage{position:relative;isolation:isolate;display:grid;grid-template-rows:minmax(0,1fr);min-height:0;margin:0;padding:clamp(16px,2.2vw,34px);border-radius:28px;background:var(--night);box-shadow:0 1px 2px rgba(var(--deep-rgb),.08),0 14px 30px -18px rgba(var(--deep-rgb),.32)}
+.v-tab .f2-stage canvas{display:block;width:100%;height:100%;min-height:0}
+
+@media (max-width:860px){
+  .v-tab .f2-head .lead{display:none}
+  .v-tab .f2-body{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:12px}
+  .v-tab .f2-stage{order:-1;padding:10px;border-radius:22px}
+  .v-tab .f2-stage>.enc{border-radius:22px}
+  .v-tab .f2-list{gap:2px}
+  .v-tab .f2-row{gap:12px;padding:7px 10px}
+  .v-tab .f2-row:not(.on) h3{font-size:16px}
+  .v-tab .f2-el{width:46px;padding:5px 6px;border-radius:10px}
+  .v-tab .f2-el b{font-size:21px}
+}
+/* with reduced motion there is no stage: every row says its sentence beside its picture, complete and still */
+@media (prefers-reduced-motion:reduce){
+  .v-tab .f2-stage{display:none}
+  .v-tab .f2-body{grid-template-columns:1fr}
+  .v-tab .f2-list{gap:12px}
+  .v-tab .f2-row{grid-template-columns:auto minmax(0,1fr) minmax(0,1.5fr);opacity:1;background:#fff;box-shadow:inset 0 0 0 1px rgba(var(--deep-rgb),.12)}
+  .v-tab .f2-fold{grid-template-rows:1fr}
+  .v-tab .f2-bit{color:inherit;background:none}
+  .v-tab .f2-still{display:block;width:100%;aspect-ratio:3/2;height:auto}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:860px){
+  .v-tab .f2-row{grid-template-columns:auto minmax(0,1fr)}
+  .v-tab .f2-still{grid-column:1/-1}
+}
+</style>
+
+<template id="tpl2-tabla">
+<section class="moment f2" id="servicios" aria-labelledby="f2-h" style="--mh:340vh">
+  <div class="moment__stick f2-stick is-flow">
+    <div class="f2-head">
+      <h2 class="h2" id="f2-h">Cuatro elementos. Tú eliges la fórmula.</h2>
+      <p class="lead">Puedes empezar con uno y sumar los demás cuando tu negocio los pida.</p>
+    </div>
+    <div class="f2-body">
+      <ol class="f2-list">
+        {SERV.map((s, i) => (
+          <li class={i ? 'f2-row' : 'f2-row on'}>
+            <span class="f2-el" aria-hidden="true"><i>{s.z}</i><b>{s.k}</b></span>
+            <div class="f2-txt"><h3>{s.name}</h3><div class="f2-fold"><p>{s.bits.map((b, j) => <><span class="f2-bit">{b}</span>{j < s.bits.length - 1 ? ' ' : ''}</>)}</p></div></div>
+            <canvas class="f2-still" role="img" aria-label={s.desc}></canvas>
+          </li>
+        ))}
+      </ol>
+      <figure class="f2-stage"><canvas role="img" aria-label={SERV[0].desc}></canvas></figure>
+    </div>
+  </div>
+</section>
+</template>
+
+<script is:inline>
+/* Services: the scroll gives each service a stretch of the section. In its stretch the service is lit in the list and its
+   picture tells its sentence in steps (window.SCN, escenas.astro); the stretch of the sentence being told lights up, with a
+   marker that runs under it as the step goes on.
+   With reduced motion each row draws its own picture, complete. */
+addSection('tabla', 'tpl2-tabla', 1, (root) => {
+  const sec = root.querySelector('.f2'), rows = [...sec.querySelectorAll('.f2-row')], cv = sec.querySelector('.f2-stage canvas');
+  const offEnc = RM ? null : Encuadre.put(sec.querySelector('.f2-stage'));
+  const bits = rows.map((r) => [...r.querySelectorAll('.f2-bit')]);
+  const lines = rows.map((r) => r.querySelector('.f2-fold p').textContent.trim());
+  if (RM) {
+    const draw = () => rows.forEach((r, j) => window.SCN.paint(r.querySelector('.f2-still'), [[j, 1, 1]]));
+    draw(); if (document.fonts) document.fonts.ready.then(draw);
+    addEventListener('resize', draw);
+    return () => removeEventListener('resize', draw);
+  }
+  const A0 = .05, SL = .225;
+  let P = 0, cur = -1, drawn = -1;
+  /* the stage is drawn from the scroll alone: only when the scroll has moved it and while it is on screen (the pictures do not
+     depend on time, so there is nothing to draw between two scrolls) */
+  const frame = () => {
+    const b = sec.getBoundingClientRect(); if (b.bottom < -40 || b.top > innerHeight + 40 || P === drawn) return;
+    drawn = P;
+    /* the first service arrives as a page that is loading (its window, its address bar and the shape of its parts), so the stage
+       is never an empty frame, and the first bit of scroll loads it: "Cargan rápido" is seen, not said (17 November 2026) */
+    const f = (P - A0) / SL, i = Math.max(0, Math.min(3, Math.floor(f))), u = clamp01(f - i), t0 = clamp01(u * 1.2), t = i === 0 ? .04 + .96 * t0 : t0;
+    if (i !== cur) {
+      cur = i;
+      rows.forEach((r, j) => r.classList.toggle('on', j === i));
+      cv.setAttribute('aria-label', lines[i]);
+    }
+    /* the picture before fades while the next one starts to build */
+    const layers = []; if (i > 0 && u < .1) layers.push([i - 1, 1, 1 - easeOut(u / .1)]);
+    layers.push([i, t, 1]);
+    window.SCN.paint(cv, layers, true);
+    const S = window.SCN.STEPS[i]; let on = 0; S.forEach((a, j) => { if (t >= a) on = j; });
+    bits[i].forEach((b, j) => {
+      b.classList.toggle('on', j === on); b.classList.toggle('done', j < on);
+      const k = (j === on ? clamp01((t - S[j]) / ((j + 1 < S.length ? S[j + 1] : 1) - S[j])) : 0).toFixed(3);
+      if (b.dataset.k !== k) { b.dataset.k = k; b.style.setProperty('--k', k); }
+    });
+  };
+  /* a new size or the fonts arriving draw it again */
+  const again = () => { drawn = -1; frame(); };
+  addEventListener('resize', again);
+  if (document.fonts) document.fonts.ready.then(again);
+  const stop = moment(sec, (p) => { P = p; frame(); });
+  return () => { stop(); removeEventListener('resize', again); if (offEnc) offEnc(); };
+});
+</script>

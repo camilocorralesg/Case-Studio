@@ -1,0 +1,93 @@
+<style>
+/* ===== The menu that stays with you after the hero and marks where you are:
+   the sections are one period of the table, along the top, clear of the content ===== */
+.mn{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 320ms ease,visibility 0s linear 320ms}
+.mn.is-in{opacity:1;visibility:visible;transition:opacity 320ms ease}
+.mn a{text-decoration:none}
+.mn-list a{color:inherit}
+.mn ol{list-style:none;margin:0;padding:0}
+.mn-list,.mn-side{pointer-events:auto}
+.mn-side{position:absolute;right:max(12px,env(safe-area-inset-right));top:12px;display:flex;align-items:center;gap:8px}
+.mn-lang{display:inline-flex;align-items:center}
+.mn-lang button{min-width:40px;min-height:40px;padding:0 10px;border:0;background:none;color:inherit;font:500 13px/1 var(--font);letter-spacing:.02em;cursor:pointer;opacity:.55;transition:opacity 200ms ease,background-color 200ms ease,color 200ms ease}
+.mn-lang button[aria-pressed="true"]{opacity:1}
+.mn-cta{white-space:nowrap}
+.no-lang .mn-lang{display:none}
+.mn :focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}
+
+
+.mn--tabla{color:#cfe0ff}
+.mn--tabla .mn-list{position:absolute;left:50%;top:10px;display:flex;gap:4px;transform:translateX(-50%)}
+.mn--tabla .mn-list a,.mn--tabla .mn-lang button{position:relative;display:grid;align-content:space-between;justify-items:start;width:44px;height:46px;min-width:0;min-height:0;padding:5px 6px;border:0;border-radius:8px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.5);color:#cfe0ff;opacity:1;text-align:left;transition:background-color 300ms ease,color 300ms ease,box-shadow 300ms ease,transform 320ms var(--ease-out)}
+.mn--tabla .mn-k{font:400 8.5px/1 var(--mono)}
+.mn-s{font:600 18px/1 var(--sym);letter-spacing:-.04em}
+.mn--tabla .mn-list a.done{background:linear-gradient(#3d8bff,#1e55e0);box-shadow:none;color:#fff}
+.mn--tabla .mn-list a.on{background:#fff;box-shadow:0 0 0 3px rgba(61,139,255,.4);color:var(--deep);transform:translateY(6px)}
+.mn--tabla .mn-t{position:absolute;left:50%;top:calc(100% + 10px);padding:6px 9px;border-radius:7px;background:#fff;color:var(--deep);font:500 12px/1 var(--font);white-space:nowrap;opacity:0;transform:translate(-50%,-6px);transition:opacity 200ms ease,transform 280ms var(--ease-out);pointer-events:none}
+.mn--tabla .mn-list a:hover .mn-t,.mn--tabla .mn-list a:focus-visible .mn-t{opacity:1;transform:translate(-50%,0)}
+.mn--tabla .mn-side{right:10px;top:10px;gap:8px}
+.mn--tabla .mn-lang{gap:4px}
+.mn--tabla .mn-lang button{font:600 18px/1 var(--sym);letter-spacing:-.04em;place-content:end start}
+.mn--tabla .mn-lang button[aria-pressed="true"]{background:#fff;box-shadow:none;color:var(--deep)}
+
+@media (max-width:860px){
+  .mn--tabla .mn-cta{display:none}
+  .mn--tabla .mn-list{left:8px;top:8px;gap:3px;transform:none}
+  .mn--tabla .mn-list a,.mn--tabla .mn-lang button{width:calc((100vw - 16px - 27px) / 10);height:36px;padding:4px;border-radius:6px}
+  .mn--tabla .mn-s,.mn--tabla .mn-lang button{font-size:13px}
+  .mn--tabla .mn-k{font-size:7px}
+  .mn--tabla .mn-list a.on{transform:translateY(5px)}
+  .mn--tabla .mn-side{right:8px;top:8px;gap:3px}
+  .mn--tabla .mn-lang{gap:3px}
+  .mn--tabla .mn-t{display:none}
+}
+@media (prefers-reduced-motion:reduce){.mn *,.mn *::before{transition:none!important}}
+</style>
+<script>
+(() => {
+  /* section id, name and symbol in the period row; the symbols change with the language */
+  const ITEMS = [['servicios', 'Servicios', 'Sv'], ['rediseno', 'Rediseño', 'Rd'], ['proyectos', 'Proyectos', 'Py'], ['marcas', 'Marcas', 'Mc'], ['proceso', 'Proceso', 'Pc'], ['redes', 'Redes', 'Rs'], ['nosotros', 'Nosotros', 'No'], ['contacto', 'Contacto', 'Co']];
+  const SYM_EN = ['Sv', 'Rd', 'Pj', 'Br', 'Pc', 'So', 'Ab', 'Co'];
+  const light = (el) => { const m = getComputedStyle(el).backgroundColor.match(/[\d.]+/g); return m ? (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255 > .6 : false; };
+
+  window.MENU = (id, root) => {
+    const lang = (window.LANG && window.LANG.cur) || 'es';
+    const list = `<ol class="mn-list" id="mn-index">${ITEMS.map(([k, t, s], i) => `<li><a href="#${k}" style="--i:${i}"><span class="mn-k">0${i + 1}</span><span class="mn-s" aria-hidden="true">${lang === 'en' ? SYM_EN[i] : s}</span><span class="mn-t">${t}</span></a></li>`).join('')}</ol>`;
+    const side = `<div class="mn-side"><div class="mn-lang" role="group" aria-label="Idioma">${[['es', 'ES', 'Español'], ['en', 'EN', 'English']].map(([c, t, n]) => `<button type="button" data-lang="${c}" aria-pressed="${c === lang}" aria-label="${n}">${t[0] + t[1].toLowerCase()}</button>`).join('')}</div><a class="btn btn--sm btn--white mn-cta" href="#contacto">Empezar mi proyecto</a></div>`;
+    const nav = document.createElement('nav'); nav.className = 'mn mn--' + id; nav.setAttribute('aria-label', 'Secciones');
+    nav.innerHTML = list + side;
+    if (!window.LANG) nav.classList.add('no-lang');
+    root.appendChild(nav);
+    const links = [...nav.querySelectorAll('.mn-list a')], secs = ITEMS.map(([k]) => root.querySelector('#' + k));
+    const all = [...root.children].filter((n) => n.matches('section')), hero = all[0], foot = root.querySelector('.ft');
+    const tones = all.map(light), owner = all.map((s) => secs.indexOf(s));
+    /* the closing section and the last phrase belong to Contacto; anything before the first item belongs to none */
+    for (let i = 0, last = -1; i < owner.length; i++) { if (owner[i] >= 0) last = owner[i]; else owner[i] = all[i].matches('.ou') ? ITEMS.length - 1 : last; }
+    for (let i = owner.length - 2; i > 0; i--) if (all[i + 1] && owner[i + 1] === ITEMS.length - 1 && secs.indexOf(all[i]) < 0 && !all[i].matches('.ab')) owner[i] = ITEMS.length - 1;
+    let act = -1, shown = null, raf = 0;
+    const setAct = (i) => {
+      if (i === act) return; act = i;
+      links.forEach((a, j) => { a.classList.toggle('on', j === i); a.classList.toggle('done', j < i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    };
+    /* the menu shows once the hero is behind and hides before the footer; the section in the middle of the screen is the one marked */
+    const frame = () => {
+      raf = 0; const vh = innerHeight, mid = vh * .5;
+      let k = 0; all.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) k = i; });
+      const on = hero.getBoundingClientRect().bottom < vh * .45 && (!foot || foot.getBoundingClientRect().top > vh * .8);
+      if (on !== shown) { shown = on; nav.classList.toggle('is-in', on); }
+      setAct(Math.max(0, owner[k])); nav.classList.toggle('on-light', tones[k]);
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue);
+    frame(); requestAnimationFrame(() => { act = -1; frame(); });
+    return () => { removeEventListener('scroll', queue); removeEventListener('resize', queue); cancelAnimationFrame(raf); nav.remove(); };
+  };
+
+  /* the menu is added with the rest of what comes after the sections */
+  const F = window.FINALE;
+  window.FINALE = (id, root, ct) => {
+    const a = F ? F(id, root, ct) : null, b = window.MENU(id, root);
+    return () => { b(); if (typeof a === 'function') a(); };
+  };
+})();
+</script>

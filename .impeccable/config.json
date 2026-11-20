@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "sitio/partes/hero.html"
+        ],
+        "createdAt": "2026-11-12T02:58:14.150Z",
+        "reason": "Claude triage: the flagged div.v-tab is the full-bleed page wrapper of the hero (canvas fills it, copy is inset by --gutter and padding); no text sits against a visible edge"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/partes/rediseno.astro"
+        ],
+        "createdAt": "2026-11-12T19:08:28.879Z",
+        "reason": "CLAUDE.md project rule: the Rediseño 'before' mockup parodies the AI-generated look on purpose (gradient headline of the slop site)"
+      }
+    ]
+  }
+}

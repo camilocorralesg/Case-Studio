@@ -1,0 +1,76 @@
+<style>
+/* ===== Footer: the table itself is the landscape, and Ca and Se are the two lights on it ===== */
+@property --lx{syntax:'<percentage>';inherits:true;initial-value:50%}
+.ft{position:relative;background:var(--ft-bg);color:var(--ft-fg);font-size:15px;line-height:1.45}
+.ft-in{position:relative;padding:clamp(30px,5vh,60px) var(--gutter) 22px}
+.ft .logo{display:block;height:var(--ft-logo,26px);width:auto;aspect-ratio:959.36/250;color:var(--ft-fg)}
+.ft a{text-decoration:none}
+.ft a:not(.btn){color:inherit}
+.ft h3{margin-bottom:14px;font:500 15px/1.2 var(--font);color:var(--ft-fg)}
+.ft-col{display:grid;align-content:start;justify-items:start;gap:11px;color:var(--ft-dim)}
+.ft-col>a{display:block}
+.ft-col a{transition:color 180ms ease}
+.ft-legal{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin-top:clamp(26px,5vh,54px);font-size:14px;color:var(--ft-dim)}
+.ft-top{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 4px;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.ft .ft-free{display:inline-flex;align-items:center;gap:9px}
+.ft-free::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#35d07f;box-shadow:0 0 0 4px rgba(53,208,127,.2)}
+.ft :is(a,button):focus-visible{outline:2px solid var(--ft-focus,#7fb0ff);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.ft-col a:hover,.ft-top:hover{color:var(--ft-fg)}}
+/* the footer opens with the other half of the light that closed the last section */
+:is(.v-tab)>.ft{background-image:radial-gradient(62vw 34vh at 50% 0%,var(--join),transparent 72%);background-repeat:no-repeat}
+
+.ft--tabla{--ft-bg:#02040a;--ft-fg:#fff;--ft-dim:#9fb0d6;overflow:hidden}
+.fb-land{position:relative;height:clamp(170px,28vh,300px);perspective:620px;perspective-origin:50% 0;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 58%);mask-image:linear-gradient(transparent,#000 58%)}
+.fb-land::before{content:"";position:absolute;left:0;right:0;top:20%;height:60%;background:radial-gradient(50% 100% at 50% 50%,rgba(30,107,255,.5),rgba(30,107,255,0) 70%)}
+.fb-floor{position:absolute;left:-12%;right:-12%;bottom:-6%;display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:clamp(3px,.5vw,8px);transform:rotateX(64deg);transform-origin:50% 100%}
+.fb-floor i{aspect-ratio:1/1.08;border-radius:clamp(3px,.5vw,8px);background:#0a1638;box-shadow:inset 0 0 0 1px rgba(118,166,255,.42)}
+.fb-floor i.off{visibility:hidden}
+.fb-floor i.ca{background:#fff;box-shadow:0 0 30px 6px rgba(118,166,255,.9)}
+.fb-floor i.se{background:#02040a;box-shadow:inset 0 0 0 3px #fff,0 0 30px 6px rgba(118,166,255,.9)}
+.fb-cols{display:grid;grid-template-columns:minmax(0,4fr) repeat(2,minmax(0,2fr)) minmax(0,4fr);gap:clamp(18px,3vw,56px)}
+.fb-me{display:grid;align-content:start;justify-items:start;gap:16px;color:#9fb0d6}
+.fb-team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.fb-t{display:grid;align-content:space-between;gap:10px;aspect-ratio:1/1.1;padding:10px;border-radius:12px;background:#fff;color:#0a1f5c}
+.fb-t .mono{font-size:11px}
+.fb-t b{font:600 clamp(26px,2.8vw,42px)/.9 var(--sym);letter-spacing:-.04em}
+.fb-t i{font-style:normal;font-size:12px;line-height:1.25}
+.fb-t+.fb-t{background:none;color:#fff;box-shadow:inset 0 0 0 3px #fff}
+.fb-t+.fb-t+.fb-t{background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.6)}
+@media (max-width:860px){
+  .fb-cols{grid-template-columns:1fr 1fr}
+  .fb-me,.fb-cols>:last-child{grid-column:1/-1}
+  .fb-land{height:150px}
+}
+</style>
+
+<script>
+const FT = {
+  nav: [['Servicios', '#servicios'], ['Rediseño', '#rediseno'], ['Proyectos', '#proyectos'], ['Marcas', '#marcas'], ['Proceso', '#proceso'], ['Redes', '#redes'], ['Contacto', '#contacto']],
+  svc: [['Sitios y tiendas web', '#servicios'], ['Rediseño de sitios', '#rediseno'], ['Marca e identidad', '#servicios'], ['Redes sociales y contenido', '#redes'], ['Motion graphics y contenido con IA', '#redes']],
+  team: [['Camilo Corrales', 'Diseño y desarrollo', 'Ca', '20'], ['Sebastián Vanegas', 'Ventas y relaciones comerciales', 'Se', '34'], ['Catalina Vanegas', 'Redes sociales y contenido', 'Cv', '03']],
+  mail: 'hola@casestudio.example', place: 'Medellín, Colombia', free: 'Disponibles para nuevos proyectos'
+};
+const FT_LOGO = '<svg class="logo" role="img" aria-label="CaSe Studio" viewBox="0 0 959.36 250"><use href="#logo-cut"></use></svg>';
+const FT_TOP = '<button class="ft-top" type="button">Volver arriba <span aria-hidden="true">↑</span></button>';
+const ftNav = () => FT.nav.map(([t, h]) => `<a href="${h}">${t}</a>`).join('');
+const ftSvc = () => FT.svc.map(([t, h]) => `<a href="${h}">${t}</a>`).join('');
+const ftCols = (teamHTML) => `<nav class="ft-col" aria-label="Pie de página"><h3>Explorar</h3>${ftNav()}</nav><div class="ft-col"><h3>Servicios</h3>${ftSvc()}</div>${teamHTML}`;
+
+window.FOOT = {
+  tabla: () => {
+    /* the real outline of the table: periods one to five */
+    const tiles = [];
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 18; c++) {
+      const off = (r === 0 && c > 0 && c < 17) || ((r === 1 || r === 2) && c > 1 && c < 12);
+      tiles.push(`<i class="${off ? 'off' : r === 3 && c === 1 ? 'ca' : r === 3 && c === 15 ? 'se' : ''}"></i>`);
+    }
+    return `<div class="fb-land" aria-hidden="true"><div class="fb-floor">${tiles.join('')}</div></div>
+    <div class="ft-in"><div class="fb-cols"><div class="fb-me">${FT_LOGO}<p>${FT.mail}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${ftCols(`<div class="ft-col"><h3>Equipo</h3><div class="fb-team">${FT.team.map(([n, r, s, no]) => `<div class="fb-t"><span class="mono">${no}</span><b>${s}</b><i>${n}</i></div>`).join('')}</div></div>`)}</div>
+    <p class="ft-legal"><span>© 2026 CaSe Studio</span>${FT_TOP}</p></div>`;
+  }
+};
+window.FOOT_INIT = {
+  /* the light on the glass name follows the pointer; without one, it crosses as the footer comes into view */
+  
+};
+</script>

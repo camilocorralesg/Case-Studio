@@ -1,0 +1,14 @@
+<script is:inline>
+/* What is added once the sections are in place: the form and the footer. (The last line, "Crece con CaSe.", went on 17 November 2026:
+   the closing section is the last call before the form; it is kept in archivo/secciones-quitadas/frase-final.astro.)
+   color.html and menu.html wrap this function to add the colour edges and the menu, so it has to be defined before them. */
+window.FINALE = (id, root, ct) => {
+  const offs = [];
+  offs.push(FORMS[id](ct));
+  const ft = document.createElement('footer'); ft.className = 'ft ft--' + id; ft.innerHTML = window.FOOT[id]();
+  root.append(ft);
+  ft.querySelector('.ft-top').addEventListener('click', () => scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }));
+  if (window.FOOT_INIT && window.FOOT_INIT[id]) offs.push(window.FOOT_INIT[id](ft));
+  return () => offs.forEach((f) => { if (typeof f === 'function') f(); });
+};
+</script>

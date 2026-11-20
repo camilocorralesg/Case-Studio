@@ -1,0 +1,90 @@
+---
+import Flecha from '../components/Flecha.astro';
+---
+<style is:global>
+/* ===== The last line: a call to start, written with the periodic table. "Crece con CaSe." is spelled with real elements
+   (C Re Ce · C O N · Ca Se; in English "Soar with CaSe.": S O Ar · W I Th · Ca Se). It arrives small and grows with the scroll,
+   each element bigger than the one before, a staircase that ends in the logo; then the button ===== */
+.ou{background:var(--ou-bg);color:var(--ou-fg);overflow:clip}
+.ou-stick{display:grid;place-items:center;padding:clamp(88px,12vh,128px) var(--gutter) clamp(36px,7vh,72px)}
+.ou-stick::before{content:"";position:absolute;inset:0;background:var(--ou-glow,none);pointer-events:none}
+.ou--tabla{--ou-bg:var(--night);--ou-fg:#fff;--ou-glow:radial-gradient(60% 50% at 50% 100%,rgba(var(--glow-rgb),.36),rgba(var(--glow-rgb),0) 72%)}
+.ou-cr{position:relative;display:grid;justify-items:center;gap:clamp(48px,8vh,88px);width:100%}
+/* the row keeps the height of its last step from the start, so the elements grow up from a line that stays still */
+.ou-row{display:flex;align-items:flex-end;justify-content:center}
+.ou-w{display:flex;align-items:flex-end}
+/* an element: number and symbol; the em is the unit, so it grows with its font size, and so do the gaps */
+.ou-el{flex:none;display:grid;align-content:space-between;justify-items:start;width:1.12em;height:1.12em;margin-right:.07em;padding:.1em .1em .11em;border-radius:.12em;background:var(--cell);box-shadow:inset 0 0 0 max(1px,.022em) rgba(var(--edge-rgb),.6);color:#fff;line-height:1;font-size:40px}
+.ou-el:last-child{margin-right:0}
+.ou-w:not(:last-child) .ou-el:last-child{margin-right:.34em}
+.ou-el i{font:400 max(9.5px,.13em)/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
+.ou-el b{font:600 .56em/.8 var(--sym);letter-spacing:-.04em}
+/* the two of the name, in the colours of the logo */
+.ou-ca{background:#fff;box-shadow:none;color:var(--night)}
+.ou-ca i{color:#33487f}
+.ou-se{background:transparent;box-shadow:inset 0 0 0 max(2px,.045em) #fff}
+.ou-se i{color:var(--ice)}
+.ou-cta{will-change:transform,opacity}
+/* on the phone, a word a line, each line bigger than the one before */
+@media (max-width:860px){
+  .ou-cr{justify-items:start;gap:clamp(28px,5vh,44px)}
+  .ou-row{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:12px}
+  .ou-w:not(:last-child) .ou-el:last-child{margin-right:0}
+}
+</style>
+
+<template id="tpl-ou"><section class="moment ou" style="--mh:160vh"><div class="moment__stick ou-stick is-flow">
+  <p class="sr-only" id="ou-t">Crece con CaSe. La frase está escrita con elementos de la tabla periódica: carbono, renio, cerio, carbono, oxígeno, nitrógeno, calcio y selenio.</p>
+  <div class="ou-cr"><div class="ou-row" aria-hidden="true"></div><a class="btn btn--white ou-cta" href="#contacto">Empezar mi proyecto <Flecha /></a></div>
+</div></section></template>
+
+<script is:inline>
+/* ---------- the last line ---------- */
+/* the sentence word by word, each word with the elements that spell it (symbol, atomic number); the last word is the name */
+const OU_SAY = {
+  es: [[['C', 6], ['Re', 75], ['Ce', 58]], [['C', 6], ['O', 8], ['N', 7]], [['Ca', 20], ['Se', 34]]],
+  en: [[['S', 16], ['O', 8], ['Ar', 18]], [['W', 74], ['I', 53], ['Th', 90]], [['Ca', 20], ['Se', 34]]]
+};
+
+function initOutro(sec, id) {
+  const box = sec.querySelector('.ou-cr'), row = sec.querySelector('.ou-row'), cta = sec.querySelector('.ou-cta');
+  const words = OU_SAY[(window.LANG && window.LANG.cur) || 'es'], top = words.length - 1;
+  row.innerHTML = words.map((w, wi) => `<span class="ou-w">${w.map(([s, n], j) => `<span class="ou-el${wi === top ? (j ? ' ou-se' : ' ou-ca') : ''}"><i>${n}</i><b>${s}</b></span>`).join('')}</span>`).join('');
+  const els = [...row.querySelectorAll('.ou-el')], line = words.flatMap((w, i) => w.map(() => i)), steps = els.length - words[top].length;
+  let F = { narrow: false, seed: 40, to: [] }, last = 0;
+  /* the sizes it climbs to: each element about a quarter bigger than the one before, and the two of the name as big as the step
+     after the last one, side by side like the logo. On the phone, each line bigger than the one above */
+  const fit = () => {
+    const W = box.clientWidth, narrow = W < 800;
+    if (narrow) {
+      const size = [.156, .223, .36].map((f) => W * f);
+      F = { narrow, seed: W * .1, to: line.map((l) => size[l]) };
+      row.style.height = (size[0] + size[1] + size[2] + 24).toFixed(1) + 'px';
+      return;
+    }
+    const r = 1.23, end = (i) => line[i] !== line[i + 1] && i < els.length - 1;
+    const pow = els.map((_, i) => Math.pow(r, Math.min(i, steps)));
+    /* the width of the row in units of the first step: each element and the gap after it (.07em inside a word, .34em between words) */
+    const units = pow.reduce((t, k, i) => t + k * (1 + (i === els.length - 1 ? 0 : (end(i) ? .34 : .07) / 1.12)), 0);
+    const s0 = Math.min(W * .92 / units, innerHeight * .42 / pow[steps]);
+    F = { narrow, seed: s0 * .62, to: pow.map((k) => s0 * k) };
+    row.style.height = (s0 * pow[steps]).toFixed(1) + 'px';
+  };
+  const draw = (p0) => {
+    last = p0; const p = RM ? 1 : p0;
+    els.forEach((el, i) => {
+      /* one step after another; the two of the name arrive together, as one */
+      const a = F.narrow ? .06 + line[i] * .2 : .05 + Math.min(i, steps) * .07, k = easeOut(range(p, a, a + (F.narrow ? .24 : .17)));
+      el.style.fontSize = (lerp(F.seed, F.to[i], k) / 1.12).toFixed(2) + 'px';
+    });
+    /* the button comes last, and can't be reached while it can't be seen */
+    const kb = easeOut(range(p, .78, .9));
+    cta.style.opacity = kb.toFixed(3); cta.style.transform = `translate3d(0,${((1 - kb) * 14).toFixed(1)}px,0)`; cta.style.visibility = kb > .01 ? 'visible' : 'hidden';
+  };
+  const refit = () => { fit(); draw(last); };
+  fit();
+  addEventListener('resize', refit);
+  const off = moment(sec, draw);
+  return () => { if (typeof off === 'function') off(); removeEventListener('resize', refit); };
+}
+</script>

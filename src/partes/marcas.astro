@@ -1,0 +1,151 @@
+---
+/* which brands have a capture of their real Instagram profile (herramientas/perfiles.py leaves them in public/assets/ig) */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+const IG = join(process.cwd(), 'public', 'assets', 'ig');
+const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'oneillcolombia', 'graduadoseafit']
+  .filter((h) => existsSync(join(IG, `${h}.webp`)) && existsSync(join(IG, `${h}-en.webp`)));
+---
+<style is:global>
+/* ===== Brands whose social media the team has run: the account itself. A phone shows each brand's real Instagram profile and the
+   scroll goes from one to the next; the phone stands in a frame that opens onto the hero's light (encuadre.astro). Beside it, the
+   six, with the one on the phone lit; touching one brings its profile to the phone. There is no detail to open ===== */
+.mr{background-color:var(--night);color:#fff}
+.mr :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.mr-stick{--pt:clamp(76px,11vh,108px);--pb:clamp(24px,4.4vh,48px);--fh:min(calc(100svh - var(--pt) - var(--pb)),800px);display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);align-items:center;gap:clamp(24px,4vw,72px);padding:var(--pt) var(--gutter) var(--pb)}
+.mr-side{display:grid;gap:clamp(16px,3.4vh,36px);min-width:0}
+.mr-head{display:grid;gap:12px}
+.mr-head .lead{max-width:30em;color:#b3bfd3}
+/* the six: element, name, account; the one on the phone is lit */
+.mr-list{display:grid;gap:clamp(2px,.5vh,6px)}
+.mr-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(12px,1.4vw,16px);width:100%;padding:clamp(5px,.8vh,8px) 16px clamp(5px,.8vh,8px) clamp(5px,.8vh,8px);border:0;border-radius:16px;background:transparent;color:#fff;font:inherit;text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,box-shadow var(--d-fade) ease}
+.mr-el{--z:clamp(38px,5.6vh,50px);display:flex;flex-direction:column;flex:none;width:var(--z);height:var(--z);padding:calc(var(--z) * .09) calc(var(--z) * .1);border-radius:calc(var(--z) * .2);background:var(--bg);color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);opacity:.55;transition:opacity var(--d-fade) ease}
+.mr-el i{font:500 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;opacity:.82}
+.mr-el b{margin-top:auto;font:600 calc(var(--z) * .42)/.8 var(--sym);letter-spacing:-.045em}
+.mr-who{display:grid;gap:2px;min-width:0}
+.mr-who b{font-size:clamp(16px,2.1vh,18px);font-weight:600;letter-spacing:-.015em}
+.mr-who>span:not(.mr-fold){font:400 13px/1.3 var(--mono);color:#8ea6d6}
+.mr-who em{display:block;padding-top:6px;font-style:normal;font-size:14.5px;line-height:1.45;color:#c9d3ea}
+/* the brand on the phone says its line under its name (its real figure: 280 mil seguidores, 70 mil, 70.000 egresados); the line
+   unfolds as the phone reaches it, as the sentence of a service does in Servicios */
+.mr-fold{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--d-move) var(--ease-io)}
+.mr-fold>em{min-height:0;overflow:hidden}
+.mr-row.is-on .mr-fold{grid-template-rows:1fr}
+@media (prefers-reduced-motion:reduce){.mr-fold{transition:none}}
+.mr-nets{font-size:13px;color:#8ea6d6}
+.mr-row.is-on{background:linear-gradient(180deg,rgba(160,196,255,.09),rgba(0,4,16,.16)),#0a1433;box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.22)}
+.mr-row.is-on .mr-el{opacity:1}
+@media (hover:hover) and (pointer:fine){button.mr-row:not(.is-on):hover{background:rgba(255,255,255,.04)}button.mr-row:hover .mr-el{opacity:1}}
+/* the frame and the phone in the middle of it */
+/* the frame fills its column, to the right gutter as the frames of Servicios, Rediseño, Redes and Preguntas do, as tall as there
+   is room for, with the phone at 86% of that height in its middle (17 November 2026: it hugged the phone in the middle of its
+   column, chosen on 13 November; from 1280 up that left the frame well short of the gutter, 290 px at 1880) */
+.mr-stage{position:relative;isolation:isolate;justify-self:stretch;display:grid;place-items:center;width:100%;height:var(--fh);border-radius:32px}
+.mr-stage>.enc{border-radius:32px}
+.mr-phone{--ph:calc(var(--fh) * .86);position:relative;width:calc(var(--ph) * .49);height:var(--ph);padding:9px;border:0;border-radius:calc(var(--ph) * .068);background:linear-gradient(155deg,#2a3348,#0b0e19 38%,#141a2b);box-shadow:inset 0 0 0 1.5px rgba(190,214,255,.26),inset 0 0 0 4px #05070d,0 50px 90px -40px rgba(0,0,0,.9),0 12px 24px -12px rgba(0,0,0,.6)}
+.mr-screen{position:relative;height:100%;border-radius:calc(var(--ph) * .068 - 9px);overflow:hidden;background:#fff}
+/* the camera island and a soft sheen on the glass, above whatever profile is on screen */
+.mr-screen::before{content:"";position:absolute;left:50%;top:9px;z-index:2;width:30%;height:21px;border-radius:99px;background:#05070d;translate:-50% 0}
+.mr-screen::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(118deg,rgba(255,255,255,.16),rgba(255,255,255,0) 34%);pointer-events:none}
+.mr-feed{will-change:transform}
+.mr-prof{height:var(--sh,600px);overflow:hidden;padding:36px 0 0;background:#fff}
+/* a capture always covers the screen, from its top: a taller one is cut at the bottom, a shorter one loses a sliver at the sides */
+.mr-prof img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+/* a brand with no capture yet: its profile drawn in its own colours, with no made-up posts */
+.mr-drawn{display:flex;flex-direction:column;gap:12px;padding:46px 16px 16px;color:#0a1020}
+.mr-top{display:flex;justify-content:center;font-size:14px;font-weight:600}
+.mr-id{display:flex;align-items:center;gap:14px}
+.mr-id .mr-el{--z:78px;opacity:1;border-radius:22px}
+.mr-id>span{display:grid;gap:3px;min-width:0}
+.mr-id>span b{font-size:17px;letter-spacing:-.01em}
+.mr-id>span span{font-size:12.5px;color:#5a6785}
+.mr-bio{display:block;font-size:13.5px;line-height:1.4;color:#28324a}
+.mr-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mr-btns span{display:grid;place-items:center;height:32px;border-radius:9px;background:#eef1f8;font-size:13px;font-weight:600}
+.mr-btns span:first-child{background:var(--btn);color:#fff}
+.mr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:2px -16px 0}
+.mr-grid i{display:grid;place-items:center;aspect-ratio:4/5;font:600 26px/1 var(--sym);font-style:normal;letter-spacing:-.04em}
+.mr-grid small{padding:0 6px;font:600 12px/1.1 var(--font);letter-spacing:0;text-align:center}
+@media (max-width:860px){
+  .mr-stick{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:14px}
+  .mr-side{display:contents}
+  .mr-head{grid-row:1}
+  .mr-head .lead{display:none}
+  .mr-stage{grid-row:2;width:100%;height:auto;padding:18px 0;border-radius:22px}
+  .mr-stage>.enc{border-radius:22px}
+  .mr-phone{--ph:min(calc(100svh - 360px),560px);padding:8px}
+  .mr-screen::before{top:7px;height:17px}
+  .mr-prof{padding-top:28px}
+  .mr-list{grid-row:3;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+  .mr-row{display:grid;place-items:center;padding:0;border-radius:12px}
+  .mr-row .mr-el{--z:min(13.6vw,56px)}
+  .mr-who,.mr-nets{display:none}
+  .mr-row.is-on{background:none;box-shadow:none}
+  .mr-row.is-on .mr-el{box-shadow:0 0 0 2px #fff}
+}
+/* quiet: no phone; every brand says its line beside its element */
+.mr.is-still .mr-stick{display:block}
+.mr.is-still .mr-stage{display:none}
+.mr.is-still .mr-list{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:28px}
+.mr.is-still .mr-row{grid-template-columns:auto minmax(0,1fr);align-items:start;padding:12px;background:#0a1433;cursor:default}
+.mr.is-still .mr-el{opacity:1}
+.mr.is-still .mr-fold{grid-template-rows:1fr}
+.mr.is-still .mr-nets{display:none}
+</style>
+
+<template id="tpl-br"><section class="moment mr" id="marcas" aria-labelledby="mr-h" style="--mh:300vh"><div class="moment__stick mr-stick is-flow">
+  <div class="mr-side">
+    <div class="mr-head"><h2 class="h2" id="mr-h">Marcas con las que hemos trabajado en redes</h2><p class="lead">Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.</p></div>
+    <ol class="mr-list"></ol>
+  </div>
+  <div class="mr-stage"><div class="mr-phone" aria-hidden="true"><div class="mr-screen"><div class="mr-feed"></div></div></div></div>
+</div></section></template>
+
+<script is:inline define:vars={{ SHOTS }}>
+/* the profiles: the real capture where there is one (in the language of the page), otherwise the brand drawn in its colours */
+addSection('tabla', 'tpl-br', 2.5, (root) => {
+  const sec = root.querySelector('.mr'), list = sec.querySelector('.mr-list'), screen = sec.querySelector('.mr-screen'), feed = sec.querySelector('.mr-feed');
+  const B = BRANDS, N = B.length, offs = [], no = (i) => String(i + 1).padStart(2, '0');
+  const on = (el, ev, fn, opt) => { el.addEventListener(ev, fn, opt); offs.push(() => el.removeEventListener(ev, fn, opt)); };
+  const hex = (s) => (s.match(/#[0-9a-f]{6}/i) || ['#000000'])[0];
+  const light = (b) => { const c = [1, 3, 5].map((i) => parseInt(hex(b.bg).slice(i, i + 2), 16) / 255); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] > .6; };
+  const tone = (b) => `--bg:${b.bg};--fg:${b.fg};--btn:${light(b) ? b.fg : hex(b.bg)}`;
+  const el = (b, i) => `<span class="mr-el" style="${tone(b)}" aria-hidden="true"><i>${zOf(b.sym)}</i><b>${b.sym}</b></span>`;
+  const handle = (b) => b.nets[0][1].slice(1);
+  const shot = (b) => (SHOTS.includes(handle(b)) ? `assets/ig/${handle(b)}${window.LANG && LANG.cur === 'en' ? '-en' : ''}.webp` : null);
+  /* the drawn feed is made of the brand's own colours in blocks: there are no posts here, and none are made up */
+  const FEED = ['bg sym', 'fg', 'tint', 'tint2', 'bg name', 'fg sym', 'tint', 'bg', 'tint2'];
+  const post = (b, kind) => {
+    const k = kind.split(' '), st = { bg: `background:${b.bg};color:${b.fg}`, fg: `background:${b.fg};color:${hex(b.bg)}`, tint: `background:color-mix(in srgb,${b.fg} 14%,#fff);color:${b.fg}`, tint2: `background:color-mix(in srgb,${hex(b.bg)} 72%,#fff);color:${b.fg}` }[k[0]];
+    return `<i style="${st}">${k[1] === 'sym' ? b.sym : k[1] === 'name' ? `<small>${b.name}</small>` : ''}</i>`;
+  };
+  const drawn = (b, i) => `<span class="mr-prof mr-drawn" style="${tone(b)}"><span class="mr-top">${b.nets[0][1]}</span>
+    <span class="mr-id">${el(b, i)}<span><b>${b.name}</b><span>${b.nets.map((n) => n[0]).join(' · ')}</span></span></span>
+    <span class="mr-bio">${b.tag}</span><span class="mr-btns"><span>Seguir</span><span>Mensaje</span></span>
+    <span class="mr-grid">${FEED.map((k) => post(b, k)).join('')}</span></span>`;
+  /* a row brings its brand's profile to the phone; with reduced motion there is no phone, and the rows are just the list */
+  const row = (b, i) => `${el(b, i)}<span class="mr-who"><b>${b.name}</b><span>${[...new Set(b.nets.map((n) => n[1]))].join(' · ')}</span><span class="mr-fold"><em>${b.tag}</em></span></span><span class="mr-nets">${b.nets.map((n) => n[0]).join(' + ')}</span>`;
+  list.innerHTML = B.map((b, i) => `<li>${RM ? `<div class="mr-row">${row(b, i)}</div>` : `<button class="mr-row" type="button" aria-label="Ver el perfil de ${b.name}">${row(b, i)}</button>`}</li>`).join('');
+  feed.innerHTML = B.map((b, i) => (shot(b) ? `<span class="mr-prof" style="display:block"><img src="${shot(b)}" srcset="${shot(b).replace('.webp', '-480.webp')} 480w, ${shot(b)} 780w" sizes="(max-width:860px) 240px, 320px" width="780" height="1584" alt="" loading="lazy" decoding="async"></span>` : drawn(b, i))).join('');
+  const rows = [...list.querySelectorAll('.mr-row')];
+  if (RM) { sec.classList.add('is-still'); return () => {}; }
+  /* where in the scroll each profile rests on the phone, and the way there */
+  const at = (j) => .05 + Math.min(N - 1, j + .05) / (N - 1) * .9;
+  rows.forEach((r, j) => on(r, 'click', () => scrollTo({ top: sec.getBoundingClientRect().top + scrollY + at(j) * (sec.offsetHeight - innerHeight), behavior: 'smooth' })));
+  let k = 0;
+  const offEnc = Encuadre.put(sec.querySelector('.mr-stage'), 'y');
+  /* the scroll holds on each profile and glides to the next, as if the phone were scrolled from one account to the other */
+  let H = 0, last = 0;
+  const mark = (j) => { if (j === k && rows[j].classList.contains('is-on')) return; k = j; rows.forEach((r, n) => r.classList.toggle('is-on', n === k)); };
+  const render = (p) => {
+    last = p;
+    const s = range(p, .05, .95) * (N - 1), i = Math.min(N - 2, Math.floor(s)), at = i + easeIO(range(s - i, .3, .8));
+    feed.style.transform = `translate3d(0,${(-at * H).toFixed(1)}px,0)`;
+    mark(Math.round(at));
+  };
+  const layout = () => { H = screen.clientHeight; sec.style.setProperty('--sh', `${H}px`); render(last); };
+  layout(); on(window, 'resize', layout);
+  const stop = moment(sec, render);
+  return () => { stop(); offEnc(); offs.forEach((f) => f()); };
+});
+</script>

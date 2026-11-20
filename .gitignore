@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.astro/
+herramientas/salida/
+__pycache__/
+
+# Claude Code: los ajustes de esta máquina y los skills de terceros, que se reinstalan
+# (npx impeccable install; el skill prototype queda en skills-lock.json)
+.claude/settings.local.json
+.claude/skills/
+.claude/agents/
+
+# cachés de Impeccable
+.impeccable/hook.cache.json
+.impeccable/live/

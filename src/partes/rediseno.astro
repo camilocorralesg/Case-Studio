@@ -1,0 +1,285 @@
+<style is:global>
+/* "Nuestro plus" beside a name: a word in the sky's blue, not a badge (17 November 2026: it was a cobalt pill in the mono) */
+.plus{margin-left:6px;white-space:nowrap;color:var(--sky);font:600 .8em/1 var(--font);font-style:normal;letter-spacing:0}
+.plus::before{content:"· ";color:currentColor}
+
+/* ===== Redesign: the same bakery, before and after. First its problems are named on the old site; then each one is fixed by
+   the brand's tiles, which take the old site apart and leave the new one, and the rest of the old site goes in one wave ===== */
+.v-tab .rd{background:var(--night);color:#fff}
+.v-tab .rd-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:clamp(76px,11vh,108px) var(--gutter) clamp(20px,4vh,44px)}
+.v-tab .rd-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 70% 100%,rgba(var(--glow-rgb),.3),rgba(var(--glow-rgb),0) 72%);pointer-events:none}
+.v-tab .rd-left{grid-column:1/5;position:relative;display:grid;gap:18px;justify-items:start}
+.v-tab .rd-left .lead{color:#b3bfd3}
+.rd-tags{display:flex;gap:22px;margin-top:6px}
+.rd-tag{display:inline-flex;align-items:center;gap:9px;color:#7f8ba3;font-size:14px;transition:color var(--d-state) ease}
+.rd-tag::before{content:"";width:10px;height:10px;border-radius:3px;box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.5);transition:background-color var(--d-state) ease,box-shadow var(--d-state) ease}
+.rd-tag.on{color:#fff}
+.rd-tag.on::before{background:var(--sky);box-shadow:none}
+/* the stage floats in a frame that opens onto the hero's light (encuadre.astro), with the same margin all round */
+.v-tab .rd-stage{--fx:clamp(24px,3.8vw,60px);grid-column:5/13;position:relative;isolation:isolate;justify-self:end;width:min(calc(100% - 2 * var(--fx)),calc(60vh * 1.6));margin:var(--fx);aspect-ratio:16/10;border-radius:14px}
+.v-tab .rd-stage>.enc{inset:calc(-1 * var(--fx))}
+.v-tab .rd-stage .mk{box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
+
+/* ---------- the two sites share a frame; everything inside is measured in the frame's own width ---------- */
+.mk{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;border-radius:14px;container-type:inline-size;isolation:isolate}
+.mk ul{margin:0;padding:0;list-style:none}
+.mk h4,.mk p{margin:0}
+.mk em{font-style:normal}
+
+/* before: every habit of a generated site (the parody is on purpose) */
+.mk-slop{color:#fff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.mk-slop::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 10% 22%,rgba(250,204,21,.5),rgba(250,204,21,0) 30%),radial-gradient(circle at 94% 84%,rgba(34,211,238,.55),rgba(34,211,238,0) 34%),linear-gradient(135deg,#4c1d95,#7c3aed 46%,#db2777)}
+.mk-slop .m-nav{display:flex;align-items:center;gap:2.6cqw;padding:2.4cqw 3.6cqw;font-size:1.55cqw}
+.mk-slop .m-logo{margin-right:auto;font-size:2.1cqw;font-weight:800}
+.mk-slop .m-cta,.mk-slop .m-btns em{display:inline-block;padding:1.1cqw 2.3cqw;border-radius:99px;background:linear-gradient(90deg,#f59e0b,#ec4899);box-shadow:0 0 2.6cqw rgba(236,72,153,.75);font-weight:700;white-space:nowrap}
+.mk-slop .m-hero{display:grid;justify-items:center;gap:1.7cqw;padding:1.2cqw 9cqw 0;text-align:center}
+.mk-slop .m-badge{padding:.8cqw 1.8cqw;border-radius:99px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 .12cqw rgba(255,255,255,.3);font-size:1.35cqw}
+.mk-slop .m-h{font-size:5.2cqw;line-height:1.03;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,#fff,#fde68a,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mk-slop .m-sub{max-width:34em;font-size:1.7cqw;line-height:1.4;opacity:.9}
+.mk-slop .m-btns{display:flex;gap:1.4cqw;font-size:1.6cqw}
+.mk-slop .m-btns em.g{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 .15cqw rgba(255,255,255,.45)}
+.mk-slop .m-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw;padding:3cqw 7cqw 0}
+.mk-slop .m-card{display:grid;gap:.6cqw;justify-items:center;padding:1.8cqw 1.4cqw;border-radius:1.8cqw;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 .12cqw rgba(255,255,255,.28),0 1.4cqw 3cqw rgba(76,29,149,.45)}
+.mk-slop .m-card i{font-style:normal;font-size:2.6cqw;line-height:1}
+.mk-slop .m-card b{font-size:1.8cqw;font-weight:800}
+.mk-slop .m-card small{font-size:1.25cqw;opacity:.8}
+
+/* after: a bakery that says one thing. White, ink, one cobalt; the bread brings its own warmth */
+.mk-new{background:#fff;color:#10131a;font-family:var(--font)}
+.mk-new .n-nav{display:flex;align-items:center;gap:2.4cqw;padding:2.2cqw 3.4cqw;font-size:1.42cqw}
+.mk-new .n-logo{margin-right:auto;display:inline-flex;align-items:center;gap:.9cqw;font-size:1.85cqw;font-weight:600;letter-spacing:-.03em}
+.mk-new .n-logo svg{width:2.9cqw;height:2.9cqw}
+.mk-new .n-lk{color:#4d5566}
+.mk-new .n-open{display:inline-flex;align-items:center;gap:.7cqw;padding:.7cqw 1.4cqw;border-radius:99px;background:#eef3ff;color:var(--cobalt);font-weight:500}
+.mk-new .n-open i{width:.8cqw;height:.8cqw;border-radius:50%;background:var(--cobalt);box-shadow:0 0 0 .45cqw rgba(var(--cobalt-rgb),.18)}
+.mk-new .n-cta{padding:.95cqw 2.1cqw;border-radius:99px;background:#10131a;color:#fff;font-weight:600}
+.mk-new .n-hero{flex:1;min-height:0;display:grid;grid-template-columns:1.06fr .94fr}
+.mk-new .n-copy{display:grid;grid-template-rows:minmax(0,1fr) auto;min-height:0;padding:0 3.2cqw 2.6cqw 3.4cqw}
+.mk-new .n-main{display:flex;flex-direction:column;justify-content:center;gap:2cqw}
+.mk-new .n-h{font-family:var(--head);font-size:6.1cqw;line-height:.96;font-weight:600;letter-spacing:-.05em;text-wrap:balance}
+.mk-new .n-h span{color:var(--cobalt)}
+.mk-new .n-sub{max-width:24em;font-size:1.75cqw;line-height:1.42;color:#4d5566}
+.mk-new .n-btns{display:flex;flex-wrap:wrap;gap:1.1cqw;font-size:1.55cqw;font-weight:600}
+.mk-new .n-b1{display:inline-flex;align-items:center;gap:.9cqw;padding:1.25cqw 2.3cqw;border-radius:99px;background:var(--cobalt);color:#fff;box-shadow:0 1.2cqw 2.4cqw -1cqw rgba(var(--cobalt-rgb),.7)}
+.mk-new .n-b1 svg{width:1.7cqw;height:1.7cqw}
+.mk-new .n-b2{padding:1.25cqw 2.3cqw;border-radius:99px;box-shadow:inset 0 0 0 .14cqw rgba(16,19,26,.2)}
+/* what comes out of the oven today, said plainly: the products that were three cards are one line */
+.mk-new .n-today{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6cqw 1.9cqw;font-size:1.45cqw;font-weight:600;letter-spacing:-.01em}
+.mk-new .n-today b{font-weight:500;color:#4d5566}
+/* the bread takes the whole right side, out to the edges of the site; before seven it is still in the half-light */
+.mk-new .n-pic{position:relative;overflow:hidden;border-radius:2.4cqw 0 0 0;background:var(--cobalt)}
+.mk-new .n-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:64% 62%;transform-origin:72% 62%}
+.mk-new .n-dawn{position:absolute;inset:0;background:linear-gradient(200deg,rgba(6,16,58,.16),rgba(6,16,58,.5));pointer-events:none}
+.mk-new .n-time{position:absolute;left:2cqw;top:2cqw;z-index:1;display:inline-flex;align-items:center;gap:.8cqw;padding:.7cqw 1.2cqw;border-radius:99px;background:rgba(255,255,255,.16);color:#fff;font-size:1.25cqw;box-shadow:inset 0 0 0 .1cqw rgba(255,255,255,.3)}
+.mk-new .n-time b{font:500 1.25cqw/1 var(--mono)}
+.mk-new .n-order{position:absolute;left:2cqw;bottom:2.4cqw;z-index:1;display:grid;gap:1cqw;width:19cqw;padding:1.6cqw;border-radius:1.6cqw;background:#fff;color:#10131a;box-shadow:0 2cqw 4cqw -1.6cqw rgba(6,16,58,.55)}
+.mk-new .n-order>b{font-size:1.45cqw;font-weight:600}
+.mk-new .n-order ul{display:grid;gap:.7cqw}
+.mk-new .n-order li{display:flex;align-items:baseline;gap:.9cqw;font-size:1.3cqw}
+.mk-new .n-order li small{margin-left:auto;font:500 1.15cqw/1 var(--mono);color:#4d5566}
+.mk-new .n-order em{display:flex;justify-content:center;padding:.9cqw;border-radius:99px;background:#10131a;color:#fff;font-size:1.25cqw;font-weight:600}
+
+/* ---------- the review: notes on the old site, and the tiles that fix it ---------- */
+.rd-an{position:absolute;inset:0;z-index:3;pointer-events:none}
+.rd-note{position:absolute;border-radius:10px;box-shadow:0 0 0 2px var(--sky),0 0 0 6px rgba(var(--sky-rgb),.18);opacity:0;transition:box-shadow var(--d-state) ease}
+.rd-note>span{position:absolute;left:-2px;top:-8px;transform:translateY(-100%);display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:7px;background:var(--cobalt);color:#fff;font-size:11.5px;line-height:1;white-space:nowrap;transition:background-color var(--d-state) ease,color var(--d-state) ease}
+.rd-note>span b{font:500 11px/1 var(--mono)}
+.rd-note.ok{box-shadow:0 0 0 2px #fff,0 0 0 6px rgba(255,255,255,.14)}
+/* note 03 tells the two buttons: its label goes beside them, so the subtitle above them stays in sight */
+.rd-note:nth-child(3)>span{left:calc(100% + 10px);top:50%;transform:translateY(-50%)}
+.rd-note.ok>span{background:#fff;color:var(--cell)}
+.rd-flash{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none}
+
+/* with reduced motion: the two side by side, still */
+.rd-stage.is-still .mk-slop{inset:0 auto auto 0;width:44%;height:44%}
+.rd-stage.is-still .mk-new{inset:auto 0 0 auto;width:74%;height:74%;box-shadow:0 0 0 6px var(--night)}
+.rd.rd-still .rd-tags{display:none}
+
+@media (max-width:860px){
+  .v-tab .rd-stick{align-content:center;row-gap:18px}
+  .v-tab .rd-left,.v-tab .rd-stage{grid-column:1/-1}
+  .v-tab .rd-left .lead{display:none}
+  .v-tab .rd-stage{--fx:16px;width:calc(100% - 2 * var(--fx))}
+  .v-tab .rd-stage>.enc{border-radius:22px}
+  .rd-note>span{gap:4px;padding:4px 7px;font-size:10.5px}
+  .rd-note>span b{font-size:10px}
+  /* narrower, beside the buttons there is no room: note 03 goes over them, on the right, where the short last line of the
+     subtitle leaves the space free */
+  .rd-note:nth-child(3)>span{left:auto;right:-2px;top:-8px;transform:translateY(-100%)}
+}
+@media (max-width:600px){
+  .v-tab .rd-stage{aspect-ratio:4/5;justify-self:center;width:min(calc(100% - 2 * var(--fx)),calc((100svh - 400px) * .8))}
+  .rd-note>span{gap:5px;padding:5px 7px;font-size:11px}
+  .rd-note>span b{font-size:10px}
+  /* on a phone the subtitle takes two full lines over the buttons: note 03 goes under them, on the right, and note 04 under the
+     cards, so the two never share the strip between buttons and cards */
+  .rd-note:nth-child(3)>span{top:calc(100% + 8px);transform:none}
+  .rd-note:nth-child(4)>span{top:calc(100% + 8px);transform:none}
+  .mk-slop .m-nav{gap:3cqw;padding:4.4cqw 5cqw;font-size:3.2cqw}
+  .mk-slop .m-nav span{display:none}
+  .mk-slop .m-logo{font-size:4.4cqw}
+  .mk-slop .m-cta,.mk-slop .m-btns em{padding:2.2cqw 4.2cqw}
+  .mk-slop .m-hero{gap:3.2cqw;padding:3cqw 6cqw 0}
+  .mk-slop .m-badge{padding:1.5cqw 3.2cqw;font-size:2.9cqw}
+  .mk-slop .m-h{font-size:9.4cqw}
+  .mk-slop .m-sub{font-size:3.5cqw}
+  .mk-slop .m-btns{gap:2.6cqw;font-size:3.3cqw}
+  .mk-slop .m-cards{gap:2.6cqw;padding:7cqw 5cqw 0}
+  .mk-slop .m-card{gap:1.2cqw;padding:3.4cqw 1.6cqw;border-radius:3.4cqw}
+  .mk-slop .m-card i{font-size:5.4cqw}
+  .mk-slop .m-card b{font-size:3.3cqw}
+  .mk-slop .m-card small{font-size:2.5cqw}
+  .mk-new .n-nav{gap:3cqw;padding:4.4cqw 5cqw;font-size:3.2cqw}
+  .mk-new .n-lk,.mk-new .n-open,.mk-new .n-today{display:none}
+  .mk-new .n-logo{gap:2cqw;font-size:4.2cqw}
+  .mk-new .n-logo svg{width:6.6cqw;height:6.6cqw}
+  .mk-new .n-cta{padding:2.2cqw 4.6cqw}
+  .mk-new .n-hero{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:5cqw}
+  .mk-new .n-copy{display:block;padding:2cqw 5cqw 0}
+  .mk-new .n-main{gap:3.6cqw}
+  .mk-new .n-h{font-size:9.6cqw}
+  .mk-new .n-sub{font-size:3.6cqw}
+  .mk-new .n-btns{gap:2.4cqw;font-size:3.4cqw}
+  .mk-new .n-b1,.mk-new .n-b2{padding:2.6cqw 4.6cqw}
+  .mk-new .n-b1{gap:1.8cqw}
+  .mk-new .n-b1 svg{width:3.8cqw;height:3.8cqw}
+  .mk-new .n-pic{border-radius:0}
+  .mk-new .n-img{object-position:50% 70%}
+  .mk-new .n-time{left:4cqw;top:3.6cqw;gap:1.6cqw;padding:1.4cqw 2.6cqw;font-size:2.9cqw}
+  .mk-new .n-time b{font-size:2.9cqw}
+  .mk-new .n-order{left:4cqw;bottom:4cqw;gap:2cqw;width:41cqw;padding:3.2cqw;border-radius:3.4cqw}
+  .mk-new .n-order>b{font-size:3.4cqw}
+  .mk-new .n-order ul{gap:1.4cqw}
+  .mk-new .n-order li{gap:1.8cqw;font-size:3.1cqw}
+  .mk-new .n-order li small{font-size:2.8cqw}
+  .mk-new .n-order em{padding:2cqw;font-size:3cqw}
+  /* with reduced motion the two go one under the other, each as wide as the screen */
+  .rd-stage.is-still{aspect-ratio:auto;width:calc(100% - 2 * var(--fx));display:grid;gap:16px}
+  .rd-stage.is-still .mk-slop,.rd-stage.is-still .mk-new{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:4/5;box-shadow:none}
+}
+</style>
+
+<template id="tpl-rd"><section class="moment rd" id="rediseno" aria-labelledby="rd-h" style="--mh:260vh"><div class="moment__stick rd-stick is-flow">
+  <div class="rd-left"><h2 class="h2" id="rd-h">¿Ya tienes un sitio? Lo rediseñamos para que diga qué vendes y cómo pedirlo.</h2><p class="lead">Conservamos lo que funciona y rediseñamos el resto.</p><p class="rd-tags" aria-hidden="true"><span class="rd-tag on">Antes</span><span class="rd-tag">Después</span></p></div>
+  <div class="rd-stage" role="img" aria-label="Ejemplo: el sitio genérico de una panadería, rediseñado como un sitio claro"></div>
+</div></section></template>
+
+<script is:inline>
+/* The two sites are the same bakery, "Tu marca". What works (its name, its three products, ordering on WhatsApp) stays;
+   the rest is redesigned. The words are an example, never a claim about a client. */
+const RD_PRODUCTS = [['⚡', 'Masa madre', 'Innovador'], ['🎯', 'Croissant', 'Robusto'], ['💎', 'Pan de queso', 'Potente']];
+const RD_SLOP = () => `<div class="mk mk-slop">
+  <nav class="m-nav"><b class="m-logo">✨ Tu marca</b><span>Inicio</span><span>Soluciones</span><span>Blog</span><em class="m-cta">Empezar 🚀</em></nav>
+  <div class="m-hero"><p class="m-badge">🔥 Nuevo · Potenciado con IA</p><p class="m-h">Desbloquea el poder de tu panadería</p>
+    <p class="m-sub">Soluciones innovadoras y de vanguardia para potenciar tu experiencia de pan.</p>
+    <div class="m-btns"><em>Empezar ahora</em><em class="g">Saber más</em></div></div>
+  <div class="m-cards">${RD_PRODUCTS.map(([e, n, w]) => `<div class="m-card"><i>${e}</i><b>${n}</b><small>${w}</small></div>`).join('')}</div>
+</div>`;
+const RD_CHAT = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5 5.2 16A7.5 7.5 0 1 1 8 18.8L4 19.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+/* the bread is an illustration (src/assets/rd-pan.jpg, brought to the brand's cobalt by herramientas/cobalto.py) */
+const RD_NEW = () => `<div class="mk mk-new">
+  <nav class="n-nav"><b class="n-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#10131a"/><path d="M11 33c0-10 6-16 13-16s13 6 13 16c0 1-3 2-13 2s-13-1-13-2Z" fill="#f2b45f"/><path d="M16 26c5-4 12-5 18-1-6-2-12-1-18 3Z" fill="#fff"/></svg>Tu marca</b>
+    <span class="n-lk">Pan</span><span class="n-lk">Café</span><span class="n-lk">Visítanos</span><span class="n-open"><i></i>Abierto desde las 7</span><em class="n-cta">Pedir</em></nav>
+  <div class="n-hero">
+    <div class="n-copy"><div class="n-main"><p class="n-h">Pan recién horneado, todos los días <span>a las 7.</span></p>
+      <p class="n-sub">Pídelo por WhatsApp y recógelo en la tienda.</p>
+      <div class="n-btns"><em class="n-b1">${RD_CHAT}Hacer un pedido</em><em class="n-b2">Ver el menú</em></div></div>
+      <p class="n-today"><b>Hoy</b>${RD_PRODUCTS.map(([, n]) => `<span>${n}</span>`).join('')}</p></div>
+    <div class="n-pic"><img class="n-img" src="assets/rd-pan-1024.webp" srcset="assets/rd-pan-640.webp 640w, assets/rd-pan-1024.webp 1024w" sizes="(max-width: 600px) 92vw, (max-width: 860px) 46vw, 30vw" width="1024" height="1024" loading="lazy" alt="" loading="lazy" decoding="async"><i class="n-dawn"></i>
+      <span class="n-time">Recién salido <b>06:48</b></span>
+      <div class="n-order"><b>Tu pedido</b><ul><li><span>Masa madre</span><small>× 1</small></li><li><span>Croissant</span><small>× 2</small></li></ul><em>Pedir por WhatsApp</em></div></div>
+  </div>
+</div>`;
+/* what the review names, in order; each note is fixed in the same order */
+const RD_NOTES = [['.m-logo', 'Emojis de relleno'], ['.m-h', 'Promesa vaga'], ['.m-btns', 'Dos botones compiten'], ['.m-cards', 'Tarjetas iguales']];
+
+function initRedo() {
+  return (root) => {
+    const sec = root.querySelector('.rd'), stage = sec.querySelector('.rd-stage'), tags = [...sec.querySelectorAll('.rd-tag')];
+    let L = null;
+    const morning = (p) => {
+      /* the new site's morning: the half-light lifts off the bread, the picture settles and the clock reaches seven */
+      L = L || { dawn: [...stage.querySelectorAll('.n-dawn')], img: [...stage.querySelectorAll('.n-img')], clock: [...stage.querySelectorAll('.n-time b')] };
+      const up = easeOut(range(p, .7, .98)), m = Math.round(48 + up * 12), txt = m >= 60 ? '07:00' : '06:' + m;
+      L.dawn.forEach((d) => { d.style.opacity = (1 - up).toFixed(3); });
+      L.img.forEach((im) => { im.style.transform = up < 1 ? `scale(${(1.045 - .045 * up).toFixed(4)})` : ''; });
+      L.clock.forEach((c) => { if (c.textContent !== txt) c.textContent = txt; });
+    };
+    if (RM) {
+      sec.classList.add('rd-still'); stage.classList.add('is-still'); stage.innerHTML = RD_SLOP() + RD_NEW();
+      Encuadre.put(stage, 'x'); morning(1); return;
+    }
+    stage.innerHTML = RD_NEW() + RD_SLOP() + '<canvas class="rd-flash" aria-hidden="true"></canvas><div class="rd-an"></div>';
+    const slop = stage.querySelector('.mk-slop'), cv = stage.querySelector('.rd-flash'), ctx = cv.getContext('2d'), an = stage.querySelector('.rd-an');
+    an.innerHTML = RD_NOTES.map(([, t], i) => `<div class="rd-note"><span><b>0${i + 1}</b>${t}</span></div>`).join('');
+    const notes = [...an.querySelectorAll('.rd-note')];
+    Encuadre.put(stage, 'x');
+    /* square tiles: 15 rows, and as many columns as the frame's shape asks for (24 on a wide frame, 12 on a phone) */
+    const ROWS = 15; let COLS = 0, N = 0, start, dur, owner;
+    let W = 0, H = 0, D = 1, boxes = [], P = 0;
+    const rel = (el) => { const a = el.getBoundingClientRect(), b = stage.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top, w: a.width, h: a.height }; };
+    const frameOf = (sel) => {
+      if (sel !== '.m-cards') return rel(slop.querySelector(sel));
+      const c = [...slop.querySelectorAll('.m-card')].map(rel), x = c[0].x, y = Math.min(...c.map((r) => r.y));
+      return { x, y, w: c[c.length - 1].x + c[c.length - 1].w - x, h: Math.max(...c.map((r) => r.y + r.h)) - y };
+    };
+    /* every tile knows when it goes: inside a note it goes when that note is fixed, from the note's middle outwards;
+       anywhere else it goes in the last wave, from the top left to the bottom right */
+    const layout = () => {
+      W = stage.clientWidth; H = stage.clientHeight; D = Math.min(2, devicePixelRatio || 1);
+      const cols = Math.max(8, Math.round(ROWS * W / Math.max(1, H)));
+      if (cols !== COLS) { COLS = cols; N = COLS * ROWS; start = new Float32Array(N); dur = new Float32Array(N); owner = new Int8Array(N); }
+      cv.width = Math.round(W * D); cv.height = Math.round(H * D);
+      boxes = RD_NOTES.map(([sel]) => frameOf(sel));
+      boxes.forEach((r, i) => { const n = notes[i]; n.style.left = (r.x - 6) + 'px'; n.style.top = (r.y - 5) + 'px'; n.style.width = (r.w + 12) + 'px'; n.style.height = (r.h + 10) + 'px'; });
+      const tw = W / COLS, th = H / ROWS;
+      for (let n = 0; n < N; n++) {
+        const cx = (n % COLS + .5) * tw, cy = (Math.floor(n / COLS) + .5) * th;
+        let o = -1; boxes.forEach((r, i) => { if (o < 0 && cx > r.x - tw * .3 && cx < r.x + r.w + tw * .3 && cy > r.y - th * .3 && cy < r.y + r.h + th * .3) o = i; });
+        owner[n] = o;
+        if (o >= 0) {
+          const r = boxes[o], d = Math.hypot((cx - (r.x + r.w / 2)) / (r.w / 2 + tw), (cy - (r.y + r.h / 2)) / (r.h / 2 + th));
+          start[n] = .36 + o * .06 + Math.min(1, d) * .05; dur[n] = .045;
+        } else {
+          const h = Math.sin(n * 12.9898) * 43758.5453, g = (n % COLS) / (COLS - 1) * .62 + Math.floor(n / COLS) / (ROWS - 1) * .38;
+          start[n] = .6 + (.84 * g + .16 * (h - Math.floor(h))) * .16; dur[n] = .05;
+        }
+      }
+    };
+    const rr = (x, y, w, h, r) => `M${(x + r).toFixed(1)} ${y.toFixed(1)}h${(w - 2 * r).toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${r.toFixed(1)} ${r.toFixed(1)}v${(h - 2 * r).toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${(-r).toFixed(1)} ${r.toFixed(1)}h${(2 * r - w).toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${(-r).toFixed(1)} ${(-r).toFixed(1)}v${(2 * r - h).toFixed(1)}a${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${r.toFixed(1)} ${(-r).toFixed(1)}z`;
+    const frame = (p) => {
+      /* 1 · the review: the notes appear one by one */
+      notes.forEach((n, i) => {
+        const k = easeOut(range(p, .05 + i * .055, .13 + i * .055)), fix = range(p, .36 + i * .06, .44 + i * .06);
+        n.classList.toggle('ok', fix > .55);
+        n.style.opacity = (k * (1 - easeOut(range(fix, .75, 1)))).toFixed(3);
+        n.style.transform = k < 1 ? `translateY(${((1 - k) * 8).toFixed(1)}px)` : '';
+      });
+      /* 2 · the fix: a tile of the brand's blue covers each tile of the old site, the old one is gone under it, and the blue
+         shrinks away over the new site. First the tiles of each note, then all the rest in one wave */
+      const tw = W / COLS, th = H / ROWS, g = Math.min(tw, th) * .08;
+      let path = '', any = false;
+      ctx.setTransform(D, 0, 0, D, 0, 0); ctx.clearRect(0, 0, W, H);
+      for (let n = 0; n < N; n++) {
+        const k = clamp01((p - start[n]) / dur[n]), cx = n % COLS, cy = Math.floor(n / COLS);
+        if (k < .35) { any = true; path += `M${(cx * tw).toFixed(1)} ${(cy * th).toFixed(1)}h${(tw + .7).toFixed(1)}v${(th + .7).toFixed(1)}h${(-tw - .7).toFixed(1)}z`; }
+        if (k > 0 && k < 1) {
+          const s = k < .35 ? easeOut(k / .35) : 1 - Math.pow((k - .35) / .65, 2), w = (tw - 2 * g) * s, h = (th - 2 * g) * s;
+          ctx.fillStyle = k < .35 ? '#3d8bff' : '#1e55e0';
+          ctx.beginPath(); ctx.roundRect(cx * tw + (tw - w) / 2, cy * th + (th - h) / 2, w, h, Math.min(w, h) * .22); ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      slop.style.clipPath = any ? `path('${path}')` : 'inset(0 0 0 100%)';
+      const after = p > .66; tags.forEach((t, i) => t.classList.toggle('on', i === (after ? 1 : 0)));
+      morning(p);
+    };
+    layout(); frame(0);
+    const onR = () => { layout(); frame(P); }; addEventListener('resize', onR);
+    if (document.fonts) document.fonts.ready.then(onR);
+    const off = moment(sec, (p) => { P = p; frame(p); });
+    return () => { if (typeof off === 'function') off(); removeEventListener('resize', onR); };
+  };
+}
+addSection('tabla', 'tpl-rd', 1.5, initRedo());
+</script>

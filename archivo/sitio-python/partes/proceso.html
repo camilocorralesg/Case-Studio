@@ -1,0 +1,47 @@
+<style>
+/* Process: four elements fill up one after another */
+.pq{background:#02040a;color:#fff}
+.pq-stick{display:flex;flex-direction:column;justify-content:center;gap:clamp(22px,5vh,48px);padding:0 var(--gutter)}
+.pq-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(18px,2.6vw,40px)}
+.pq-t{position:relative;aspect-ratio:1/1.12;border-radius:16px;overflow:hidden;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55)}
+.pq-fill{position:absolute;inset:0;background:linear-gradient(#3d8bff,#1e55e0);transform:scaleY(var(--f,0));transform-origin:50% 100%;will-change:transform}
+.pq-fill::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:#cfe0ff}
+.pq-in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,1.6vw,24px)}
+.pq-in b{font:600 clamp(48px,6vw,100px)/.86 var(--sym);letter-spacing:-.04em}
+.pq-in h3{margin-top:10px;font-family:var(--head);font-weight:var(--head-w);font-size:clamp(17px,1.6vw,24px);letter-spacing:-.015em;line-height:1.1}
+.pq-in p{margin-top:8px;font-family:var(--body);font-size:clamp(13px,1.05vw,16px);line-height:1.4;opacity:var(--f,0)}
+.pq-link{position:absolute;top:50%;width:clamp(18px,2.6vw,40px);height:2px;margin-left:calc(clamp(18px,2.6vw,40px) * -1);background:rgba(118,166,255,.3)}
+.pq-link::after{content:"";position:absolute;inset:0;background:#cfe0ff;transform:scaleX(var(--f,0));transform-origin:left}
+.pq-wrap{position:relative}
+
+@media (max-width:860px){
+  .pq-row{grid-template-columns:1fr 1fr}
+  .pq-link{display:none}
+  /* on a phone the tile grows with its text instead of cutting it */
+  .pq-t{aspect-ratio:auto;min-height:calc((100vw - var(--gutter) * 2) * .45)}
+  .pq-in{position:relative;inset:auto;min-height:inherit;gap:12px}
+  .pq-in b{font-size:40px}
+}
+</style>
+
+<template id="tpl-pq"><section class="moment pq" id="proceso" aria-labelledby="pq-h" style="--mh:320vh"><div class="moment__stick pq-stick"><h2 class="h2" id="pq-h">Así trabajamos contigo</h2><ol class="pq-row"></ol></div></section></template>
+
+<script>
+const STEPS = [
+  { s: 'Cn', t: 'Conversamos', c: 'Tu negocio y tus clientes', d: 'Entendemos tu negocio, tus clientes y qué debe lograr la web.' },
+  { s: 'Di', t: 'Diseñamos', c: 'Estilo y estructura', d: 'Proponemos el estilo y la estructura antes de programar.' },
+  { s: 'Cs', t: 'Construimos', c: 'Rápido y adaptado a celulares', d: 'Desarrollamos un sitio rápido y adaptado a celulares.' },
+  { s: 'La', t: 'Lanzamos', c: 'Seguimos contigo', d: 'Publicamos, te enseñamos a usarlo y seguimos contigo.' }
+];
+
+/* the elements fill one after another */
+addSection('tabla', 'tpl-pq', 3, (root) => {
+  const sec = root.querySelector('.pq'), ol = sec.querySelector('.pq-row');
+  ol.innerHTML = STEPS.map((s, i) => `<li class="pq-wrap">${i ? '<i class="pq-link" aria-hidden="true"></i>' : ''}<div class="pq-t"><i class="pq-fill" aria-hidden="true"></i><div class="pq-in"><span class="mono">0${i + 1}</span><div><b aria-hidden="true">${s.s}</b><h3>${s.t}</h3><p>${s.d}</p></div></div></div></li>`).join('');
+  const tiles = [...ol.querySelectorAll('.pq-t')], links = [...ol.querySelectorAll('.pq-link')];
+  return moment(sec, (p) => {
+    tiles.forEach((t, i) => t.style.setProperty('--f', (RM ? 1 : easeIO(range(p, .06 + i * .21, .24 + i * .21))).toFixed(3)));
+    links.forEach((l, i) => l.style.setProperty('--f', (RM ? 1 : range(p, .2 + i * .21, .27 + i * .21)).toFixed(3)));
+  });
+});
+</script>

@@ -1,0 +1,51 @@
+<style is:global>
+/* ===== Encuadre: what shows a service, a site or a brand stands in a rounded frame that opens onto the hero's light: four fields
+   of the hero's colours (cobalt, sky blue, ice and deep blue) over the night, with a fine grain so the blues do not band. The
+   light moves with the scroll of its section (--p, 0..1) and rests when the page rests. The frame goes behind the piece:
+   Encuadre.put(el) puts it inside el, which isolates its stacking so the frame sits under its content ===== */
+.enc{position:absolute;inset:0;z-index:-1;border-radius:28px;overflow:hidden;background:var(--night);pointer-events:none}
+.enc::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(160,196,255,.22),inset 0 1px 0 rgba(220,232,255,.14)}
+.enc::before{content:"";position:absolute;inset:0;z-index:2;opacity:.16;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+.enc i{position:absolute;display:block;border-radius:50%;will-change:transform}
+.enc .enc-1{left:-36%;top:-46%;width:96%;height:90%;background:radial-gradient(closest-side,rgba(var(--deep-rgb),.95),rgba(var(--deep-rgb),0));transform:translate3d(calc(var(--p,0) * 30%),calc(var(--p,0) * 18%),0)}
+.enc .enc-2{left:-30%;top:18%;width:115%;height:120%;background:radial-gradient(closest-side,rgba(var(--cobalt-rgb),.9),rgba(var(--cobalt-rgb),.35) 55%,rgba(var(--cobalt-rgb),0));transform:translate3d(calc(var(--p,0) * 34%),calc(var(--p,0) * -16%),0) scale(calc(1 + var(--p,0) * .14))}
+.enc .enc-3{right:-28%;top:-42%;width:92%;height:105%;background:radial-gradient(closest-side,rgba(var(--sky-rgb),.62),rgba(var(--sky-rgb),0));transform:translate3d(calc(var(--p,0) * -40%),calc(var(--p,0) * 22%),0)}
+.enc .enc-4{left:30%;bottom:-52%;width:72%;height:86%;background:radial-gradient(closest-side,rgba(var(--ice-rgb),.42),rgba(130,186,255,.12) 55%,rgba(var(--ice-rgb),0));transform:translate3d(calc(var(--p,0) * -46%),calc(var(--p,0) * -20%),0) scale(calc(1 + var(--p,0) * .2))}
+/* each section lights its frame from another side: the same light, mirrored, so the molding never repeats twice in a row. The edge
+   (::after) is mirrored back and keeps its highlight on top */
+.enc--x,.enc--x::after{transform:scaleX(-1)}
+.enc--y,.enc--y::after{transform:scaleY(-1)}
+.enc--xy,.enc--xy::after{transform:scale(-1,-1)}
+@media (prefers-reduced-motion:reduce){.enc i{will-change:auto}}
+</style>
+
+<script is:inline>
+/* the frame behind a piece, and its light following the scroll: the progress of the pinned section it lives in (or, outside a
+   moment, how far the frame has crossed the screen). With reduced motion the light rests in the middle of its path */
+const Encuadre = (() => {
+  const frames = new Set();
+  let raf = 0;
+  const follow = () => {
+    raf = 0;
+    frames.forEach((f) => {
+      if (!f.isConnected) { frames.delete(f); return; }
+      const s = f.closest('.moment');
+      let p;
+      if (s) { const r = s.getBoundingClientRect(), total = s.offsetHeight - innerHeight; p = total > 0 ? clamp01(-r.top / total) : 0; }
+      else { const r = f.getBoundingClientRect(); p = clamp01((innerHeight - r.top) / (innerHeight + r.height)); }
+      f.style.setProperty('--p', p.toFixed(4));
+    });
+  };
+  const queue = () => { if (!raf) raf = requestAnimationFrame(follow); };
+  if (!RM) { addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue); }
+  /* side: '' as drawn, 'x' mirrored across, 'y' upside down, 'xy' both */
+  const put = (el, side) => {
+    el.insertAdjacentHTML('afterbegin', `<span class="enc${side ? ' enc--' + side : ''}" aria-hidden="true"><i class="enc-1"></i><i class="enc-2"></i><i class="enc-3"></i><i class="enc-4"></i></span>`);
+    const f = el.firstElementChild;
+    if (RM) f.style.setProperty('--p', '.5'); else { frames.add(f); queue(); }
+    return () => { frames.delete(f); f.remove(); };
+  };
+  return { put };
+})();
+window.Encuadre = Encuadre;
+</script>

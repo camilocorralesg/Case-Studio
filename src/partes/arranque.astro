@@ -1,0 +1,89 @@
+<template id="tpl-contact">
+  <section class="contact" id="contacto" aria-labelledby="contact-h">
+    <div class="contact__in wrap">
+      <div class="ck-head"><h2 class="h2" id="contact-h">Hablemos de tu proyecto</h2><p class="lead">Marca lo que necesitas y te escribimos con los siguientes pasos.</p></div>
+      <form class="contact__form ck-form" novalidate></form>
+    </div>
+  </section>
+</template>
+
+<main id="stage"></main>
+
+<script is:inline>
+/* Puts the page together: the hero, the sections in their order, the contact block and what FINALE adds
+   (form, last line, footer, colour edges and menu). REMOUNT draws it again; the language switch uses it. */
+(() => {
+  const page = window.VARIANTS[0];
+  const stage = document.getElementById('stage');
+  let cleanup = null, first = true;
+
+  function mount() {
+    if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+    stage.innerHTML = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      const frag = document.getElementById(page.tpl).content.cloneNode(true);
+      const pages = (window.PAGES[page.id] || []).slice().sort((x, y) => x.order - y.order);
+      pages.forEach((pg) => frag.firstElementChild.appendChild(document.getElementById(pg.tpl).content.cloneNode(true)));
+      frag.firstElementChild.appendChild(document.getElementById('tpl-contact').content.cloneNode(true));
+      stage.appendChild(frag);
+      const root = stage.firstElementChild;
+      if (window.I18N) window.I18N.node(root);
+      root.classList.add('is-entering');
+      document.documentElement.style.background = getComputedStyle(root).backgroundColor;
+      const done = page.init ? page.init(root) : null;
+      const done2 = pages.map((pg) => pg.init(root));
+      const ct = root.querySelector('.contact');
+      ct.classList.add('contact--' + page.id);
+      const stopTours = window.Tours ? Tours.start(root) : null;
+      const fin = window.FINALE ? window.FINALE(page.id, root, ct) : null;
+      cleanup = () => { if (fin) fin(); if (stopTours) stopTours(); if (typeof done === 'function') done(); done2.forEach((f) => { if (typeof f === 'function') f(); }); };
+      /* a link to a section (index.html#contacto) lands on it the first time the page is drawn */
+      if (first) { first = false; let t = null; try { t = location.hash.length > 1 ? stage.querySelector(location.hash) : null; } catch (e) {} if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); }
+    });
+  }
+
+  window.REMOUNT = mount;
+
+  /* a long way (more than two screens) is not scrolled through: the screen goes to the night for a moment and opens on the place,
+     so the sections fixed on the way do not race past it (17 November 2026: "Ver proyectos" crossed 9.500 px of moments in a
+     second). A short way is scrolled. window.JUMP(y) is the same for any other code that sends the page somewhere */
+  const veil = document.body.appendChild(document.createElement('div'));
+  veil.setAttribute('aria-hidden', 'true');
+  veil.style.cssText = 'position:fixed;inset:0;z-index:59;pointer-events:none;opacity:0;background:var(--night)';
+  let jumping = false;
+  const jump = (y, then) => {
+    if (RM || jumping || Math.abs(y - scrollY) < innerHeight * 2.2 || !veil.animate) { scrollTo({ top: y, behavior: RM ? 'auto' : 'smooth' }); if (then) then(); return; }
+    jumping = true;
+    const dim = veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: MOTION.d('fade'), easing: MOTION.ease('out'), fill: 'forwards' });
+    dim.onfinish = () => {
+      scrollTo({ top: y, behavior: 'instant' }); if (then) then();
+      /* two frames for the sections to draw themselves where it landed, then the night opens */
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const open = veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: MOTION.d('enter'), easing: MOTION.ease('out'), fill: 'forwards' });
+        open.onfinish = () => { dim.cancel(); open.cancel(); jumping = false; };
+      }));
+    };
+  };
+  window.JUMP = jump;
+
+  /* in-page links go to their section */
+  stage.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    e.preventDefault();
+    if (href === '#top') { jump(0); return; }
+    const target = stage.querySelector(href);
+    if (!target) return;
+    const y = target.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(target).scrollMarginTop) || 0);
+    /* the focus goes with the page, so the keyboard goes on from the section it arrived at */
+    jump(Math.max(0, y), () => {
+      if (!target.matches('a,button,input,select,textarea,[tabindex]')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    });
+  });
+
+  mount();
+})();
+</script>

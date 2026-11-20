@@ -1,0 +1,67 @@
+<style>
+/* Services: four elements rise from the floor and turn over, one per service */
+.v-tab .f2{background:#02040a;color:#fff}
+.v-tab .f2-stick{display:flex;flex-direction:column;justify-content:center;gap:clamp(22px,5vh,52px);padding:0 var(--gutter)}
+.v-tab .f2-stick::before{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:radial-gradient(60% 80% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%);pointer-events:none}
+.v-tab .f2-head{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:end}
+.v-tab .f2-head h2{grid-column:1/8}
+.v-tab .f2-head .lead{grid-column:9/13;color:#b3bfd3}
+.v-tab .f2-row{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,1120px);margin-inline:auto;gap:clamp(8px,1vw,16px);perspective:1700px}
+.v-tab .f2-t{position:relative;aspect-ratio:1/1.1;transform-style:preserve-3d;will-change:transform}
+.v-tab .f2-f{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,1.5vw,24px);border-radius:16px;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.v-tab .f2-front{background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55)}
+.v-tab .f2-front .mono{color:#8fb0ff}
+.v-tab .f2-sym{font-family:var(--sym);font-weight:600;font-size:clamp(54px,6.6vw,108px);line-height:.86;letter-spacing:-.04em}
+.v-tab .f2-name{margin-top:10px;font-size:clamp(14px,1.2vw,18px);color:#c7d5f5}
+.v-tab .f2-back{background:linear-gradient(160deg,#fff,#c9dbff);color:var(--deep);transform:rotateY(180deg)}
+.v-tab .f2-back h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(19px,1.9vw,30px);line-height:1.05;letter-spacing:-.02em}
+.v-tab .f2-back p{font-family:var(--body);font-size:clamp(14px,1.15vw,17px);line-height:1.38}
+.v-tab .f2-foot{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.v-tab .f2-eq{display:flex;align-items:center;gap:10px;font-size:15px;color:#7f8ba3}
+.v-tab .f2-eq b{display:grid;place-items:center;width:38px;height:38px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.4);font-weight:600;color:#7f8ba3;transition:background-color 300ms ease,color 300ms ease,box-shadow 300ms ease}
+.v-tab .f2-eq b.on{background:#fff;color:var(--deep);box-shadow:none}
+@media (max-width:860px){
+  .v-tab .f2-head h2,.v-tab .f2-head .lead{grid-column:1/-1}
+  .v-tab .f2-head .lead{display:none}
+  .v-tab .f2-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .v-tab .f2-t{aspect-ratio:1/.72}
+  .v-tab .f2-sym{font-size:44px}
+  .v-tab .f2-eq span{display:none}
+}
+</style>
+
+<template id="tpl2-tabla">
+<section class="moment f2" id="servicios" aria-labelledby="f2-h" style="--mh:460vh">
+  <div class="moment__stick f2-stick">
+    <div class="f2-head">
+      <h2 class="h2" id="f2-h">Cuatro elementos. Tú eliges la fórmula.</h2>
+      <p class="lead">Puedes empezar con uno y sumar los demás cuando tu negocio los pida.</p>
+    </div>
+    <ol class="f2-row">
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">01</span><div><div class="f2-sym">Sw</div><div class="f2-name">Sitios web</div></div></div><div class="f2-f f2-back"><h3>Sitios web</h3><p>Cargan rápido, se leen bien en el celular y llevan a tu cliente a escribirte.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">02</span><div><div class="f2-sym">Ti</div><div class="f2-name">Tiendas en línea</div></div></div><div class="f2-f f2-back"><h3>Tiendas en línea</h3><p>Catálogo, carrito y pagos conectados con tu inventario.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">03</span><div><div class="f2-sym">Rs</div><div class="f2-name">Redes sociales</div></div></div><div class="f2-f f2-back"><h3>Redes sociales</h3><p>Calendario del mes, fotos, videos y textos listos para publicar.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">04</span><div><div class="f2-sym">Ma</div><div class="f2-name">Marca</div></div></div><div class="f2-f f2-back"><h3>Marca</h3><p>Logo, colores y tipografías con una guía corta para usarlos.</p></div></li>
+    </ol>
+    <div class="f2-foot">
+      <p class="f2-eq" aria-hidden="true"><b>Sw</b>+<b>Ti</b>+<b>Rs</b>+<b>Ma</b><span>en un solo equipo</span></p>
+      <a class="btn btn--white" href="#contacto">Armar mi fórmula {{ARR}}</a>
+    </div>
+  </div>
+</section>
+</template>
+
+<script>
+addSection('tabla', 'tpl2-tabla', 1, (root) => {
+  const sec = root.querySelector('.f2'), tiles = [...sec.querySelectorAll('.f2-t')], chips = [...sec.querySelectorAll('.f2-eq b')];
+  return moment(sec, (p) => {
+    tiles.forEach((el, i) => {
+      const r = RM ? 1 : easeOut(range(p, .02 + i * .03, .2 + i * .03));
+      const f = easeIO(range(p, .27 + i * .13, .43 + i * .13));
+      el.style.opacity = r >= 1 ? '' : r.toFixed(3);
+      el.style.transform = `translate3d(0,${((1 - r) * 110).toFixed(1)}px,${(Math.sin(Math.PI * f) * 90).toFixed(1)}px) rotateX(${((1 - r) * 62).toFixed(2)}deg) rotateY(${(f * 180).toFixed(2)}deg)`;
+      chips[i].classList.toggle('on', f > .5);
+    });
+  });
+});
+</script>

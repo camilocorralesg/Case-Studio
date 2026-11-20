@@ -1,0 +1,213 @@
+<style is:global>
+/* ===== The menu that stays with you after the hero and marks where you are:
+   the sections are one period of the table, along the top, clear of the content ===== */
+.mn{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;visibility:hidden;transition:opacity var(--d-state) ease,visibility 0s linear var(--d-state)}
+.mn.is-in{opacity:1;visibility:visible;transition:opacity var(--d-state) ease}
+.mn a{text-decoration:none}
+.mn-list a{color:inherit}
+.mn ol{list-style:none;margin:0;padding:0}
+.mn-list,.mn-side{pointer-events:auto}
+.mn-side{position:absolute;right:max(12px,env(safe-area-inset-right));top:12px;display:flex;align-items:center;gap:8px}
+.mn-lang{display:inline-flex;align-items:center}
+.mn-lang button{min-width:40px;min-height:40px;padding:0 10px;border:0;background:none;color:inherit;font:500 13px/1 var(--font);letter-spacing:.02em;cursor:pointer;opacity:.55;transition:opacity var(--d-fade) ease,background-color var(--d-fade) ease,color var(--d-fade) ease}
+.mn-lang button[aria-pressed="true"]{opacity:1}
+.mn-cta{white-space:nowrap;transition:transform var(--d-hover) var(--ease-out),background-color var(--d-state) var(--ease-out),border-color var(--d-hover) ease,color var(--d-state) var(--ease-out),opacity var(--d-fade) ease}
+/* on Contacto and on the closing the button would repeat what is already on screen (the form, and the closing's own button): it
+   steps aside, and theirs is the one action there */
+.mn.cta-off .mn-cta{opacity:0;visibility:hidden;transition:opacity var(--d-fade) ease,visibility 0s linear var(--d-fade)}
+.no-lang .mn-lang{display:none}
+.mn :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+
+.mn--tabla{color:var(--ice)}
+.mn--tabla .mn-list{position:absolute;left:50%;top:10px;display:flex;gap:4px;transform:translateX(-50%)}
+.mn--tabla .mn-list a,.mn--tabla .mn-lang button{position:relative;display:grid;align-content:space-between;justify-items:start;width:44px;height:46px;min-width:0;min-height:0;padding:5px 6px;border:0;border-radius:8px;background:var(--cell);box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.5);color:var(--ice);opacity:1;text-align:left;transition:background-color var(--d-state) ease,color var(--d-state) ease,box-shadow var(--d-state) ease,transform var(--d-state) var(--ease-out)}
+/* no number under 9.5 px: below that Plex Mono turns into a smudge; a number steps back by its colour, never by its size */
+.mn--tabla .mn-k{font:400 10px/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.mn-s{font:600 18px/1 var(--sym);letter-spacing:-.04em}
+/* "done" is a deeper blue, so its white number and symbol read */
+.mn--tabla .mn-list a.done{background:linear-gradient(var(--cobalt),var(--cobalt-deep));box-shadow:none;color:#fff}
+.mn--tabla .mn-list a.on{background:#fff;box-shadow:0 0 0 3px rgba(var(--sky-rgb),.4);color:var(--deep);transform:translateY(6px)}
+.mn--tabla .mn-t{position:absolute;left:50%;top:calc(100% + 10px);padding:6px 9px;border-radius:7px;background:#fff;color:var(--deep);font:500 12px/1 var(--font);white-space:nowrap;opacity:0;transform:translate(-50%,-6px);transition:opacity var(--d-fade) ease,transform var(--d-state) var(--ease-out);pointer-events:none}
+.mn--tabla .mn-list a:hover .mn-t,.mn--tabla .mn-list a:focus-visible .mn-t{opacity:1;transform:translate(-50%,0)}
+.mn--tabla .mn-side{right:10px;top:10px;gap:8px}
+/* the language against the edge and the button before it: where the button steps aside it leaves no hole at the edge */
+.mn--tabla .mn-lang{order:2;gap:4px}
+.mn--tabla .mn-lang button{font:600 18px/1 var(--sym);letter-spacing:-.04em;place-content:end start}
+.mn--tabla .mn-lang button[aria-pressed="true"]{background:#fff;box-shadow:none;color:var(--deep)}
+/* on light paper the white button would vanish (1.07:1): it turns ink, as on the phone; the white language cell keeps an edge and
+   the names under the row come in navy */
+.mn--tabla.on-light .mn-cta{background:var(--ink);color:#fff}
+@media (hover:hover) and (pointer:fine){.mn--tabla.on-light .mn-cta:hover{background:#2e2e2e}}
+.mn--tabla.on-light .mn-lang button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px rgba(var(--deep-rgb),.35)}
+.mn--tabla.on-light .mn-t{background:var(--cell);color:#fff}
+/* where you are, by name, beside the row: the row alone speaks in symbols. Wide, to its right; from 981 px, where the button would
+   meet it, to its left; up to 980 px, where the row moves to the left edge, to its right again */
+.mn-now{display:none}
+@media (min-width:861px){
+  .mn--tabla .mn-now{display:block;position:absolute;top:26px;left:calc(50% + var(--rw,380px) / 2 + 14px);font:500 13px/1 var(--font);letter-spacing:-.005em;color:var(--ice);white-space:nowrap;pointer-events:none;transition:color var(--d-state) var(--ease-out)}
+  .mn--tabla.on-light .mn-now{color:var(--deep)}
+}
+@media (min-width:981px) and (max-width:1199px){.mn--tabla .mn-now{left:auto;right:calc(50% + var(--rw,380px) / 2 + 14px);text-align:right}}
+@media (min-width:861px) and (max-width:980px){.mn--tabla .mn-now{left:calc(10px + var(--rw,380px) + 14px)}}
+
+/* a little wider than a phone, the row of eight in the middle would meet the button: it goes to the left */
+@media (min-width:861px) and (max-width:980px){.mn--tabla .mn-list{left:10px;transform:none}}
+
+/* ===== On the phone (Hoja, chosen on 15 November 2026): a row of seven would be too small to read. On the right go the button and
+   "Menú" with the section you are in; "Menú" opens a sheet with the eight sections by name, the language and the button ===== */
+.mn-top{display:none}
+@media (max-width:860px){
+  .mn--tabla .mn-list,.mn--tabla .mn-side{display:none}
+  .mn-top{pointer-events:auto;position:absolute;top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right));display:flex;align-items:center;gap:6px}
+  .mn-top-cta{min-height:44px;padding:0 16px;font-size:14px;transition:transform var(--d-hover) var(--ease-out),background-color var(--d-hover) ease,color var(--d-hover) ease,opacity var(--d-fade) ease}
+  .mn.on-light .mn-top-cta{background:var(--ink);color:#fff}
+  .mn.cta-off .mn-top-cta{opacity:0;visibility:hidden;transition:opacity var(--d-fade) ease,visibility 0s linear var(--d-fade)}
+  .mn-open{display:flex;align-items:center;gap:10px;height:44px;padding:2px 2px 2px 14px;border:0;border-radius:12px;background:var(--cell);box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.5);color:var(--ice);font:500 14px/1 var(--font);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform var(--d-hover) var(--ease-out)}
+  .mn-open:active{transform:scale(.97)}
+  /* the section you are in, white, as the row marks it */
+  .mn-here{display:grid;align-content:space-between;justify-items:start;width:40px;height:40px;padding:4px 5px;border-radius:9px;background:#fff;color:var(--deep)}
+  .mn-here i{font:400 9.5px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .mn-here b{font:600 15px/1 var(--sym);letter-spacing:-.04em}
+}
+/* the sheet comes up from the bottom; it closes with the cross, a touch outside it, Escape, or dragging it down */
+.mn-sheet{position:fixed;inset:auto 0 0;width:100%;max-width:100%;max-height:100%;margin:0;padding:0;border:0;background:transparent;color:#fff;overflow:visible}
+.mn-sheet::backdrop{background:rgba(var(--night-rgb),.62);opacity:0;transition:opacity var(--d-state) ease}
+.mn-sheet.is-open::backdrop{opacity:1}
+.mn-sh-in{padding:14px max(16px,env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));border-radius:22px 22px 0 0;background:radial-gradient(90% 70% at 50% 0%,rgba(var(--glow-rgb),.26),rgba(var(--glow-rgb),0) 70%),#050b1f;touch-action:none;transform:translate3d(0,105%,0);transition:transform var(--d-state) var(--ease-out)}
+.mn-sheet.is-open .mn-sh-in{transform:none}
+.mn-sh-in.is-drag{transition:none}
+.mn-sh-top{display:flex;align-items:center;justify-content:space-between}
+.mn-sh-k{font:600 13px/1 var(--font);letter-spacing:0;color:var(--frost)}
+.mn-x{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:10px;background:rgba(238,243,255,.1);color:#fff;cursor:pointer}
+.mn-x svg{width:16px;height:16px}
+.mn-sh-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 16px}
+/* the period, with names: number, symbol and name, in the states of the row (done, here, still to come) */
+.mn-c{display:grid;grid-template-rows:auto 1fr auto;justify-items:start;width:100%;aspect-ratio:1;padding:8px 9px 9px;border:0;border-radius:12px;background:var(--cell);box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.5);color:var(--ice);font:inherit;text-align:left;text-decoration:none;cursor:pointer;transition:transform var(--d-hover) var(--ease-out)}
+.mn-c i{font:400 10px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.mn-c b{align-self:end;font:600 26px/.9 var(--sym);letter-spacing:-.045em;color:#fff}
+.mn-c span{max-width:100%;margin-top:6px;overflow:hidden;font:500 12px/1.1 var(--font);white-space:nowrap;text-overflow:ellipsis}
+.mn-c.done{background:linear-gradient(var(--cobalt),var(--cobalt-deep));box-shadow:none;color:#fff}
+.mn-c.on{background:#fff;box-shadow:0 0 0 3px rgba(var(--sky-rgb),.4);color:var(--deep)}
+.mn-c.on b{color:var(--deep)}
+.mn-sh-tools{display:flex;gap:6px}
+.mn-sh-lang{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:10px;background:none;box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.5);color:#fff;font:600 15px/1 var(--sym);letter-spacing:-.04em;cursor:pointer}
+.mn-c:active{transform:scale(.97)}
+.mn-sh-cta{width:100%;min-height:52px;font-size:16px}
+.mn-sheet :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+html.mn-lock{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.mn *,.mn *::before{transition:none!important}.mn-sh-in,.mn-sheet::backdrop,.mn-c{transition:none}}
+</style>
+<script is:inline>
+(() => {
+  /* section id, name and symbol in the period row; the symbols change with the language */
+  const ITEMS = [['servicios', 'Servicios', 'Sv'], ['rediseno', 'Rediseño', 'Rd'], ['proyectos', 'Proyectos', 'Py'], ['marcas', 'Marcas', 'Mc'], ['proceso', 'Proceso', 'Pc'], ['redes', 'Redes', 'Rs'], ['preguntas', 'Preguntas', 'Pr'], ['contacto', 'Contacto', 'Co']];
+  /* (Redes is the service Redes sociales: Rs in both languages, as in the footer) */
+  const SYM_EN = ['Sv', 'Rd', 'Pj', 'Br', 'Pc', 'Rs', 'Qs', 'Co'];
+  /* each section with its one number, the one it has in the footer's table (EL_Z in Base.astro) */
+  const num = (i) => zOf(ITEMS[i][2]);
+  const light = (el) => { const m = getComputedStyle(el).backgroundColor.match(/[\d.]+/g); return m ? (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255 > .6 : false; };
+
+  const ARR = '<svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const X = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+  window.MENU = (id, root) => {
+    const lang = (window.LANG && window.LANG.cur) || 'es';
+    const sym = (i) => (lang === 'en' ? SYM_EN[i] : ITEMS[i][2]);
+    const list = `<ol class="mn-list" id="mn-index">${ITEMS.map(([k, t], i) => `<li><a href="#${k}" style="--i:${i}"><span class="mn-k">${num(i)}</span><span class="mn-s" aria-hidden="true">${sym(i)}</span><span class="mn-t">${t}</span></a></li>`).join('')}</ol>`;
+    const side = `<div class="mn-side"><div class="mn-lang" role="group" aria-label="Idioma">${[['es', 'ES', 'Español'], ['en', 'EN', 'English']].map(([c, t, n]) => `<button type="button" data-lang="${c}" aria-pressed="${c === lang}" aria-label="${n}">${t[0] + t[1].toLowerCase()}</button>`).join('')}</div><a class="btn btn--sm btn--white mn-cta" href="#contacto">Empezar mi proyecto</a></div>`;
+    /* on the phone: the button, and "Menú" with the section you are in */
+    const top = `<div class="mn-top"><a class="btn btn--sm btn--white mn-top-cta" href="#contacto">Empezar mi proyecto</a><button type="button" class="mn-open" aria-haspopup="dialog" aria-expanded="false" aria-controls="mn-sheet" aria-label="Menú"><span aria-hidden="true">Menú</span><span class="mn-here" aria-hidden="true"><i>${num(0)}</i><b>${sym(0)}</b></span></button></div>`;
+    const nav = document.createElement('nav'); nav.className = 'mn mn--' + id; nav.setAttribute('aria-label', 'Secciones');
+    /* the name of the section you are in, beside the row (the links already say it to a screen reader with aria-current) */
+    nav.innerHTML = list + '<span class="mn-now" aria-hidden="true"></span>' + side + top;
+    if (!window.LANG) nav.classList.add('no-lang');
+    /* first in the order of the keyboard, after the skip link: it is fixed, so where it sits does not change what is seen */
+    const skip = root.querySelector(':scope > .skip');
+    root.insertBefore(nav, skip ? skip.nextSibling : root.firstChild);
+    /* the sheet "Menú" opens: the eight sections by name, two rows of the period; up top the language (the one to switch to) and the
+       cross; and the button */
+    const other = lang === 'en' ? ['es', 'Es', 'Español'] : ['en', 'En', 'English'];
+    const sheet = document.createElement('dialog'); sheet.className = 'mn-sheet'; sheet.id = 'mn-sheet'; sheet.setAttribute('aria-labelledby', 'mn-sh-t');
+    sheet.innerHTML = `<div class="mn-sh-in"><div class="mn-sh-top"><p class="mn-sh-k" id="mn-sh-t">Secciones</p><span class="mn-sh-tools">${window.LANG ? `<button type="button" class="mn-sh-lang" data-lang="${other[0]}" aria-label="${other[2]}">${other[1]}</button>` : ''}<button type="button" class="mn-x" aria-label="Cerrar">${X}</button></span></div>
+      <ol class="mn-sh-list">${ITEMS.map(([k, t], i) => `<li><a class="mn-c" href="#${k}"><i>${num(i)}</i><b aria-hidden="true">${sym(i)}</b><span>${t}</span></a></li>`).join('')}</ol>
+      <a class="btn btn--white mn-sh-cta" href="#contacto">Empezar mi proyecto ${ARR}</a></div>`;
+    root.appendChild(sheet);
+    const H = document.documentElement, openB = nav.querySelector('.mn-open'), here = nav.querySelector('.mn-here'), inner = sheet.querySelector('.mn-sh-in'), cells = [...sheet.querySelectorAll('.mn-sh-list a')];
+    let closing = 0;
+    const show = () => {
+      clearTimeout(closing);
+      if (!sheet.open) sheet.showModal();
+      H.classList.add('mn-lock'); openB.setAttribute('aria-expanded', 'true');
+      inner.getBoundingClientRect(); sheet.classList.add('is-open');
+      /* the focus opens on the section you are in, not on the language (an Enter there would switch it) */
+      (sheet.querySelector('.mn-c.on') || sheet.querySelector('.mn-x')).focus();
+    };
+    const hide = () => {
+      if (!sheet.open) return;
+      sheet.classList.remove('is-open'); H.classList.remove('mn-lock'); openB.setAttribute('aria-expanded', 'false');
+      clearTimeout(closing); closing = setTimeout(() => { if (sheet.open) sheet.close(); }, RM ? 0 : MOTION.d('state') + 40);
+    };
+    openB.addEventListener('click', show);
+    sheet.addEventListener('cancel', (e) => { e.preventDefault(); hide(); });
+    /* a touch on the dark around it, on the cross or on a section closes it; the page's own handler then goes to the section */
+    sheet.addEventListener('click', (e) => { if (e.target === sheet || e.target.closest('.mn-x, a')) hide(); });
+    /* dragged down past a third of its height, or flicked, it closes; less than that, it goes back up */
+    let drag = null;
+    inner.addEventListener('pointerdown', (e) => { if (e.isPrimary) drag = { id: e.pointerId, y: e.clientY, t: performance.now(), dy: 0, on: false }; });
+    inner.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dy = Math.max(0, e.clientY - drag.y);
+      if (!drag.on && dy > 8) { drag.on = true; inner.setPointerCapture(e.pointerId); inner.classList.add('is-drag'); }
+      if (drag.on) { drag.dy = dy; inner.style.transform = `translate3d(0,${dy.toFixed(1)}px,0)`; }
+    });
+    const drop = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag; drag = null;
+      if (!d.on) return;
+      inner.classList.remove('is-drag'); inner.style.transform = '';
+      if (d.dy > inner.offsetHeight / 3 || d.dy / Math.max(1, performance.now() - d.t) > .6) hide();
+    };
+    inner.addEventListener('pointerup', drop); inner.addEventListener('pointercancel', drop);
+    const links = [...nav.querySelectorAll('.mn-list a')], secs = ITEMS.map(([k]) => root.querySelector('#' + k));
+    const row = nav.querySelector('.mn-list'), now = nav.querySelector('.mn-now');
+    const fit = () => nav.style.setProperty('--rw', row.offsetWidth + 'px');
+    const all = [...root.children].filter((n) => n.matches('section')), hero = all[0], foot = root.querySelector('.ft');
+    const tones = all.map(light), owner = all.map((s) => secs.indexOf(s));
+    /* the closing section belongs to Contacto (it is the call to it); anything before the first item belongs to none */
+    for (let i = 0, last = -1; i < owner.length; i++) { if (owner[i] >= 0) last = owner[i]; else owner[i] = last; }
+    for (let i = owner.length - 2; i > 0; i--) if (all[i + 1] && owner[i + 1] === ITEMS.length - 1 && secs.indexOf(all[i]) < 0) owner[i] = ITEMS.length - 1;
+    let act = -1, shown = null, raf = 0;
+    const setAct = (i) => {
+      if (i === act) return; act = i;
+      [links, cells].forEach((set) => set.forEach((a, j) => { a.classList.toggle('on', j === i); a.classList.toggle('done', j < i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }));
+      here.firstChild.textContent = num(i); here.lastChild.textContent = sym(i);
+      /* the name as its link says it, already in the page's language */
+      now.textContent = links[i].querySelector('.mn-t').textContent;
+    };
+    /* the menu shows once the hero is behind and hides before the footer; the section in the middle of the screen is the one marked */
+    const frame = () => {
+      raf = 0; const vh = innerHeight, mid = vh * .5;
+      let k = 0; all.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) k = i; });
+      const on = hero.getBoundingClientRect().bottom < vh * .45 && (!foot || foot.getBoundingClientRect().top > vh * .8);
+      if (on !== shown) { shown = on; nav.classList.toggle('is-in', on); }
+      setAct(Math.max(0, owner[k])); nav.classList.toggle('on-light', tones[k]); nav.classList.toggle('cta-off', !!all[k] && (all[k].id === 'contacto' || all[k].matches('.zb')));
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    const resized = () => { fit(); queue(); };
+    addEventListener('scroll', queue, { passive: true }); addEventListener('resize', resized);
+    fit(); frame(); requestAnimationFrame(() => { act = -1; fit(); frame(); });
+    return () => {
+      removeEventListener('scroll', queue); removeEventListener('resize', resized); cancelAnimationFrame(raf); clearTimeout(closing);
+      H.classList.remove('mn-lock'); if (sheet.open) sheet.close(); sheet.remove(); nav.remove();
+    };
+  };
+
+  /* the menu is added with the rest of what comes after the sections */
+  const F = window.FINALE;
+  window.FINALE = (id, root, ct) => {
+    const a = F ? F(id, root, ct) : null, b = window.MENU(id, root);
+    return () => { b(); if (typeof a === 'function') a(); };
+  };
+})();
+</script>

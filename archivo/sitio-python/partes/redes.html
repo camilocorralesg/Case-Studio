@@ -1,0 +1,63 @@
+<style>
+/* Social media: a molecule; six elements bond to the one in the middle */
+.sm{background:#02040a;color:#fff}
+.sm-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:0 var(--gutter)}
+.sm-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 56% at 72% 50%,rgba(30,107,255,.3),rgba(30,107,255,0) 70%);pointer-events:none}
+.sm-left{grid-column:1/6;position:relative;display:grid;gap:18px}
+.sm-left .lead{color:#b3bfd3}
+.sm-ds{display:grid;margin-top:8px;min-height:7em}
+.sm-d{grid-area:1/1;display:grid;gap:6px;align-content:start;opacity:0;transform:translateY(10px);transition:opacity 300ms ease,transform 420ms var(--ease-out)}
+.sm-d.on{opacity:1;transform:none}
+.sm-d strong{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(24px,2.4vw,36px);letter-spacing:-.02em}
+.sm-d span{max-width:24em;font-family:var(--body);font-size:var(--t-lead);color:#c7d5f5}
+.sm-mol{grid-column:7/13;position:relative;justify-self:center;width:min(100%,72vh);aspect-ratio:1;will-change:transform}
+.sm-bond{position:absolute;left:50%;top:50%;width:37%;height:2px;margin-top:-1px;transform-origin:0 50%;background:rgba(118,166,255,.25)}
+.sm-bond i{display:block;height:100%;background:#cfe0ff;transform:scaleX(var(--f,0));transform-origin:0 50%}
+.sm-t{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;justify-content:space-between;width:19%;aspect-ratio:1;margin:-9.5%;padding:1.6%;border-radius:14%;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);transition:background-color 300ms ease;will-change:transform}
+.sm-t b{font:600 clamp(20px,2.6vw,40px)/.9 var(--sym);letter-spacing:-.04em}
+.sm-t .mono{font-size:10px;color:#8fb0ff}
+.sm-t.on{background:#1e6bff}.sm-t.on .mono{color:#fff}
+.sm-t--c{width:27%;margin:-13.5%;background:#fff;color:var(--deep);box-shadow:0 0 60px rgba(30,107,255,.6)}
+.sm-t--c b{font-size:clamp(30px,4vw,62px)}.sm-t--c .mono{color:var(--deep)}
+
+@media (max-width:860px){
+  .sm-stick{align-content:center;row-gap:16px}
+  .sm-left,.sm-mol{grid-column:1/-1}
+  .sm-mol{order:-1}.sm-mol{width:min(86vw,40vh)}
+  .sm-left .lead{display:none}
+}
+</style>
+
+<template id="tpl-sm"><section class="moment sm" id="redes" aria-labelledby="sm-h" style="--mh:400vh"><div class="moment__stick sm-stick"><div class="sm-left"><h2 class="h2" id="sm-h">Manejo de redes sociales</h2><p class="lead">Seis elementos que se enlazan alrededor de tus redes.</p><div class="sm-ds"></div></div><div class="sm-mol" aria-hidden="true"></div></div></section></template>
+
+<script>
+/* what the social media service covers; a third item marks the ones that are our edge */
+const SOCIAL = [
+  ['Estrategia y calendario', 'Definimos contigo los temas, los formatos y las fechas del mes.'],
+  ['Fotos y videos', 'Producimos el contenido: sesiones de fotos, reels y piezas gráficas.'],
+  ['Motion graphics', 'Animamos tus ideas en reels y piezas con movimiento, hechas por nosotros.', 1],
+  ['Contenido con IA', 'Usamos inteligencia artificial para producir más piezas en el estilo de tu marca.', 1],
+  ['Community management', 'Publicamos, respondemos comentarios, mensajes y reseñas, y cuidamos el tono de tu marca.'],
+  ['Publicación', 'Programamos cada pieza con su fecha y la publicamos en tus redes.']
+];
+const PLUS = ' <em class="plus">Nuestro plus</em>';
+
+/* six elements bond to the one in the middle */
+addSection('tabla', 'tpl-sm', 4, (root) => {
+  const sec = root.querySelector('.sm'), mol = sec.querySelector('.sm-mol'), ds = sec.querySelector('.sm-ds'), SYM = ['Ec', 'Fv', 'Mg', 'Ai', 'Cm', 'Pu'];
+  ds.innerHTML = SOCIAL.map(([t, d, pl]) => `<p class="sm-d"><strong>${t}${pl ? PLUS : ''}</strong><span>${d}</span></p>`).join('');
+  mol.innerHTML = SYM.map((s, i) => `<div class="sm-bond" style="transform:rotate(${i * 60 - 90}deg)"><i></i></div>`).join('') + SYM.map((s, i) => { const a = (i * 60 - 90) * Math.PI / 180; return `<div class="sm-t" style="left:${(50 + 38 * Math.cos(a)).toFixed(2)}%;top:${(50 + 38 * Math.sin(a)).toFixed(2)}%"><span class="mono">0${i + 1}</span><b>${s}</b></div>`; }).join('') + '<div class="sm-t sm-t--c"><span class="mono">Redes</span><b>Rs</b></div>';
+  const bonds = [...mol.querySelectorAll('.sm-bond i')], tiles = [...mol.querySelectorAll('.sm-t')], dd = [...ds.children];
+  let act = -2;
+  return moment(sec, (p) => {
+    const rot = RM ? 0 : lerp(-18, 30, p);
+    mol.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+    let k = -1;
+    bonds.forEach((b, i) => { const f = RM ? 1 : range(p, .06 + i * .145, .16 + i * .145); b.style.setProperty('--f', f.toFixed(3)); tiles[i].classList.toggle('on', f >= 1); if (f > .5) k = i; });
+    tiles.forEach((t) => { t.style.transform = `rotate(${(-rot).toFixed(2)}deg)`; });
+    if (k === act) return;
+    act = k;
+    dd.forEach((el, i) => el.classList.toggle('on', i === Math.max(0, k)));
+  });
+});
+</script>

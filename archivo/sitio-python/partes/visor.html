@@ -1,0 +1,233 @@
+<style>
+/* ---- Portfolio: real projects. The frame scrolls through them with the page; opening one keeps you here, inside a viewer ---- */
+
+/* ---- The viewer: a project opens over the page, from the place you clicked ---- */
+.vw{position:fixed;inset:0;z-index:2147483000;display:none}
+.vw.is-open{display:block}
+.vw-back{position:absolute;inset:0;background:rgba(5,7,12,.78);opacity:0;transition:opacity 360ms ease}
+.vw.is-in .vw-back{opacity:1}
+.vw-win{position:absolute;inset:clamp(8px,2.2vw,34px);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#0f1115;color:#e8eaf0;will-change:clip-path;
+  clip-path:inset(0 round 16px);transition:clip-path 640ms cubic-bezier(.23,1,.32,1)}
+.vw-bar{flex:none;display:flex;align-items:center;gap:10px;height:54px;padding:0 8px 0 16px;background:#16181d;border-bottom:1px solid rgba(255,255,255,.08)}
+.vw-dots{display:flex;gap:7px}.vw-dots i{width:10px;height:10px;border-radius:50%;background:#33363f}
+.vw-name{margin-left:8px;font-size:15px;font-weight:500;white-space:nowrap}
+.vw-name span{font-weight:400;color:#9499a6}
+.vw-url{flex:1;min-width:0;max-width:440px;margin-inline:auto;padding:8px 14px;border-radius:9px;background:#0f1115;font:400 13px/1 var(--mono);color:#aeb4c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.vw-btn{display:inline-grid;place-items:center;flex:none;min-width:40px;height:40px;padding:0 10px;border:0;border-radius:10px;background:none;color:#e8eaf0;font:500 14px/1 var(--font);text-decoration:none;cursor:pointer;transition:background-color 150ms ease,transform 150ms var(--ease-out)}
+.vw-btn svg{width:16px;height:16px}
+.vw-btn--txt{gap:8px;grid-auto-flow:column;padding:0 14px;background:#fff;color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.vw-btn:hover{background:rgba(255,255,255,.1)}.vw-btn--txt:hover{background:#e6e8ee}}
+.vw-btn:active{transform:scale(.95)}
+.vw-btn:focus-visible{outline:2px solid #7fb0ff;outline-offset:2px}
+.vw-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background:#0b0c10}
+.vw-page{will-change:transform,opacity}
+.vw-split{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,27vw,400px);min-height:100%}
+.vw-split--live iframe{display:block;width:100%;height:calc(100vh - 54px - 2*clamp(8px,2.2vw,34px));border:0;background:#fff}
+.vw-shot{display:grid;align-content:center;gap:18px;padding:clamp(14px,2.4vw,34px);background:#0b0c10}
+.vw-tour{position:relative;aspect-ratio:800/414;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 40px 80px -40px #000}
+.vw-tour .tour{position:absolute;inset:0}
+.vw-why{max-width:46em;font-size:14px;line-height:1.5;color:#9aa1b0}
+.vw-cover{display:grid;place-content:center;justify-items:center;gap:14px;aspect-ratio:800/414;border-radius:12px;text-align:center}
+.vw-cover i{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;box-shadow:inset 0 0 0 2px currentColor;font:600 22px/1 var(--head);font-style:normal}
+.vw-cover b{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(30px,4.6vw,66px);line-height:1;letter-spacing:-.03em}
+.vw-cover span{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.vw-cover em{padding:8px 12px;border-radius:99px;background:color-mix(in srgb,currentColor 13%,transparent);font:400 13px/1 var(--mono);font-style:normal}
+.vw-info{display:grid;align-content:start;gap:14px;padding:clamp(18px,2.2vw,30px);background:#14161b;border-left:1px solid rgba(255,255,255,.08);overflow:auto}
+.vw-info .mono{font-size:12px;color:#8fb2ff;text-transform:uppercase;letter-spacing:.06em}
+.vw-info h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(26px,2.4vw,36px);line-height:1.05;letter-spacing:-.025em}
+.vw-lead{font-size:15px;line-height:1.5;color:#c3c8d4}
+.vw-info dl{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;padding:14px 0;border-block:1px solid rgba(255,255,255,.1)}
+.vw-info dt{font:400 11px/1.2 var(--mono);color:#8a90a0;text-transform:uppercase;letter-spacing:.05em}
+.vw-info dd{margin-top:4px;font-size:14px;line-height:1.3}
+.vw-info h4{font:500 13px/1 var(--font);color:#8a90a0}
+.vw-info ul{display:grid;gap:8px;font-size:14px;line-height:1.4;color:#d6dae3}
+.vw-info li{padding-left:16px;position:relative}
+.vw-info li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:#3d8bff}
+.vw-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+/* a tour fills its frame; the strip inside moves by itself */
+.tour{display:block;position:relative;overflow:hidden;background:#0b0c10}
+.tour>img{position:absolute;left:50%;top:0;height:calc(100% * var(--f,5));width:auto;max-width:none;transform:translate3d(-50%,0,0);will-change:transform}
+html.vw-on{overflow:hidden}
+html.vw-on .proto-picker{display:none}
+@media (max-width:860px){.vw-name span,.vw-url{display:none}.vw-name{margin-right:auto}.vw-split{grid-template-columns:1fr}.vw-info{border-left:0}.vw-split--live .vw-info{display:none}.vw-ext{display:none}}
+@media (prefers-reduced-motion:reduce){.vw-win{transition:none}.vw-back{transition:none}}
+</style>
+
+<div class="vw" role="dialog" aria-modal="true" aria-label="Vista previa del proyecto">
+  <div class="vw-back"></div>
+  <div class="vw-win">
+    <div class="vw-bar">
+      <span class="vw-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <p class="vw-name"></p>
+      <p class="vw-url"></p>
+      <button class="vw-btn vw-prev" type="button" aria-label="Proyecto anterior"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="vw-btn vw-next" type="button" aria-label="Proyecto siguiente"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <a class="vw-btn vw-btn--txt vw-ext" target="_blank" rel="noopener">Abrir en pestaña nueva</a>
+      <button class="vw-btn vw-close" type="button" aria-label="Cerrar vista previa"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="vw-body" tabindex="0"><div class="vw-page"></div></div>
+  </div>
+</div>
+
+<script>
+/* the real projects. Each has a poster (img) and a tour: a strip of real screens of the site that scrolls by itself */
+window.PROJECTS = [
+  { id: 'duches', name: 'Los Duches', kind: 'Menú y pedidos en línea', url: 'https://losduches.com/', n: 4, cat: 'Restaurantes',
+    lead: 'Sitio para un restaurante de hamburguesas, sánduches de autor y papas cargadas en Laureles. El cliente arma su pedido en la web y lo envía listo por WhatsApp, a domicilio o para recoger.',
+    facts: ['Restaurantes', 'Laureles, Medellín', 'Menú + pedidos', 'Español'],
+    feats: ['Menú digital con hamburguesas, Duches y papas cargadas', 'Armado del pedido directamente en la web', 'Envío del pedido listo por WhatsApp', 'Opciones de domicilio o para recoger'] },
+  { id: 'neuralnet', name: 'NeuralNet', kind: 'Sitio corporativo de inteligencia artificial', url: 'https://www.neuralnet.com.co/', n: 3, cat: 'Tecnología',
+    lead: 'Sitio del ecosistema NeuralNet, que reúne sus dos líneas de inteligencia artificial para empresas: NeuralBI y NeuralFin.',
+    facts: ['Inteligencia artificial', 'Colombia', 'Sitio corporativo', ''],
+    feats: ['Portada con texto en movimiento', 'Entrada a las dos líneas del grupo: NeuralBI y NeuralFin', 'Selector de idioma'] },
+  { id: 'neuralbi', name: 'NeuralBI', kind: 'Sitio corporativo bilingüe', url: 'https://www.neuralnet.com.co/NeuralBI', n: 4, cat: 'Tecnología',
+    lead: 'Sitio corporativo bilingüe para una firma que construye tableros de Power BI, apps a medida y agentes de IA para empresas. El reto era explicar servicios muy técnicos de forma clara y verse a la altura de clientes corporativos.',
+    facts: ['Consultoría tecnológica', 'Colombia · clientes internacionales', 'Sitio corporativo / B2B', 'Español e inglés'],
+    feats: ['Diseño oscuro y tecnológico con animaciones que explican cada servicio', 'Secciones por producto: Power BI, Power Apps, Power Automate y Copilot Studio', 'Proceso de trabajo en tres fases y soluciones por industria', 'Tablero de ejemplo interactivo y preguntas frecuentes', 'Formulario para agendar una auditoría'] },
+  { id: 'akua', name: 'AKUA Residencia', kind: 'Landing de proyecto inmobiliario', url: 'https://akua-apartamentos.vercel.app/', n: 4, cat: 'Inmobiliario',
+    lead: 'Página de ventas para un proyecto de vivienda y comercio en Medellín. Todo está pensado para captar compradores e inversionistas: tipologías con precios, galería de renders y formularios de cotización.',
+    facts: ['Finca raíz', 'La Pilarica, Medellín', 'Landing de ventas', 'Español'],
+    feats: ['Formulario de cotización visible desde la primera pantalla', 'Comparador de apartamentos tipo A y B con áreas y precios', 'Galería de 14 renders interiores en pantalla completa', 'Mapa con sitios cercanos y argumentos de inversión', 'Sección de locales comerciales con disponibilidad'] },
+  { id: 'weedhoney', name: 'Weed Honey', kind: 'Sitio de marca y tienda', url: 'https://www.weedhoney.co/', n: 4, cat: 'E-commerce', embed: false,
+    lead: 'Sitio para una marca de bebidas funcionales con CBD. La idea era crear una experiencia divertida y llamativa que presentara cada sabor como un producto propio y permitiera pedir por paquetes.',
+    facts: ['Bebidas', 'Medellín', 'Sitio de marca + tienda', 'Español'],
+    feats: ['Portada animada con la identidad de la marca', 'Presentación de los tres sabores con sus beneficios', 'Selector de sabor y paquetes de 6, 12 o 24 latas con carrito', 'Tabla nutricional e ingredientes por producto', 'Información legal y de licencias visible'] },
+  { id: 'mimarte', name: 'Mimarte', kind: 'Tienda en línea de jabones artesanales', url: 'https://mimarte.com.co/', n: 4, cat: 'E-commerce',
+    lead: 'Tienda virtual para una marca de jabones artesanales hechos en frío. Buscábamos una experiencia cálida y sensorial que transmitiera lo natural del producto y facilitara comprar y pedir por WhatsApp.',
+    facts: ['Cuidado personal', 'Medellín', 'E-commerce', 'Español'],
+    feats: ['Catálogo con filtros por categoría, favoritos y carrito de compras', 'Diagnóstico de piel que recomienda la barra ideal', 'Formulario para diseñar un jabón a la medida, enviado por WhatsApp', 'Sección de bodas, eventos y regalos corporativos'] }
+].map((p) => Object.assign(p, { img: `assets/pf-${p.id}.jpg`, tour: `assets/tour-${p.id}.webp` }));
+/* brands whose social media the team has run */
+window.BRANDS = [
+  { name: 'Weed Honey', sym: 'We', nets: [['Instagram', '@weedhoney.co', 'https://www.instagram.com/weedhoney.co/'], ['TikTok', '@weedhoney.co', 'https://www.tiktok.com/@weedhoney.co']], bg: 'linear-gradient(150deg,#FFFDF7,#F6ECD6)', fg: '#B07F24',
+    tag: 'Bebidas con CBD con una voz fresca y relajada, alineada con su sitio web.', lead: 'Llevamos la identidad que diseñamos para su sitio web a Instagram y TikTok, para que redes y tienda hablaran el mismo idioma y vendieran juntas.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok', 'Coherencia visual entre redes y sitio web'] },
+  { name: 'Agilcash', sym: 'Ag', nets: [['Instagram', '@agilcash.co', 'https://www.instagram.com/agilcash.co/'], ['TikTok', '@agilcash.co', 'https://www.tiktok.com/@agilcash.co']], bg: 'linear-gradient(150deg,#115450,#0B3D3A)', fg: '#FFFFFF',
+    tag: 'Una plataforma para pasar dólares digitales a pesos, explicada de forma clara y cercana.', lead: 'Agilcash convierte dólares digitales a pesos colombianos. Nuestro reto fue hacer que un tema financiero se entendiera fácil y generara confianza en Instagram y TikTok.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok'] },
+  { name: 'La Miguería', sym: 'Mi', nets: [['Instagram', '@lamigueria', 'https://www.instagram.com/lamigueria/']], bg: 'linear-gradient(150deg,#77513F,#5C3D30)', fg: '#F4E7D4',
+    tag: 'Una panadería con una comunidad de más de 280 mil seguidores en Instagram.', lead: 'Acompañamos a La Miguería en Instagram, donde su comunidad supera los 280 mil seguidores, con contenido que antoja y conversaciones que no se quedan sin respuesta.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Speedo Colombia', sym: 'Sp', nets: [['Instagram', '@speedocolombia', 'https://www.instagram.com/speedocolombia/']], bg: 'linear-gradient(150deg,#FFFFFF,#F2F2F2)', fg: '#E2231A',
+    tag: 'La marca de natación en el país, con más de 70 mil seguidores en Instagram.', lead: 'Trabajamos con Speedo Colombia, la cuenta local de la marca de trajes de baño y accesorios de natación, cuidando una comunidad de más de 70 mil seguidores en Instagram.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: "O'Neill Colombia", sym: "O'", nets: [['Instagram', '@oneillcolombia', 'https://www.instagram.com/oneillcolombia/']], bg: 'linear-gradient(150deg,#000000,#161616)', fg: '#FFFFFF',
+    tag: 'Ropa de surf y playa con tienda en línea y envíos a toda Colombia.', lead: "Para O'Neill Colombia, la marca de ropa de surf y playa, trabajamos en Instagram para conectar el espíritu de la marca con su tienda en línea.",
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Graduados EAFIT', sym: 'Ea', nets: [['Instagram', '@graduadoseafit', 'https://www.instagram.com/graduadoseafit/']], bg: 'linear-gradient(150deg,#2447E0,#1734BE)', fg: '#FFFFFF',
+    tag: 'El canal de una comunidad de más de 70.000 egresados de la universidad.', lead: 'Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] }
+];
+const host = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+/* the page itself may not frame other sites while it lives in this prototype; on its own domain the viewer loads the real site */
+const LIVE = !/claude|anthropic|localhost|127\.0\.0\.1/.test(location.hostname);
+
+/* a tour is one tall image of n screens plus the first one again; it rests on each screen and glides to the next, like someone scrolling the site */
+const tourHTML = (p, cls) => `<span class="tour${cls ? ' ' + cls : ''}" style="--f:${p.n + 1}" data-n="${p.n}"><img src="${p.tour}" alt="" decoding="async"></span>`;
+const Tours = (() => {
+  const live = new Map();
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { const a = live.get(e.target); if (a) { if (e.isIntersecting) a.play(); else a.pause(); } }), { rootMargin: '12% 0px' }) : null;
+  const start = (root) => {
+    if (RM || !root) return () => {};
+    const made = [];
+    root.querySelectorAll('.tour').forEach((t, i) => {
+      if (live.has(t)) return;
+      const n = +t.dataset.n, img = t.firstElementChild, hold = 1900, move = 950, total = n * (hold + move), kf = [];
+      for (let k = 0; k <= n; k++) {
+        const tr = `translate3d(-50%,${(-k * 100 / (n + 1)).toFixed(4)}%,0)`;
+        if (k < n) kf.push({ transform: tr, offset: k * (hold + move) / total }, { transform: tr, offset: (k * (hold + move) + hold) / total, easing: 'cubic-bezier(.77,0,.175,1)' });
+        else kf.push({ transform: tr, offset: 1 });
+      }
+      const a = img.animate(kf, { duration: total, iterations: Infinity, delay: -((i * 733) % total) });
+      a.pause(); live.set(t, a); made.push(t);
+      if (io) io.observe(t); else a.play();
+    });
+    return () => made.forEach((t) => { const a = live.get(t); if (a) a.cancel(); live.delete(t); if (io) io.unobserve(t); });
+  };
+  return { start };
+})();
+window.Tours = Tours;
+
+const Viewer = (() => {
+  const el = document.querySelector('.vw'), win = el.querySelector('.vw-win'), body = el.querySelector('.vw-body'), page = el.querySelector('.vw-page');
+  const name = el.querySelector('.vw-name'), url = el.querySelector('.vw-url'), ext = el.querySelector('.vw-ext');
+  let idx = 0, src = null, last = null, open = false, list = [], stop = null;
+  const insetFor = (node) => {
+    if (!node || !node.isConnected) return null;
+    const r = node.getBoundingClientRect(), w = win.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return null;
+    return `inset(${Math.max(0, r.top - w.top).toFixed(1)}px ${Math.max(0, w.right - r.right).toFixed(1)}px ${Math.max(0, w.bottom - r.bottom).toFixed(1)}px ${Math.max(0, r.left - w.left).toFixed(1)}px round 12px)`;
+  };
+  const li = (a) => a.map((x) => `<li>${x}</li>`).join('');
+  const out = (href, label) => `<a class="btn btn--white btn--sm" href="${href}" target="_blank" rel="noopener">${label} <span aria-hidden="true">↗</span></a>`;
+  const projectHTML = (p) => {
+    const F = ['Sector', 'Ubicación', 'Tipo de sitio', 'Idioma'], framed = LIVE && p.embed !== false;
+    const info = `<aside class="vw-info"><p class="mono">${p.cat}</p><h3>${p.name}</h3><p class="vw-lead">${p.lead}</p>
+      <dl>${p.facts.map((f, i) => (f ? `<div><dt>${F[i]}</dt><dd>${f}</dd></div>` : '')).join('')}</dl>
+      <h4>Lo que construimos</h4><ul>${li(p.feats)}</ul><p class="vw-acts">${out(p.url, 'Visitar sitio')}</p></aside>`;
+    if (framed) return `<div class="vw-split vw-split--live"><iframe src="${p.url}" title="Sitio de ${p.name}" loading="eager"></iframe>${info}</div>`;
+    const why = LIVE ? `${p.name} no permite abrirse dentro de otra página, así que aquí ves su recorrido. Ábrelo en una pestaña nueva para navegarlo.`
+      : `Recorrido con pantallas reales de ${p.name}. Cuando esta página esté en su propio dominio, aquí se abre el sitio real y se navega sin salir.`;
+    return `<div class="vw-split"><div class="vw-shot"><div class="vw-tour">${tourHTML(p)}</div><p class="vw-why">${why}</p></div>${info}</div>`;
+  };
+  const brandHTML = (b) => `<div class="vw-split"><div class="vw-shot"><div class="vw-cover" style="background:${b.bg};color:${b.fg}"><i>${b.sym}</i><b>${b.name}</b><span>${b.nets.map((n) => `<em>${n[0]} · ${n[1]}</em>`).join('')}</span></div></div>
+    <aside class="vw-info"><p class="mono">Redes sociales</p><h3>${b.name}</h3><p class="vw-lead">${b.lead}</p>
+      <dl><div><dt>Redes</dt><dd>${b.nets.map((n) => n[0]).join(', ')}</dd></div><div><dt>Servicio</dt><dd>Community management y contenido</dd></div></dl>
+      <h4>Lo que hicimos</h4><ul>${li(b.did)}</ul><p class="vw-acts">${b.nets.map((n) => out(n[2], 'Ver en ' + n[0])).join('')}</p></aside></div>`;
+  const fill = (dir) => {
+    const p = list[idx], brand = !!p.nets;
+    if (stop) { stop(); stop = null; }
+    name.innerHTML = '';
+    name.append(p.name + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + (brand ? 'Redes sociales' : p.kind) }));
+    url.textContent = brand ? p.nets[0][1] : host(p.url);
+    ext.href = brand ? p.nets[0][2] : p.url;
+    ext.textContent = brand ? 'Ver en ' + p.nets[0][0] : 'Abrir en pestaña nueva';
+    page.innerHTML = brand ? brandHTML(p) : projectHTML(p);
+    stop = Tours.start(page);
+    body.scrollTop = 0;
+    if (dir && !RM) page.animate([{ opacity: 0, transform: `translate3d(${dir * 40}px,0,0)` }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.23,1,.32,1)' });
+  };
+  const go = (d) => { idx = (idx + d + list.length) % list.length; fill(d); };
+  const close = () => {
+    if (!open) return;
+    open = false;
+    el.classList.remove('is-in');
+    const back = RM ? null : insetFor(src);
+    const done = () => { el.classList.remove('is-open'); document.documentElement.classList.remove('vw-on'); if (stop) { stop(); stop = null; } page.innerHTML = ''; win.style.clipPath = ''; if (last) last.focus({ preventScroll: true }); };
+    if (back) { win.style.clipPath = back; setTimeout(done, 520); } else done();
+  };
+  const show = (i, from, items) => {
+    list = items || PROJECTS; idx = i; src = from || null; last = document.activeElement; open = true;
+    fill(0);
+    document.documentElement.classList.add('vw-on');
+    el.classList.add('is-open');
+    const start = RM ? null : insetFor(src);
+    if (start) {
+      win.style.transition = 'none'; win.style.clipPath = start;
+      win.getBoundingClientRect();
+      win.style.transition = '';
+      requestAnimationFrame(() => { el.classList.add('is-in'); win.style.clipPath = 'inset(0 round 16px)'; });
+      page.animate([{ transform: 'scale(1.04)' }, { transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.23,1,.32,1)' });
+    } else el.classList.add('is-in');
+    el.querySelector('.vw-close').focus({ preventScroll: true });
+  };
+  el.querySelector('.vw-close').addEventListener('click', close);
+  el.querySelector('.vw-back').addEventListener('click', close);
+  el.querySelector('.vw-prev').addEventListener('click', () => go(-1));
+  el.querySelector('.vw-next').addEventListener('click', () => go(1));
+  /* while it is open the viewer owns the keyboard: Esc closes, arrows change project, Tab stays inside */
+  addEventListener('keydown', (e) => {
+    if (!open) return;
+    e.stopImmediatePropagation();
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === 'Tab') {
+      const f = [...el.querySelectorAll('button,a[href],[tabindex="0"]')], a = document.activeElement, i = f.indexOf(a);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  }, true);
+  return { show, close };
+})();
+</script>

@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CaSe Studio | Sitios web, tiendas en línea, redes y marca</title>
+<meta name="description" content="CaSe Studio es un estudio de Medellín: sitios web, tiendas en línea, redes sociales y marca, hechos por el mismo equipo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Hanken+Grotesk:wght@300..800&family=IBM+Plex+Mono:wght@400;500&family=Martian+Mono:wdth,wght@75..112.5,300..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 208 100'%3E%3Crect width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='108' width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='122' y='14' width='72' height='72' rx='5' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  /* CaSe Studio web. Vercel's monochrome discipline and hairlines, Apple's quiet gallery and pills.
+     Layout idea: full-bleed pages with thin gutters, one authored motion moment per page. */
+  --paper:#fafafa; --surface:#ffffff; --mist:#f4f4f5; --hair:#e8e8e8; --line:#d4d4d4;
+  --ink:#171717; --ink-2:#4a4a4a; --muted:#666666; --night:#0b0b0c; --night-2:#161618;
+  --calcio:#f0531c; --selenio:#1e6bff; --action:#155eef; --ok:#1f7a3a;
+  /* round two: white, black and blue */
+  --abyss:#04060b; --deep:#0a1f5c; --blue:#1e6bff; --blue-2:#3d8bff; --ice:#e8f0ff; --ice-2:#cfe0ff; --steel:#9aa8bd;
+  --dot:"Doto", var(--mono, ui-monospace), monospace;
+  --font:"Funnel Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"Martian Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --gutter:clamp(16px, 2.4vw, 40px);
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+  --r-card:14px; --r-media:20px;
+  --t-display:calc(clamp(44px, 6.4vw, 96px) * var(--hs, 1));
+  --t-h2:calc(clamp(32px, 3.6vw, 56px) * var(--hs, 1));
+  /* type set: Funnel Display for headlines and element symbols, Funnel Sans for text, Martian Mono (narrowed) for atomic numbers and data */
+  --body:var(--font);
+  --head:"Funnel Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sym:"Funnel Display", ui-sans-serif, system-ui, sans-serif;
+  --head-w:500; --head-ls:-.035em; --head-lh:1; --hs:1;
+  --t-lead:clamp(17px, 1.32vw, 21px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;color-scheme:light}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;caret-color:var(--action);
+  scrollbar-color:#c4c4c4 transparent;scrollbar-width:thin}
+::selection{background:rgba(30,107,255,.2)}
+:focus-visible{outline:2px solid var(--action);outline-offset:2px;border-radius:6px}
+img,svg,canvas{display:block;max-width:100%}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+h1,h2,h3{text-wrap:balance;font-weight:500}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{padding-inline:var(--gutter)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.display{font-family:var(--head);font-size:var(--t-display);line-height:var(--head-lh);letter-spacing:var(--head-ls);font-weight:var(--head-w)}
+.h2{font-family:var(--head);font-size:var(--t-h2);line-height:calc(var(--head-lh) + .05);letter-spacing:calc(var(--head-ls) * .75);font-weight:var(--head-w)}
+.lead{font-family:var(--body);font-size:var(--t-lead);line-height:1.45;color:var(--ink-2);max-width:34em}
+/* the two other finalists, kept on the type bar to compare in place. Only Martian Mono has a width axis, so the stretch touches nothing else */
+html{font-stretch:87.5%}
+html[data-type="schibsted"]{--font:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--head:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--sym:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;--mono:"IBM Plex Mono", ui-monospace, monospace;--head-w:600;--head-ls:-.04em}
+html[data-type="newsreader"]{--font:"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;--head:"Newsreader", Georgia, serif;--sym:"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;--head-w:400;--head-ls:-.025em;--head-lh:1.04;--hs:1.04}
+
+/* logo (symbols live at the top of body) */
+.logo{display:block;height:26px;width:auto;aspect-ratio:3.837;color:var(--ink);fill:currentColor;transition:color 200ms ease}
+.logo--dark{color:#fff}
+
+/* navigation: 64px, words draw a 1px line under them */
+.nav{position:relative;z-index:5;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-inline:var(--gutter)}
+.nav__home{display:flex;align-items:center;min-height:44px;text-decoration:none}
+.nav__links{display:flex;gap:28px;font-size:15px}
+.nav__links a{position:relative;color:var(--ink-2);text-decoration:none;padding-block:10px;transition:color 150ms ease}
+.nav__links a::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform 150ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .nav__links a:hover{color:var(--ink)}
+  .nav__links a:hover::after{transform:scaleX(1);transform-origin:left}
+}
+.nav--dark .nav__links a{color:#c9c9cc}
+@media (hover:hover) and (pointer:fine){.nav--dark .nav__links a:hover{color:#fff}}
+@media (max-width:860px){.nav__links{display:none}}
+
+/* buttons: step 1px up on hover, sink and press on click */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;
+  border:1px solid transparent;font:500 15px/1 var(--font);letter-spacing:-.01em;text-decoration:none;cursor:pointer;white-space:nowrap;
+  transition:transform 150ms var(--ease-out),background-color 150ms ease,border-color 150ms ease,color 150ms ease}
+.btn--sm{min-height:44px;padding:0 18px;font-size:14px}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--white{background:#fff;color:var(--ink)}
+.btn--ghost-dark{background:transparent;color:#fff;border-color:rgba(255,255,255,.28)}
+.btn .arr{width:14px;height:14px;transition:transform 150ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-1px)}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn--ink:hover{background:#2e2e2e}
+  .btn--white:hover{background:#ececec}
+  .btn--ghost-dark:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+}
+.btn:active{transform:translateY(1px) scale(.985);transition-duration:90ms}
+
+/* hero entrance: lines rise out of masks, then the lead and actions, the picture settles; about 1.1 s, once */
+.ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.ln>span{display:inline-block}
+.is-entering .ln>span{animation:lnUp 700ms var(--ease-out) both;animation-delay:calc(var(--i,0)*80ms)}
+.is-entering .up{animation:fadeUp 520ms var(--ease-out) both;animation-delay:calc(260ms + var(--i,0)*60ms)}
+@keyframes lnUp{from{transform:translateY(112%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}}
+@keyframes settle{from{transform:scale(.98)}}
+
+/* a scroll moment: a tall section whose stage stays on screen while the page scrolls natively */
+.moment{position:relative;height:var(--mh,260vh)}
+.moment__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+
+/* shared client-site mockups (fictional clients) */
+
+/* contact: the anchor every main action scrolls to */
+.contact{background:var(--mist);padding:clamp(72px,10vw,140px) 0}
+.contact__in{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto auto 1fr;column-gap:20px;row-gap:22px}
+.contact__in h2{grid-column:1/7}
+.contact__in .lead{grid-column:1/6}
+.contact__form{grid-column:7/13;grid-row:1/4;display:grid;gap:14px;align-content:start}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;color:var(--ink-2)}
+.field input{font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;
+  transition:border-color 140ms ease,box-shadow 140ms ease}
+.field input:focus{outline:none;border-color:var(--action);box-shadow:0 0 0 3px rgba(21,94,239,.16)}
+.contact__form .btn{justify-self:start}
+.contact__ok{min-height:1.5em;font-size:15px;color:var(--ok)}
+.contact__mail{grid-column:1/7;align-self:end;font-size:15px;color:var(--ink-2)}
+@media (max-width:860px){
+  .contact__in{grid-template-columns:1fr;grid-template-rows:none}
+  .contact__in h2,.contact__in .lead,.contact__form,.contact__mail{grid-column:1/-1;grid-row:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .is-entering .ln>span,.is-entering .up{animation:none}
+  .btn,.btn .arr,.nav__links a::after{transition-property:background-color,border-color,color,opacity}
+}
+
+/* the font picker at the bottom: a prototype aid that goes away once the type set is chosen */
+.proto-picker{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2147483647;display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(10,10,10,0.82);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset,0 8px 24px rgba(0,0,0,0.24),0 2px 6px rgba(0,0,0,0.12);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;line-height:1;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+.proto-picker-highlight{position:absolute;top:4px;left:0;height:28px;border-radius:999px;background:rgba(255,255,255,0.12);will-change:transform}
+.proto-picker[data-ready] .proto-picker-highlight{transition:transform 250ms cubic-bezier(0.23,1,0.32,1),width 250ms cubic-bezier(0.23,1,0.32,1)}
+@media (prefers-reduced-motion:reduce){.proto-picker[data-ready] .proto-picker-highlight{transition:none}}
+.proto-picker-item{position:relative;display:flex;align-items:center;height:28px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:rgba(255,255,255,0.55);font:inherit;cursor:pointer;transition:color 150ms ease-out}
+.proto-picker-item:hover{color:rgba(255,255,255,0.85)}
+.proto-picker-item:active{transform:scale(0.97)}
+.proto-picker-item:focus-visible{outline:2px solid rgba(255,255,255,0.4);outline-offset:2px}
+.proto-picker-item[data-active]{color:#fff}
+.proto-picker-divider{width:1px;height:16px;margin:0 4px;background:rgba(255,255,255,0.12)}
+.proto-picker-replay{padding:0 10px;font-size:14px}
+</style>
+<script>
+/* shared runtime */
+window.VARIANTS = [];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const range = (p, a, b) => clamp01((p - a) / (b - a));            /* 0..1 inside [a, b] */
+const easeIO = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const lerp = (a, b, t) => a + (b - a) * t;
+/* Scroll moment: progress 0..1 of a .moment section while its stage is pinned. Native scroll, one read a frame. */
+function moment(section, update) {
+  let raf = 0;
+  const calc = () => {
+    raf = 0;
+    const r = section.getBoundingClientRect();
+    const total = section.offsetHeight - window.innerHeight;
+    update(total > 0 ? clamp01(-r.top / total) : 1);
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(calc); };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  calc();
+  return () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+}
+</script>
+<style>
+/* the page root and the bits the hero shares with the rest */
+.v{position:relative;background:var(--paper);color:var(--ink);overflow-x:clip}
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.arr{width:14px;height:14px;flex:none}
+
+/* pause control for anything that keeps moving */
+.pause{display:inline-grid;place-items:center;flex:none;width:36px;height:36px;padding:0;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);cursor:pointer;transition:transform 150ms var(--ease-out),background-color 150ms ease,border-color 150ms ease}
+.pause svg{width:14px;height:14px}
+.pause .i-play,.pause[data-paused="1"] .i-pause{display:none}
+.pause[data-paused="1"] .i-play{display:block}
+@media (hover:hover) and (pointer:fine){.pause:hover{background:var(--mist);border-color:#b8b8b8}}
+.pause:active{transform:scale(.94)}
+.pause--dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff}
+@media (hover:hover) and (pointer:fine){.pause--dark:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}}
+
+.proto-picker .proto-picker-item{white-space:nowrap}
+.type-picker .tp-label{padding:0 8px 0 10px;color:rgba(255,255,255,.4);font-size:12px;letter-spacing:.02em}
+/* the picker scrolls sideways on narrow screens instead of running off both edges */
+@media (max-width:860px){
+  .proto-picker{max-width:calc(100vw - 16px);overflow-x:auto;scrollbar-width:none}
+  .proto-picker::-webkit-scrollbar{display:none}
+  .proto-picker-item{flex:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .moment{height:auto!important}
+  .pause{display:none}
+}
+
+/* the hero is its own scroll moment: the stage stays while the page scrolls */
+.hx{position:relative;height:var(--hh,200vh)}
+.hx__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate}
+.hx__vis{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%}
+.hx .nav{position:absolute;top:0;left:0;right:0;z-index:6}
+.hx__copy{position:relative;z-index:2;will-change:transform,opacity}
+.hx__say{position:absolute;z-index:3;left:50%;top:50%;width:min(19em,calc(100% - 2*var(--gutter)));transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
+.hx__pause{position:absolute;z-index:6;right:var(--gutter);bottom:20px}
+.is-entering .vis-in{animation:visIn 1600ms var(--ease-out) both}
+@keyframes visIn{from{opacity:0}}
+
+/* client wordmarks: fictional placeholders until there are real ones */
+
+@media (prefers-reduced-motion:reduce){
+  .moment__stick.is-flow{position:static;height:auto;overflow:visible;padding-block:clamp(64px,10vw,120px)}
+  .hx{height:auto!important}
+  .is-entering .vis-in{animation:none}
+}
+</style>
+<style>
+/* Hero: the whole periodic table as a floor of tiles drawn like the logo's. Calcium and selenium float over their squares;
+   at rest an element lights up here and there, and the scroll lifts the camera, lets the table fall away and brings Ca and Se
+   together as the mark. */
+.v-tab{background:#02040a;color:#fff}
+.v-tab ::selection{background:rgba(61,139,255,.45)}
+.v-tab .b-copy{position:absolute;z-index:2;left:0;right:0;top:64px;display:grid;justify-items:center;gap:22px;padding:clamp(20px,6vh,64px) var(--gutter) 0;text-align:center}
+.v-tab .b-h1{font-size:calc(clamp(40px,5.6vw,84px) * var(--hs,1))}
+.v-tab .b-copy .lead{margin-inline:auto;max-width:30em;color:#b3bfd3}
+.v-tab .b-copy .acts{justify-content:center}
+.v-tab .hx__say{top:76%;color:#fff}
+</style>
+<style>
+/* Services: four elements rise from the floor and turn over, one per service */
+.v-tab .f2{background:#02040a;color:#fff}
+.v-tab .f2-stick{display:flex;flex-direction:column;justify-content:center;gap:clamp(22px,5vh,52px);padding:0 var(--gutter)}
+.v-tab .f2-stick::before{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:radial-gradient(60% 80% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%);pointer-events:none}
+.v-tab .f2-head{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:end}
+.v-tab .f2-head h2{grid-column:1/8}
+.v-tab .f2-head .lead{grid-column:9/13;color:#b3bfd3}
+.v-tab .f2-row{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,1120px);margin-inline:auto;gap:clamp(8px,1vw,16px);perspective:1700px}
+.v-tab .f2-t{position:relative;aspect-ratio:1/1.1;transform-style:preserve-3d;will-change:transform}
+.v-tab .f2-f{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,1.5vw,24px);border-radius:16px;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.v-tab .f2-front{background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55)}
+.v-tab .f2-front .mono{color:#8fb0ff}
+.v-tab .f2-sym{font-family:var(--sym);font-weight:600;font-size:clamp(54px,6.6vw,108px);line-height:.86;letter-spacing:-.04em}
+.v-tab .f2-name{margin-top:10px;font-size:clamp(14px,1.2vw,18px);color:#c7d5f5}
+.v-tab .f2-back{background:linear-gradient(160deg,#fff,#c9dbff);color:var(--deep);transform:rotateY(180deg)}
+.v-tab .f2-back h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(19px,1.9vw,30px);line-height:1.05;letter-spacing:-.02em}
+.v-tab .f2-back p{font-family:var(--body);font-size:clamp(14px,1.15vw,17px);line-height:1.38}
+.v-tab .f2-foot{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.v-tab .f2-eq{display:flex;align-items:center;gap:10px;font-size:15px;color:#7f8ba3}
+.v-tab .f2-eq b{display:grid;place-items:center;width:38px;height:38px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.4);font-weight:600;color:#7f8ba3;transition:background-color 300ms ease,color 300ms ease,box-shadow 300ms ease}
+.v-tab .f2-eq b.on{background:#fff;color:var(--deep);box-shadow:none}
+@media (max-width:860px){
+  .v-tab .f2-head h2,.v-tab .f2-head .lead{grid-column:1/-1}
+  .v-tab .f2-head .lead{display:none}
+  .v-tab .f2-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .v-tab .f2-t{aspect-ratio:1/.72}
+  .v-tab .f2-sym{font-size:44px}
+  .v-tab .f2-eq span{display:none}
+}
+</style>
+<style>
+.plus{display:inline-block;margin-left:8px;padding:4px 8px;white-space:nowrap;border-radius:999px;background:var(--blue);color:#fff;font:500 11px/1 var(--mono);font-style:normal;letter-spacing:0;vertical-align:middle}
+
+/* ===== Redesign: a site full of the usual AI look becomes a clear one, strip by strip ===== */
+.rd{background:var(--rd-bg);color:var(--rd-fg)}
+.rd-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:0 var(--gutter)}
+.rd-stick::before{content:"";position:absolute;inset:0;background:var(--rd-glow,none);pointer-events:none}
+.rd-left{grid-column:1/5;position:relative;display:grid;gap:18px;justify-items:start}
+.rd-left .lead{color:var(--rd-body)}
+.rd-tags{display:flex;gap:8px;margin-top:6px}
+.rd-tag{padding:9px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--rd-line);color:var(--rd-dim);font-size:14px;transition:background-color 260ms ease,color 260ms ease}
+.rd-tag.on{background:var(--rd-fg);color:var(--rd-bg);box-shadow:none}
+.rd-stage{grid-column:5/13;position:relative;aspect-ratio:16/10;max-height:76vh;justify-self:end;width:100%;perspective:1700px;border-radius:var(--rd-r,18px)}
+.rd-stage>.rd-site,.rd-face{position:absolute;inset:0;overflow:hidden;border-radius:var(--rd-r,18px)}
+.rd-stage>.rd-slop{box-shadow:0 50px 100px -40px var(--rd-shadow,rgba(0,0,0,.7))}
+.rd-face>.rd-site{position:absolute;inset:0}
+.rd-site{container-type:inline-size;display:flex;flex-direction:column}
+.rd-nav{display:flex;align-items:center;gap:3cqw;padding:2.6cqw 4cqw;font-size:1.7cqw}
+.rd-nav b{margin-right:auto;font-size:2.2cqw}
+.rd-site em{font-style:normal;white-space:nowrap}
+.rd-hero{display:grid;gap:2cqw}
+.rd-hero>div{display:flex;gap:1.6cqw}
+/* before: the look every generated site has */
+.rd-slop{background:linear-gradient(135deg,#4c1d95,#7c3aed 45%,#db2777);color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center}
+.rd-slop .rd-nav em,.rd-slop .rd-hero em{padding:1.3cqw 2.6cqw;border-radius:99px;background:linear-gradient(90deg,#f59e0b,#ec4899);font-weight:700;font-size:1.7cqw;box-shadow:0 0 3cqw rgba(236,72,153,.8)}
+.rd-slop .rd-hero em.g{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 .2cqw rgba(255,255,255,.4)}
+.rd-slop .rd-hero{justify-items:center;padding:1cqw 8cqw 3cqw}
+.rd-badge{padding:.9cqw 2cqw;border-radius:99px;background:rgba(255,255,255,.16);font-size:1.5cqw}
+.rd-slop h4{font-size:6.2cqw;line-height:1.02;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,#fff,#fde68a,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rd-slop .rd-hero p{font-size:1.9cqw;line-height:1.4;opacity:.9;max-width:34em}
+/* after: one clear message */
+.rd-clean{background:var(--rc-bg);color:var(--rc-fg);font-family:var(--font)}
+.rd-clean .rd-nav em,.rd-clean .rd-hero em{padding:1.3cqw 2.6cqw;border-radius:var(--rc-br,99px);background:var(--rc-ac);color:var(--rc-on,#fff);font-weight:500;font-size:1.7cqw}
+.rd-clean .rd-nav span{opacity:.72}
+.rd-main{flex:1;min-height:0;display:grid;grid-template-columns:1.1fr .9fr;gap:4cqw;align-items:center;padding:1cqw 4cqw 4cqw}
+.rd-clean h4{font-family:var(--rc-hf,var(--head));font-weight:var(--rc-hw,500);font-size:calc(5.4cqw * var(--rc-hs,1) * var(--hs,1));line-height:1.02;letter-spacing:-.03em}
+.rd-clean .rd-hero p{font-size:2cqw;line-height:1.4;opacity:.78}
+.rd-menu{display:flex;gap:1.2cqw;margin-top:1.4cqw;font-size:1.5cqw}
+.rd-menu li{padding:.9cqw 1.8cqw;border-radius:var(--rc-br,99px);box-shadow:inset 0 0 0 .14cqw var(--rc-hair,rgba(255,255,255,.26));white-space:nowrap}
+.rd-pic{position:relative;align-self:stretch;overflow:hidden;border-radius:var(--rc-pr,2.4cqw);background:var(--rc-pic)}
+.rd-pic svg{position:absolute;left:-9%;bottom:0;width:118%;height:100%}
+.rd-pic .s{fill:var(--rc-sun);will-change:transform}.rd-pic .g{fill:var(--rc-gr,rgba(0,0,0,.18))}
+.rd-pic .l{fill:none;stroke:var(--rc-loaf);stroke-width:54;stroke-linecap:round}
+.rd-pic .c{fill:none;stroke:var(--rc-cut);stroke-width:5;stroke-linecap:round}
+.rd-time{position:absolute;left:2.4cqw;top:2cqw;font:500 1.7cqw/1 var(--mono);color:var(--rc-tm,inherit);opacity:.9}
+.rd-slop::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 24%,rgba(250,204,21,.5),rgba(250,204,21,0) 30%),radial-gradient(circle at 94% 80%,rgba(34,211,238,.55),rgba(34,211,238,0) 34%)}
+.rd-slop>*{position:relative}
+.rd-m-still .rd-stage>.rd-slop{inset:0 auto auto 0;width:46%;height:46%}
+.rd-m-still .rd-stage>.rd-clean{inset:auto 0 0 auto;width:72%;height:72%;box-shadow:0 0 0 6px var(--rd-bg),0 50px 100px -40px var(--rd-shadow,rgba(0,0,0,.7))}
+.rd--tab{--rd-bg:#02040a;--rd-fg:#fff;--rd-body:#b3bfd3;--rd-dim:#7f8ba3;--rd-line:rgba(118,166,255,.4);--rd-r:14px;--rd-shadow:rgba(30,107,255,.5);--rc-bg:#0a1638;--rc-fg:#fff;--rc-ac:#fff;--rc-on:#0a1f5c;--rc-br:.8cqw;--rc-pr:1.2cqw;--rc-pic:linear-gradient(#3d8bff,#1e55e0);--rc-sun:rgba(255,255,255,.24);--rc-loaf:#fff;--rc-cut:#1e55e0;--rc-gr:rgba(4,12,48,.3);--rc-hair:rgba(118,166,255,.5);--rd-glow:radial-gradient(50% 60% at 70% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+/* mechanics */
+.rd-face{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.rd-back{transform:rotateY(180deg)}
+.rd-strip{position:absolute;top:0;bottom:0;left:calc(var(--i) * 12.5%);width:12.55%;transform-style:preserve-3d;will-change:transform}
+.rd-strip .rd-face{border-radius:0}
+.rd-strip .rd-face>.rd-site{left:calc(var(--i) * -100%);width:800%;right:auto}
+@media (max-width:860px){
+  .rd-stick{align-content:center;row-gap:18px}
+  .rd-left,.rd-stage{grid-column:1/-1}
+  .rd-left .lead{display:none}
+}
+</style>
+<style>
+/* ---- Portfolio: real projects. The frame scrolls through them with the page; opening one keeps you here, inside a viewer ---- */
+
+/* ---- The viewer: a project opens over the page, from the place you clicked ---- */
+.vw{position:fixed;inset:0;z-index:2147483000;display:none}
+.vw.is-open{display:block}
+.vw-back{position:absolute;inset:0;background:rgba(5,7,12,.78);opacity:0;transition:opacity 360ms ease}
+.vw.is-in .vw-back{opacity:1}
+.vw-win{position:absolute;inset:clamp(8px,2.2vw,34px);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#0f1115;color:#e8eaf0;will-change:clip-path;
+  clip-path:inset(0 round 16px);transition:clip-path 640ms cubic-bezier(.23,1,.32,1)}
+.vw-bar{flex:none;display:flex;align-items:center;gap:10px;height:54px;padding:0 8px 0 16px;background:#16181d;border-bottom:1px solid rgba(255,255,255,.08)}
+.vw-dots{display:flex;gap:7px}.vw-dots i{width:10px;height:10px;border-radius:50%;background:#33363f}
+.vw-name{margin-left:8px;font-size:15px;font-weight:500;white-space:nowrap}
+.vw-name span{font-weight:400;color:#9499a6}
+.vw-url{flex:1;min-width:0;max-width:440px;margin-inline:auto;padding:8px 14px;border-radius:9px;background:#0f1115;font:400 13px/1 var(--mono);color:#aeb4c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.vw-btn{display:inline-grid;place-items:center;flex:none;min-width:40px;height:40px;padding:0 10px;border:0;border-radius:10px;background:none;color:#e8eaf0;font:500 14px/1 var(--font);text-decoration:none;cursor:pointer;transition:background-color 150ms ease,transform 150ms var(--ease-out)}
+.vw-btn svg{width:16px;height:16px}
+.vw-btn--txt{gap:8px;grid-auto-flow:column;padding:0 14px;background:#fff;color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.vw-btn:hover{background:rgba(255,255,255,.1)}.vw-btn--txt:hover{background:#e6e8ee}}
+.vw-btn:active{transform:scale(.95)}
+.vw-btn:focus-visible{outline:2px solid #7fb0ff;outline-offset:2px}
+.vw-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background:#0b0c10}
+.vw-page{will-change:transform,opacity}
+.vw-split{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,27vw,400px);min-height:100%}
+.vw-split--live iframe{display:block;width:100%;height:calc(100vh - 54px - 2*clamp(8px,2.2vw,34px));border:0;background:#fff}
+.vw-shot{display:grid;align-content:center;gap:18px;padding:clamp(14px,2.4vw,34px);background:#0b0c10}
+.vw-tour{position:relative;aspect-ratio:800/414;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 40px 80px -40px #000}
+.vw-tour .tour{position:absolute;inset:0}
+.vw-why{max-width:46em;font-size:14px;line-height:1.5;color:#9aa1b0}
+.vw-cover{display:grid;place-content:center;justify-items:center;gap:14px;aspect-ratio:800/414;border-radius:12px;text-align:center}
+.vw-cover i{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;box-shadow:inset 0 0 0 2px currentColor;font:600 22px/1 var(--head);font-style:normal}
+.vw-cover b{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(30px,4.6vw,66px);line-height:1;letter-spacing:-.03em}
+.vw-cover span{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.vw-cover em{padding:8px 12px;border-radius:99px;background:color-mix(in srgb,currentColor 13%,transparent);font:400 13px/1 var(--mono);font-style:normal}
+.vw-info{display:grid;align-content:start;gap:14px;padding:clamp(18px,2.2vw,30px);background:#14161b;border-left:1px solid rgba(255,255,255,.08);overflow:auto}
+.vw-info .mono{font-size:12px;color:#8fb2ff;text-transform:uppercase;letter-spacing:.06em}
+.vw-info h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(26px,2.4vw,36px);line-height:1.05;letter-spacing:-.025em}
+.vw-lead{font-size:15px;line-height:1.5;color:#c3c8d4}
+.vw-info dl{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;padding:14px 0;border-block:1px solid rgba(255,255,255,.1)}
+.vw-info dt{font:400 11px/1.2 var(--mono);color:#8a90a0;text-transform:uppercase;letter-spacing:.05em}
+.vw-info dd{margin-top:4px;font-size:14px;line-height:1.3}
+.vw-info h4{font:500 13px/1 var(--font);color:#8a90a0}
+.vw-info ul{display:grid;gap:8px;font-size:14px;line-height:1.4;color:#d6dae3}
+.vw-info li{padding-left:16px;position:relative}
+.vw-info li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:#3d8bff}
+.vw-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+/* a tour fills its frame; the strip inside moves by itself */
+.tour{display:block;position:relative;overflow:hidden;background:#0b0c10}
+.tour>img{position:absolute;left:50%;top:0;height:calc(100% * var(--f,5));width:auto;max-width:none;transform:translate3d(-50%,0,0);will-change:transform}
+html.vw-on{overflow:hidden}
+html.vw-on .proto-picker{display:none}
+@media (max-width:860px){.vw-name span,.vw-url{display:none}.vw-name{margin-right:auto}.vw-split{grid-template-columns:1fr}.vw-info{border-left:0}.vw-split--live .vw-info{display:none}.vw-ext{display:none}}
+@media (prefers-reduced-motion:reduce){.vw-win{transition:none}.vw-back{transition:none}}
+</style>
+<style>
+/* Projects: the floor of elements tilts up into a grid and each element shows its site */
+.pg{background:#02040a;color:#fff}
+.pg-stick{display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,3vh,32px);padding:0 var(--gutter);perspective:1500px}
+.pg-stick::before{content:"";position:absolute;left:0;right:0;bottom:0;height:70%;background:radial-gradient(60% 80% at 50% 100%,rgba(30,107,255,.34),rgba(30,107,255,0) 72%);pointer-events:none}
+.pg-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1vw,16px);width:min(100%,calc((100svh - 210px) * 2.5));margin-inline:auto;transform-origin:50% 100%;will-change:transform}
+.pg-t{position:relative;aspect-ratio:16/9.6;padding:0;border:0;border-radius:14px;overflow:hidden;background:#0a1638;color:#fff;cursor:pointer;text-align:left;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);transition:transform 220ms var(--ease-out)}
+.pg-el{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(10px,1.2vw,18px)}
+.pg-el b{font:600 clamp(40px,5.4vw,88px)/.86 var(--sym);letter-spacing:-.04em}
+.pg-el span:last-child{font-size:clamp(13px,1.1vw,16px);color:#c7d5f5}
+.pg-t .tour{position:absolute;inset:0;opacity:0;will-change:opacity,transform}
+.pg-t i{position:absolute;left:10px;bottom:10px;padding:7px 12px;border-radius:8px;background:#fff;color:var(--deep);font:500 13px/1 var(--font);font-style:normal;opacity:0}
+@media (hover:hover) and (pointer:fine){.pg-t:hover{transform:scale(1.025)}}
+
+@media (max-width:860px){
+  .pg-grid{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+}
+</style>
+<style>
+/* ===== Brands whose social media the team has run: a second period of six elements ===== */
+.br{background:var(--br-bg);color:var(--br-fg)}
+.br-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-content:center;row-gap:clamp(20px,4vh,44px);padding:clamp(84px,12vh,120px) var(--gutter) clamp(28px,5vh,56px)}
+.br-stick::before{content:"";position:absolute;inset:0;background:var(--br-glow,none);pointer-events:none}
+.br-head{grid-column:1/8;position:relative;display:grid;gap:12px}
+.br-head .lead{color:var(--br-body);max-width:34em}
+.br-stage{grid-column:1/-1;position:relative}
+.br-it{position:relative;display:grid;align-content:space-between;justify-items:start;gap:10px;padding:clamp(12px,1.3vw,18px);border:0;border-radius:var(--br-r,18px);background:var(--bg);color:var(--fg);font-family:var(--font);text-align:left;cursor:pointer;box-shadow:0 0 0 1px var(--br-edge,rgba(255,255,255,.12)),0 30px 60px -34px var(--br-shadow,rgba(0,0,0,.7));will-change:transform,opacity}
+.br-it i{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;box-shadow:inset 0 0 0 1.5px currentColor;font:600 15px/1 var(--head);font-style:normal}
+.br-it b{font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.9vw,30px) * var(--hs,1));line-height:1;letter-spacing:-.02em}
+.br-it span{font:400 12px/1.2 var(--mono);opacity:.82}
+.br-it em{font:400 12px/1 var(--mono);font-style:normal;padding:6px 9px;border-radius:99px;background:color-mix(in srgb,currentColor 13%,transparent);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.br-it:focus-visible{outline:2px solid var(--br-focus,#7fb0ff);outline-offset:3px}
+.br--tab{--br-bg:#02040a;--br-fg:#fff;--br-body:#b3bfd3;--br-r:14px;--br-edge:rgba(118,166,255,.5);--br-shadow:rgba(30,107,255,.5);--br-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+
+.br-m-tiles .br-stage{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1vw,16px);perspective:1400px}
+.br-m-tiles .br-it{aspect-ratio:1/1.12;transform-origin:50% 0}
+.br-m-tiles .br-it i{width:auto;height:auto;border-radius:0;box-shadow:none;font:600 clamp(34px,4.4vw,68px)/.9 var(--sym);letter-spacing:-.04em}
+.br-m-tiles .br-it b{font-family:var(--font);font-weight:500;font-size:clamp(13px,1.1vw,16px);letter-spacing:0;line-height:1.2}
+.br-m-tiles .br-it::before{content:attr(data-no);font:400 12px/1 var(--mono);opacity:.8}
+.br-m-tiles .br-it em{display:none}
+.br-cap{grid-column:1/-1;position:relative;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--br-body)}
+.br-cap .mono{padding:6px 9px;border-radius:7px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);color:#cfe0ff}
+
+@media (max-width:860px){
+  .br-head{grid-column:1/-1;text-align:left;justify-items:start}
+  .br-m-tiles .br-stage{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .br-m-tiles .br-it span{display:none}
+}
+</style>
+<style>
+/* Process: four elements fill up one after another */
+.pq{background:#02040a;color:#fff}
+.pq-stick{display:flex;flex-direction:column;justify-content:center;gap:clamp(22px,5vh,48px);padding:0 var(--gutter)}
+.pq-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(18px,2.6vw,40px)}
+.pq-t{position:relative;aspect-ratio:1/1.12;border-radius:16px;overflow:hidden;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55)}
+.pq-fill{position:absolute;inset:0;background:linear-gradient(#3d8bff,#1e55e0);transform:scaleY(var(--f,0));transform-origin:50% 100%;will-change:transform}
+.pq-fill::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:#cfe0ff}
+.pq-in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,1.6vw,24px)}
+.pq-in b{font:600 clamp(48px,6vw,100px)/.86 var(--sym);letter-spacing:-.04em}
+.pq-in h3{margin-top:10px;font-family:var(--head);font-weight:var(--head-w);font-size:clamp(17px,1.6vw,24px);letter-spacing:-.015em;line-height:1.1}
+.pq-in p{margin-top:8px;font-family:var(--body);font-size:clamp(13px,1.05vw,16px);line-height:1.4;opacity:var(--f,0)}
+.pq-link{position:absolute;top:50%;width:clamp(18px,2.6vw,40px);height:2px;margin-left:calc(clamp(18px,2.6vw,40px) * -1);background:rgba(118,166,255,.3)}
+.pq-link::after{content:"";position:absolute;inset:0;background:#cfe0ff;transform:scaleX(var(--f,0));transform-origin:left}
+.pq-wrap{position:relative}
+
+@media (max-width:860px){
+  .pq-row{grid-template-columns:1fr 1fr}
+  .pq-link{display:none}
+  /* on a phone the tile grows with its text instead of cutting it */
+  .pq-t{aspect-ratio:auto;min-height:calc((100vw - var(--gutter) * 2) * .45)}
+  .pq-in{position:relative;inset:auto;min-height:inherit;gap:12px}
+  .pq-in b{font-size:40px}
+}
+</style>
+<style>
+/* Social media: a molecule; six elements bond to the one in the middle */
+.sm{background:#02040a;color:#fff}
+.sm-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:0 var(--gutter)}
+.sm-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 56% at 72% 50%,rgba(30,107,255,.3),rgba(30,107,255,0) 70%);pointer-events:none}
+.sm-left{grid-column:1/6;position:relative;display:grid;gap:18px}
+.sm-left .lead{color:#b3bfd3}
+.sm-ds{display:grid;margin-top:8px;min-height:7em}
+.sm-d{grid-area:1/1;display:grid;gap:6px;align-content:start;opacity:0;transform:translateY(10px);transition:opacity 300ms ease,transform 420ms var(--ease-out)}
+.sm-d.on{opacity:1;transform:none}
+.sm-d strong{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(24px,2.4vw,36px);letter-spacing:-.02em}
+.sm-d span{max-width:24em;font-family:var(--body);font-size:var(--t-lead);color:#c7d5f5}
+.sm-mol{grid-column:7/13;position:relative;justify-self:center;width:min(100%,72vh);aspect-ratio:1;will-change:transform}
+.sm-bond{position:absolute;left:50%;top:50%;width:37%;height:2px;margin-top:-1px;transform-origin:0 50%;background:rgba(118,166,255,.25)}
+.sm-bond i{display:block;height:100%;background:#cfe0ff;transform:scaleX(var(--f,0));transform-origin:0 50%}
+.sm-t{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;justify-content:space-between;width:19%;aspect-ratio:1;margin:-9.5%;padding:1.6%;border-radius:14%;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);transition:background-color 300ms ease;will-change:transform}
+.sm-t b{font:600 clamp(20px,2.6vw,40px)/.9 var(--sym);letter-spacing:-.04em}
+.sm-t .mono{font-size:10px;color:#8fb0ff}
+.sm-t.on{background:#1e6bff}.sm-t.on .mono{color:#fff}
+.sm-t--c{width:27%;margin:-13.5%;background:#fff;color:var(--deep);box-shadow:0 0 60px rgba(30,107,255,.6)}
+.sm-t--c b{font-size:clamp(30px,4vw,62px)}.sm-t--c .mono{color:var(--deep)}
+
+@media (max-width:860px){
+  .sm-stick{align-content:center;row-gap:16px}
+  .sm-left,.sm-mol{grid-column:1/-1}
+  .sm-mol{order:-1}.sm-mol{width:min(86vw,40vh)}
+  .sm-left .lead{display:none}
+}
+</style>
+<style>
+/* ===== Nosotros: the three people of the studio, in their own words.
+   A tour of the periodic table that stops at Ca, at Se and at the element that completes them ===== */
+.ab{background:var(--ab-bg);color:var(--ab-fg)}
+.ab-stick{display:grid;grid-template-columns:minmax(0,1fr);align-content:center;row-gap:clamp(22px,4.4vh,48px);padding:clamp(76px,11vh,112px) var(--gutter) clamp(26px,5vh,54px)}
+.ab-stick::before{content:"";position:absolute;inset:0;background:var(--ab-glow,none);pointer-events:none;-webkit-mask-image:var(--fade);mask-image:var(--fade)}
+.ab-head{position:relative;z-index:2;display:grid;gap:12px;max-width:min(100%,46rem)}
+.ab-head .lead{color:var(--ab-body);max-width:32em}
+.ab-stage{position:relative}
+.ab-tx{display:grid;gap:8px;align-content:start}
+.ab-p h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(20px,1.9vw,28px);line-height:1.08;letter-spacing:-.02em}
+.ab-role{font:400 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ab-dim)}
+.ab-d{font-family:var(--body);font-size:clamp(14px,1.1vw,16px);line-height:1.45;color:var(--ab-body)}
+.ab-sym{display:block;font-family:var(--sym);font-weight:600;letter-spacing:-.04em;line-height:.82}
+.ab--tab{--ab-bg:#02040a;--ab-fg:#fff;--ab-body:#b3bfd3;--ab-dim:#8fa3cc;--ab-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+
+/* the camera travels over the table and stops at each of the three */
+.ab-m-map .ab-stick{align-content:start}
+.ab-m-map .ab-head{transition:opacity 300ms ease}
+.ab-m-map .ab-stage{position:absolute;inset:0}
+.ab-map{--c:min(4.6vw,7.4vh);position:absolute;left:0;top:0;display:grid;grid-template-columns:repeat(18,var(--c));grid-auto-rows:var(--c);gap:calc(var(--c) * .08);transform-origin:0 0}
+.ab-map i{display:grid;place-items:center;border-radius:12%;box-shadow:inset 0 0 0 1px rgba(118,166,255,.22);font:600 calc(var(--c) * .34)/1 var(--sym);font-style:normal;letter-spacing:-.03em;color:rgba(143,176,255,.34)}
+.ab-map i.hot{position:relative;background:linear-gradient(#3d8bff,#1e55e0);box-shadow:none;color:#fff;font-size:calc(var(--c) * .46);transition:background-color 300ms ease,color 300ms ease}
+.ab-map i.hot small{position:absolute;left:12%;top:11%;font:400 calc(var(--c) * .16)/1 var(--mono);letter-spacing:0;opacity:.85}
+.ab-map i.hot.on{background:#fff;color:var(--deep)}
+.ab-info{position:absolute;z-index:2;right:var(--gutter);top:50%;display:grid;width:min(38vw,440px);transform:translateY(-50%)}
+.ab-m-map .ab-sym{display:none}
+.ab-m-map .ab-p{grid-area:1/1;padding:clamp(18px,1.8vw,26px);border-radius:16px;background:rgba(10,22,56,.9);box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);opacity:0;transform:translateY(14px);transition:opacity 320ms ease,transform 460ms var(--ease-out);pointer-events:none}
+.ab-m-map .ab-p.on{opacity:1;transform:none}
+
+@media (max-width:860px){
+  /* on a phone the three become one row that the scroll moves, one person at a time */
+  .ab-map{--c:min(5.1vw,4.6vh)}
+  .ab-info{left:var(--gutter);right:var(--gutter);top:auto;bottom:5vh;width:auto;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .ab-m-map .ab-stage{position:relative;inset:auto;display:grid;gap:22px}
+  .ab-map{position:relative;margin-inline:auto}
+  .ab-info{position:static;width:auto;transform:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .ab-m-map .ab-p{grid-area:auto;opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:860px){
+  .ab-info{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:1fr;transform:none}
+}
+</style>
+<style>
+/* ===== Closing: the hero's own idea comes back to ask for the project ===== */
+.zz-copy{position:relative;z-index:2;display:grid;justify-items:center;gap:22px;text-align:center;padding:0 var(--gutter);will-change:transform,opacity}
+/* the element that was missing */
+.zb{background:#02040a;color:#fff}
+.zb-stick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(28px,6vh,60px)}
+.zb-stick::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 50% at 50% 46%,rgba(30,107,255,.34),rgba(30,107,255,0) 70%)}
+.zb-row{position:relative;display:flex;align-items:center;gap:clamp(8px,1.2vw,18px);--s:min(22vw,230px)}
+.zb-row>svg{width:var(--s);height:var(--s);fill:#fff;will-change:transform}
+.zb-slot{position:relative;width:var(--s);height:var(--s);border-radius:9%;border:2px dashed rgba(118,166,255,.5)}
+.zb-you{position:absolute;inset:-2px;border-radius:9%;background:linear-gradient(#3d8bff,#1e55e0);display:flex;flex-direction:column;justify-content:space-between;padding:12%;will-change:transform;font:600 calc(var(--s) * .4)/.86 var(--sym);letter-spacing:-.04em}
+.zb-you span{font:500 calc(var(--s) * .085)/1 var(--mono);letter-spacing:0}
+</style>
+<style>
+/* ===== Contact: the visitor chooses what they need instead of describing it ===== */
+.contact{position:relative}
+/* the name and the contact are elements that fill when you complete them */
+.contact--tabla{background:#02040a;color:#fff}
+.contact--tabla .lead,.contact--tabla .contact__mail{color:#b3bfd3}
+.contact--tabla .field{grid-template-columns:72px 1fr;column-gap:16px;row-gap:2px;align-items:center;padding:12px;border-radius:16px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);transition:background-color 320ms ease}
+.contact--tabla .field::before{content:attr(data-sym);grid-row:1/3;display:grid;place-items:center;aspect-ratio:1;border-radius:11px;background:#02040a;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);font:600 28px/1 var(--sym);letter-spacing:-.04em;transition:background-color 320ms ease,color 320ms ease}
+.contact--tabla .field label{color:#a9bff5}
+.contact--tabla .field :is(input,textarea){border:0;background:transparent;color:#fff;padding:4px 0}
+.contact--tabla .field :is(input,textarea):focus{box-shadow:none}
+.contact--tabla .field:focus-within{box-shadow:inset 0 0 0 2px #cfe0ff}
+.contact--tabla .field.is-full{background:#1e55e0}
+.contact--tabla .field.is-full::before{background:#fff;color:var(--deep)}
+.contact--tabla .field.is-full label{color:#e3ebff}
+.contact--tabla .btn--ink{background:#fff;color:var(--ink)}
+.contact--tabla .contact__ok{color:#8fd6a8}
+
+.ask{gap:clamp(18px,2.8vh,30px)}
+.ask fieldset{display:grid;gap:10px;min-width:0;margin:0;padding:0;border:0}
+.ask legend{padding:0;margin-bottom:10px;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.6vw,24px) * var(--hs,1));line-height:1.1;letter-spacing:-.015em}
+.ask-hint{margin-top:-4px;font-size:14px;color:var(--ask-dim)}
+.ask-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:start}
+.ask-lb{padding-top:15px;font:400 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ask-dim)}
+.ask-opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;display:inline-flex}
+.opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:var(--opt-r,999px);background:var(--opt-bg,transparent);color:var(--opt-fg,inherit);box-shadow:inset 0 0 0 1px var(--opt-line);font-size:15px;line-height:1.15;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease,transform 200ms var(--ease-out)}
+.opt b{display:none}
+.opt input:checked+span{background:var(--opt-on-bg);color:var(--opt-on-fg);box-shadow:inset 0 0 0 1px var(--opt-on-bg)}
+.opt input:focus-visible+span{outline:2px solid var(--opt-focus,#7fb0ff);outline-offset:2px}
+.opt input:active+span{transform:scale(.96)}
+@media (hover:hover) and (pointer:fine){.opt input:not(:checked):hover+span{box-shadow:inset 0 0 0 1px var(--opt-hover,currentColor)}}
+.ask-who{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ask-end{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.ask-end .contact__ok{flex:1;min-width:15em;min-height:0}
+@media (max-width:860px){.ask-row{grid-template-columns:1fr;gap:6px}.ask-lb{padding-top:0}.ask-who{grid-template-columns:1fr}}
+
+/* options are elements and the choice is a formula */
+.contact--tabla{--ask-dim:#8fa3cf;--opt-focus:#cfe0ff}
+.contact--tabla .ask-need .ask-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.contact--tabla .ask-when .ask-opts{display:grid;grid-template-columns:repeat(3,minmax(96px,150px));gap:8px}
+.contact--tabla .opt{display:flex}
+.contact--tabla .opt span{flex:1;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:10px;min-height:92px;padding:9px 10px;border-radius:12px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.5);font-size:12.5px;line-height:1.2;color:#cdd8f2}
+.contact--tabla .opt b{display:block;font:600 30px/.9 var(--sym);letter-spacing:-.04em;color:#fff}
+.contact--tabla .opt input:checked+span{background:#1e55e0;color:#fff;box-shadow:inset 0 0 0 2px #cfe0ff}
+.contact--tabla .ask-row{grid-template-columns:1fr;gap:6px}.contact--tabla .ask-lb{padding-top:6px}
+.tb-f{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:36px;font-size:14px;color:#b3bfd3}
+.tb-f .mono{padding:8px 10px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(118,166,255,.45);color:#fff}
+
+/* ===== Forms, second pass: numbered steps and, beside the options, a live picture of what the visitor has chosen ===== */
+.contact__in{grid-template-rows:auto auto 1fr auto}
+.contact__in .ask{grid-row:1/5}
+.ask>*{min-width:0}
+.ask-no{margin-right:10px;font:400 13px/1 var(--mono);letter-spacing:0;color:var(--ask-ac,var(--blue));vertical-align:.18em}
+.ask-leg{margin-bottom:-6px;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(19px,1.6vw,24px) * var(--hs,1));line-height:1.1;letter-spacing:-.015em}
+.ask-side{grid-column:1/6;position:relative;align-self:center;min-width:0}
+.ask-note{font-size:14px;color:var(--ask-dim)}
+.ask-end .btn{min-height:54px;padding:0 28px;font-size:16px}
+.ask-end .contact__ok{order:3;flex:1 1 100%;min-width:0}
+@media (max-width:860px){.contact__in{grid-template-rows:none}.contact__in .ask{grid-row:auto}.ask-side{grid-column:1/-1}}
+
+/* the formula builds up, tile by tile */
+.contact--tabla{--ask-ac:#7fb0ff}
+.contact--tabla .ask-need .ask-opts{grid-template-columns:repeat(auto-fill,minmax(108px,1fr))}
+.contact--tabla .opt span{min-height:104px}
+.contact--tabla .tb-f{display:none}
+.contact--tabla .ask-side{align-self:center;display:grid;gap:14px}
+.tb-big{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:120px}
+.tb-big b{display:grid;align-content:space-between;width:clamp(74px,7vw,104px);aspect-ratio:1/1.06;padding:9px 10px;border-radius:12px;background:#1e55e0;box-shadow:inset 0 0 0 2px #cfe0ff;font:600 clamp(28px,3vw,44px)/.9 var(--sym);letter-spacing:-.04em;animation:tbin 420ms var(--ease-out) both}
+.tb-big b small{font:400 11px/1 var(--mono);letter-spacing:0;color:#dbe7ff}
+.tb-big b.q{background:none;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.4);color:#5d73a8;animation:none}
+.tb-big em{font:400 22px/1 var(--mono);font-style:normal;color:#7f8ba3}
+.tb-big b.res{background:#fff;color:#0a1f5c;box-shadow:none}.tb-big b.res small{color:#33487f}
+@keyframes tbin{from{opacity:0;transform:translateY(-22px) rotateX(60deg)}}
+.tb-cap{font-size:15px;color:#b3bfd3}
+@media (prefers-reduced-motion:reduce){.tb-big b{animation:none}}
+</style>
+<style>
+/* ===== The last line: how the studio got its name, with the motion of each hero ===== */
+.ou{background:var(--ou-bg);color:var(--ou-fg);overflow:clip}
+.ou-stick{display:grid;place-content:center;justify-items:center;gap:clamp(26px,6vh,64px);padding:clamp(70px,12vh,150px) var(--gutter);text-align:center}
+.ou-stick::before{content:"";position:absolute;inset:0;background:var(--ou-glow,none);pointer-events:none}
+.ou-say{position:relative;max-width:12em;will-change:transform,opacity;font-family:var(--ou-font,var(--head));font-weight:var(--ou-w,var(--head-w));font-size:calc(clamp(38px,8vw,132px) * var(--hs,1) * var(--ou-s,1));line-height:.98;letter-spacing:var(--ou-ls,var(--head-ls,-.03em));text-wrap:balance}
+.ou-say span{display:inline-block;will-change:transform,opacity}
+.ou-eq{position:relative;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:var(--head-w);font-size:calc(clamp(22px,3vw,48px) * var(--hs,1));line-height:1.15;letter-spacing:-.02em;white-space:nowrap;color:var(--ou-dim);will-change:transform,opacity}
+.ou-eq b{font-weight:inherit;color:var(--ou-ac)}
+.ou-eq i{display:inline-block;overflow:hidden;max-width:calc(var(--n) * 1ch * var(--o,1));font-style:normal;white-space:pre;vertical-align:bottom}
+.ou-eq .y{color:var(--ou-ac)}
+.ou--tabla{--ou-bg:#02040a;--ou-fg:#fff;--ou-dim:#8fa3cf;--ou-ac:#fff;--ou-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.36),rgba(30,107,255,0) 72%)}
+.ou--tabla .ou-say{perspective:900px}
+.ou--tabla .ou-eq{font-size:clamp(24px,3.2vw,52px);gap:.02em}
+.ou--tabla .ou-eq b{position:relative;display:inline-grid;place-items:end start;width:1.86em;height:1.86em;padding:0 0 .12em .2em;border-radius:.2em;background:#fff;color:#0a1f5c;font-weight:600;letter-spacing:-.04em;line-height:1}
+.ou--tabla .ou-eq b+i+i+b{background:none;color:#fff;box-shadow:inset 0 0 0 .1em #fff}
+.ou--tabla .ou-eq b::before{content:attr(data-no);position:absolute;left:.75em;top:.55em;font:400 .26em/1 var(--mono);letter-spacing:0}
+.ou--tabla .ou-eq i{padding-left:.16em}
+@media (max-width:860px){.ou-say{font-size:calc(clamp(34px,10.5vw,60px) * var(--hs,1) * var(--ou-s,1))}.ou-eq{font-size:22px}.ou--tabla .ou-eq{font-size:21px}}
+</style>
+<style>
+/* ===== Footer: the table itself is the landscape, and Ca and Se are the two lights on it ===== */
+@property --lx{syntax:'<percentage>';inherits:true;initial-value:50%}
+.ft{position:relative;background:var(--ft-bg);color:var(--ft-fg);font-size:15px;line-height:1.45}
+.ft-in{position:relative;padding:clamp(30px,5vh,60px) var(--gutter) 22px}
+.ft .logo{display:block;height:var(--ft-logo,26px);width:auto;aspect-ratio:959.36/250;color:var(--ft-fg)}
+.ft a{text-decoration:none}
+.ft a:not(.btn){color:inherit}
+.ft h3{margin-bottom:14px;font:500 15px/1.2 var(--font);color:var(--ft-fg)}
+.ft-col{display:grid;align-content:start;justify-items:start;gap:11px;color:var(--ft-dim)}
+.ft-col>a{display:block}
+.ft-col a{transition:color 180ms ease}
+.ft-legal{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin-top:clamp(26px,5vh,54px);font-size:14px;color:var(--ft-dim)}
+.ft-top{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 4px;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.ft .ft-free{display:inline-flex;align-items:center;gap:9px}
+.ft-free::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#35d07f;box-shadow:0 0 0 4px rgba(53,208,127,.2)}
+.ft :is(a,button):focus-visible{outline:2px solid var(--ft-focus,#7fb0ff);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.ft-col a:hover,.ft-top:hover{color:var(--ft-fg)}}
+/* the footer opens with the other half of the light that closed the last section */
+:is(.v-tab)>.ft{background-image:radial-gradient(62vw 34vh at 50% 0%,var(--join),transparent 72%);background-repeat:no-repeat}
+
+.ft--tabla{--ft-bg:#02040a;--ft-fg:#fff;--ft-dim:#9fb0d6;overflow:hidden}
+.fb-land{position:relative;height:clamp(170px,28vh,300px);perspective:620px;perspective-origin:50% 0;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 58%);mask-image:linear-gradient(transparent,#000 58%)}
+.fb-land::before{content:"";position:absolute;left:0;right:0;top:20%;height:60%;background:radial-gradient(50% 100% at 50% 50%,rgba(30,107,255,.5),rgba(30,107,255,0) 70%)}
+.fb-floor{position:absolute;left:-12%;right:-12%;bottom:-6%;display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:clamp(3px,.5vw,8px);transform:rotateX(64deg);transform-origin:50% 100%}
+.fb-floor i{aspect-ratio:1/1.08;border-radius:clamp(3px,.5vw,8px);background:#0a1638;box-shadow:inset 0 0 0 1px rgba(118,166,255,.42)}
+.fb-floor i.off{visibility:hidden}
+.fb-floor i.ca{background:#fff;box-shadow:0 0 30px 6px rgba(118,166,255,.9)}
+.fb-floor i.se{background:#02040a;box-shadow:inset 0 0 0 3px #fff,0 0 30px 6px rgba(118,166,255,.9)}
+.fb-cols{display:grid;grid-template-columns:minmax(0,4fr) repeat(2,minmax(0,2fr)) minmax(0,4fr);gap:clamp(18px,3vw,56px)}
+.fb-me{display:grid;align-content:start;justify-items:start;gap:16px;color:#9fb0d6}
+.fb-team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.fb-t{display:grid;align-content:space-between;gap:10px;aspect-ratio:1/1.1;padding:10px;border-radius:12px;background:#fff;color:#0a1f5c}
+.fb-t .mono{font-size:11px}
+.fb-t b{font:600 clamp(26px,2.8vw,42px)/.9 var(--sym);letter-spacing:-.04em}
+.fb-t i{font-style:normal;font-size:12px;line-height:1.25}
+.fb-t+.fb-t{background:none;color:#fff;box-shadow:inset 0 0 0 3px #fff}
+.fb-t+.fb-t+.fb-t{background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.6)}
+@media (max-width:860px){
+  .fb-cols{grid-template-columns:1fr 1fr}
+  .fb-me,.fb-cols>:last-child{grid-column:1/-1}
+  .fb-land{height:150px}
+}
+</style>
+<style>
+/* ===== One continuous page. No gradient is cut at the edge of a section, and a change of colour arrives as an object or as a field of light, never as a line across the screen ===== */
+:root{--fade:linear-gradient(transparent,#000 24%,#000 76%,transparent)}
+/* 1. the glow of a pinned section dies out before its top and bottom edges */
+.rd-stick::before,.br-stick::before,.ou-stick::before,.zb-stick::before,.sm-stick::before{-webkit-mask-image:var(--fade);mask-image:var(--fade)}
+.v-tab .f2-stick::before,.pg-stick::before{-webkit-mask-image:linear-gradient(transparent,#000 45%,transparent 96%);mask-image:linear-gradient(transparent,#000 45%,transparent 96%)}
+/* 2. the light that joins two sections: half of it closes one and the other half opens the next, so together they are one glow */.v-tab{--join:rgba(30,107,255,.25)}
+:is(.v-tab)>section:not(:first-of-type){background-image:radial-gradient(62vw 34vh at 50% 100%,var(--jb,var(--join)),transparent 72%)}
+:is(.v-tab)>section:not(:first-of-type):not(:nth-of-type(2)){background-image:radial-gradient(62vw 34vh at 50% 100%,var(--jb,var(--join)),transparent 72%),radial-gradient(62vw 34vh at 50% 0%,var(--jt,var(--join)),transparent 72%)}
+</style>
+<style>
+/* ===== Sections in another colour. The change of colour is an edge between two sections and the scroll moves it:
+   the next colour is laid tile by tile, and the top row keeps the outline of the periodic table, with Ca and Se in their places ===== */
+.edge{position:relative;display:block;height:var(--eh,52vh);overflow:hidden;pointer-events:none;background:var(--ea);contain:strict}
+.edge>canvas{position:absolute;left:0;top:0;display:block;width:100%;height:100%}
+@media (max-width:860px){.edge{--eh:40vh}}
+/* where an edge takes over, the glow that joined the two sections steps aside */
+.tone,.tone-b0{--jb:transparent}.tone,.tone-t0{--jt:transparent}
+
+
+/* the process on lab paper and the closing in solid blue */
+.v-tab .pq{background-color:#f4f7ff;color:#0a1020}
+.v-tab .pq-t{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55),0 30px 50px -30px rgba(10,31,92,.6)}
+.v-tab .pq-link{background:rgba(10,31,92,.18)}
+.v-tab .pq-link::after{background:var(--blue)}
+.v-tab .zb{background-color:#1b55e8}
+.v-tab .zb-stick::before{background:radial-gradient(50% 50% at 50% 46%,rgba(160,196,255,.5),rgba(160,196,255,0) 70%)}
+.v-tab .zb-slot{border-color:rgba(255,255,255,.7)}
+.v-tab .zb-you{background:linear-gradient(#0d2a80,#071546)}
+
+</style>
+<style>
+/* ===== The menu that stays with you after the hero and marks where you are:
+   the sections are one period of the table, along the top, clear of the content ===== */
+.mn{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 320ms ease,visibility 0s linear 320ms}
+.mn.is-in{opacity:1;visibility:visible;transition:opacity 320ms ease}
+.mn a{text-decoration:none}
+.mn-list a{color:inherit}
+.mn ol{list-style:none;margin:0;padding:0}
+.mn-list,.mn-side{pointer-events:auto}
+.mn-side{position:absolute;right:max(12px,env(safe-area-inset-right));top:12px;display:flex;align-items:center;gap:8px}
+.mn-lang{display:inline-flex;align-items:center}
+.mn-lang button{min-width:40px;min-height:40px;padding:0 10px;border:0;background:none;color:inherit;font:500 13px/1 var(--font);letter-spacing:.02em;cursor:pointer;opacity:.55;transition:opacity 200ms ease,background-color 200ms ease,color 200ms ease}
+.mn-lang button[aria-pressed="true"]{opacity:1}
+.mn-cta{white-space:nowrap}
+.no-lang .mn-lang{display:none}
+.mn :focus-visible{outline:2px solid #6ea0ff;outline-offset:3px}
+
+
+.mn--tabla{color:#cfe0ff}
+.mn--tabla .mn-list{position:absolute;left:50%;top:10px;display:flex;gap:4px;transform:translateX(-50%)}
+.mn--tabla .mn-list a,.mn--tabla .mn-lang button{position:relative;display:grid;align-content:space-between;justify-items:start;width:44px;height:46px;min-width:0;min-height:0;padding:5px 6px;border:0;border-radius:8px;background:#0a1638;box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.5);color:#cfe0ff;opacity:1;text-align:left;transition:background-color 300ms ease,color 300ms ease,box-shadow 300ms ease,transform 320ms var(--ease-out)}
+.mn--tabla .mn-k{font:400 8.5px/1 var(--mono)}
+.mn-s{font:600 18px/1 var(--sym);letter-spacing:-.04em}
+.mn--tabla .mn-list a.done{background:linear-gradient(#3d8bff,#1e55e0);box-shadow:none;color:#fff}
+.mn--tabla .mn-list a.on{background:#fff;box-shadow:0 0 0 3px rgba(61,139,255,.4);color:var(--deep);transform:translateY(6px)}
+.mn--tabla .mn-t{position:absolute;left:50%;top:calc(100% + 10px);padding:6px 9px;border-radius:7px;background:#fff;color:var(--deep);font:500 12px/1 var(--font);white-space:nowrap;opacity:0;transform:translate(-50%,-6px);transition:opacity 200ms ease,transform 280ms var(--ease-out);pointer-events:none}
+.mn--tabla .mn-list a:hover .mn-t,.mn--tabla .mn-list a:focus-visible .mn-t{opacity:1;transform:translate(-50%,0)}
+.mn--tabla .mn-side{right:10px;top:10px;gap:8px}
+.mn--tabla .mn-lang{gap:4px}
+.mn--tabla .mn-lang button{font:600 18px/1 var(--sym);letter-spacing:-.04em;place-content:end start}
+.mn--tabla .mn-lang button[aria-pressed="true"]{background:#fff;box-shadow:none;color:var(--deep)}
+
+@media (max-width:860px){
+  .mn--tabla .mn-cta{display:none}
+  .mn--tabla .mn-list{left:8px;top:8px;gap:3px;transform:none}
+  .mn--tabla .mn-list a,.mn--tabla .mn-lang button{width:calc((100vw - 16px - 27px) / 10);height:36px;padding:4px;border-radius:6px}
+  .mn--tabla .mn-s,.mn--tabla .mn-lang button{font-size:13px}
+  .mn--tabla .mn-k{font-size:7px}
+  .mn--tabla .mn-list a.on{transform:translateY(5px)}
+  .mn--tabla .mn-side{right:8px;top:8px;gap:3px}
+  .mn--tabla .mn-lang{gap:3px}
+  .mn--tabla .mn-t{display:none}
+}
+@media (prefers-reduced-motion:reduce){.mn *,.mn *::before{transition:none!important}}
+</style>
+<style>
+/* the language switch inside the hero, next to the button */
+.nav__end{display:flex;align-items:center;gap:6px}
+.nav__lang{display:flex;color:var(--ink)}
+.nav--dark .nav__lang{color:#fff}
+.nav__lang button{min-width:40px;min-height:44px;padding:0 8px;border:0;background:none;color:inherit;font:500 13px/1 var(--font);letter-spacing:.02em;cursor:pointer;opacity:.5;transition:opacity 200ms ease}
+.nav__lang button[aria-pressed="true"]{opacity:1}
+@media (max-width:420px){.nav__lang button{min-width:32px;padding:0 5px}.nav .btn--sm{padding:0 14px}}
+</style>
+</head>
+
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" fill="currentColor"><symbol id="logo-cut" viewBox="0 0 959.36 250.00"><g transform="scale(2.50000)"><path fill-rule="evenodd" d="M9 0H91A9 9 0 0 1 100 9V91A9 9 0 0 1 91 100H9A9 9 0 0 1 0 91V9A9 9 0 0 1 9 0Z M35.09 83.69Q29.09 83.69 24.74 81.09Q20.4 78.49 18.09 73.83Q15.77 69.17 15.77 63.06Q15.77 56.89 18.09 52.23Q20.4 47.57 24.74 44.94Q29.09 42.31 35.09 42.31Q42.23 42.31 46.77 45.83Q51.31 49.34 52.46 55.74H44.91Q44.17 52.31 41.66 50.4Q39.14 48.49 35.03 48.49Q31.2 48.49 28.46 50.23Q25.71 51.97 24.23 55.26Q22.74 58.54 22.74 63.06Q22.74 67.57 24.23 70.8Q25.71 74.03 28.46 75.8Q31.2 77.57 35.03 77.57Q39.14 77.57 41.63 75.71Q44.11 73.86 44.91 70.49H52.51Q51.31 76.71 46.77 80.2Q42.23 83.69 35.09 83.69Z M64 83.69Q60.74 83.69 58.46 82.51Q56.17 81.34 54.97 79.4Q53.77 77.46 53.77 75.17Q53.77 70.71 57 68.26Q60.23 65.8 65.49 65.8Q67.89 65.8 69.74 66.17Q71.6 66.54 72.74 66.89V65.57Q72.74 62.43 71 60.94Q69.26 59.46 66.46 59.46Q64.4 59.46 62.8 60.29Q61.2 61.11 60.74 63.29H54.23Q54.57 60.2 56.29 58.14Q58 56.09 60.66 55.03Q63.31 53.97 66.46 53.97Q72.69 53.97 76.14 57.03Q79.6 60.09 79.6 65.57V72.49Q79.6 74.66 79.86 75.66Q80.11 76.66 80.71 76.91Q81.31 77.17 82.29 77.17H82.57V83H81.03Q78.11 83 76.14 82.17Q74.17 81.34 73.37 78.89Q71.94 80.94 69.6 82.31Q67.26 83.69 64 83.69ZM65.49 78.37Q67.49 78.37 68.91 77.43Q70.34 76.49 71.23 74.91Q72.11 73.34 72.4 71.46Q71.2 71.11 69.54 70.77Q67.89 70.43 66.17 70.43Q63.6 70.43 62.14 71.57Q60.69 72.71 60.69 74.66Q60.69 76.26 61.97 77.31Q63.26 78.37 65.49 78.37Z M16.08 27V26.33Q16.08 25.11 16.43 24.33Q16.78 23.54 17.44 23.04Q18.09 22.53 19.02 22.13L19.58 21.88Q20.49 21.46 21 21.04Q21.51 20.63 21.51 19.93Q21.51 19.51 21.32 19.15Q21.13 18.78 20.73 18.56Q20.33 18.33 19.68 18.33Q19.03 18.33 18.59 18.59Q18.15 18.85 17.93 19.27Q17.7 19.69 17.7 20.21H16.22Q16.23 19.17 16.7 18.47Q17.17 17.76 17.96 17.4Q18.75 17.03 19.73 17.03Q20.73 17.03 21.46 17.38Q22.2 17.72 22.6 18.35Q23.01 18.98 23.01 19.85Q23.01 20.85 22.37 21.62Q21.73 22.38 20.45 22.98L19.48 23.44Q18.75 23.77 18.36 24.13Q17.97 24.49 17.82 24.89Q17.67 25.28 17.67 25.74H23.15V27Z M28.65 27.17Q27.39 27.17 26.51 26.55Q25.63 25.92 25.16 24.78Q24.7 23.64 24.7 22.1Q24.7 20.56 25.16 19.42Q25.63 18.28 26.51 17.66Q27.39 17.03 28.65 17.03Q29.92 17.03 30.8 17.66Q31.67 18.28 32.14 19.42Q32.6 20.56 32.6 22.1Q32.6 23.64 32.14 24.78Q31.67 25.92 30.8 26.55Q29.92 27.17 28.65 27.17ZM28.65 25.8Q29.9 25.8 30.48 24.84Q31.06 23.89 31.06 22.1Q31.06 20.32 30.48 19.37Q29.9 18.42 28.65 18.42Q27.42 18.42 26.83 19.37Q26.24 20.32 26.24 22.1Q26.24 23.89 26.83 24.84Q27.42 25.8 28.65 25.8Z"></path><path d="M117 0H199A9 9 0 0 1 208 9V91A9 9 0 0 1 199 100H117A9 9 0 0 1 108 91V9A9 9 0 0 1 117 0ZM117 7A2 2 0 0 0 115 9V91A2 2 0 0 0 117 93H199A2 2 0 0 0 201 91V9A2 2 0 0 0 199 7Z"></path><path d="M139.66 83.69Q136.8 83.69 134.06 82.91Q131.31 82.14 129.06 80.49Q126.8 78.83 125.34 76.2Q123.89 73.57 123.54 69.91H129.94Q130.4 72.89 131.89 74.6Q133.37 76.31 135.46 77.06Q137.54 77.8 139.77 77.8Q142.06 77.8 143.89 77.09Q145.71 76.37 146.8 75Q147.89 73.63 147.89 71.69Q147.89 69.8 146.83 68.34Q145.77 66.89 142.51 66.31L135.43 65Q130.69 64.09 127.91 61.11Q125.14 58.14 125.14 54.09Q125.14 50.37 127.06 47.74Q128.97 45.11 132.14 43.71Q135.31 42.31 139.14 42.31Q143.14 42.31 146.29 43.69Q149.43 45.06 151.43 47.83Q153.43 50.6 153.83 54.94H147.31Q146.91 52.37 145.74 50.89Q144.57 49.4 142.89 48.77Q141.2 48.14 139.26 48.14Q137.49 48.14 135.69 48.71Q133.89 49.29 132.74 50.54Q131.6 51.8 131.6 53.91Q131.6 55.8 132.97 57.17Q134.34 58.54 137.2 59.06L143.77 60.31Q148.8 61.23 151.6 63.91Q154.4 66.6 154.4 71.51Q154.4 74.49 153.14 76.77Q151.89 79.06 149.74 80.57Q147.6 82.09 145 82.89Q142.4 83.69 139.66 83.69Z M170.69 83.69Q166.4 83.69 163.11 81.83Q159.83 79.97 157.97 76.66Q156.11 73.34 156.11 69Q156.11 64.6 157.94 61.2Q159.77 57.8 163.09 55.89Q166.4 53.97 170.74 53.97Q174.91 53.97 178.09 55.8Q181.26 57.63 183 60.74Q184.74 63.86 184.74 67.74V69Q184.74 69.69 184.63 70.49H162.86Q163.03 72.6 163.94 74.2Q164.97 76.09 166.74 77.06Q168.51 78.03 170.69 78.03Q173.03 78.03 174.63 76.97Q176.23 75.91 176.97 74.14H183.94Q183.2 76.89 181.34 79.03Q179.49 81.17 176.8 82.43Q174.11 83.69 170.69 83.69ZM163.03 66.03H177.83Q177.66 63.06 175.66 61.31Q173.66 59.57 170.74 59.57Q168.63 59.57 166.83 60.51Q165.03 61.46 163.94 63.29Q163.26 64.49 163.03 66.03Z"></path><path d="M127.56 27.17Q126.47 27.17 125.6 26.82Q124.74 26.47 124.22 25.77Q123.71 25.08 123.67 24.02H125.21Q125.21 24.52 125.48 24.94Q125.74 25.36 126.28 25.61Q126.81 25.87 127.56 25.87Q128.6 25.87 129.13 25.37Q129.66 24.87 129.66 24.16Q129.66 23.56 129.34 23.18Q129.02 22.8 128.46 22.61Q127.9 22.42 127.2 22.42H126.29V21.13H127.2Q128.15 21.13 128.75 20.76Q129.34 20.39 129.34 19.69Q129.34 19.08 128.87 18.71Q128.4 18.35 127.55 18.35Q126.61 18.35 126.1 18.78Q125.59 19.22 125.53 19.87H123.99Q124.04 19.01 124.48 18.37Q124.92 17.73 125.71 17.38Q126.5 17.03 127.55 17.03Q128.63 17.03 129.37 17.38Q130.11 17.72 130.48 18.3Q130.85 18.88 130.85 19.58Q130.85 20.36 130.38 20.95Q129.92 21.54 129.12 21.75Q130.03 21.9 130.62 22.55Q131.2 23.19 131.2 24.2Q131.2 25 130.79 25.68Q130.38 26.36 129.57 26.76Q128.75 27.17 127.56 27.17Z M137.53 27V25.07H132.52V23.85L137.32 17.2H138.96V23.72H140.33V25.07H138.96V27ZM137.59 23.72V18.88L134.17 23.72Z"></path><path d="M242.66 83.69Q239.74 83.69 237 82.91Q234.26 82.14 232.03 80.49Q229.8 78.83 228.37 76.26Q226.94 73.69 226.66 70.14H232.6Q233 73.11 234.49 74.91Q235.97 76.71 238.14 77.49Q240.31 78.26 242.71 78.26Q245.11 78.26 247.06 77.54Q249 76.83 250.14 75.37Q251.29 73.91 251.29 71.74Q251.29 69.74 250.17 68.2Q249.06 66.66 245.74 66.09L238.31 64.71Q233.74 63.86 231 60.94Q228.26 58.03 228.26 54.03Q228.26 50.31 230.17 47.71Q232.09 45.11 235.26 43.71Q238.43 42.31 242.2 42.31Q246.14 42.31 249.26 43.69Q252.37 45.06 254.34 47.77Q256.31 50.49 256.71 54.71H250.66Q250.31 52.14 249.11 50.6Q247.91 49.06 246.14 48.37Q244.37 47.69 242.26 47.69Q240.31 47.69 238.43 48.31Q236.54 48.94 235.37 50.29Q234.2 51.63 234.2 53.8Q234.2 55.8 235.69 57.26Q237.17 58.71 240.03 59.23L246.94 60.54Q251.91 61.46 254.63 64.14Q257.34 66.83 257.34 71.57Q257.34 74.6 256.09 76.86Q254.83 79.11 252.71 80.63Q250.6 82.14 248 82.91Q245.4 83.69 242.66 83.69Z M271.29 83Q268.66 83 266.83 82.37Q265 81.74 264.09 79.97Q263.17 78.2 263.17 74.83V59.97H258.31V54.66H263.17V47.4H269.46V54.66H277.06V59.97H269.46V73.97Q269.46 75.63 269.77 76.4Q270.09 77.17 270.91 77.4Q271.74 77.63 273.34 77.63H276.77V83Z M289.86 83.69Q285.11 83.69 282.26 80.46Q279.4 77.23 279.4 70.89V54.66H285.69V70.26Q285.69 74.26 287.26 76.29Q288.83 78.31 291.69 78.31Q295 78.31 296.89 75.97Q298.77 73.63 298.77 69.29V54.66H305.06V83H298.77V78.6Q297.51 81 295.26 82.34Q293 83.69 289.86 83.69Z M322.09 83.69Q318.03 83.69 314.86 81.74Q311.69 79.8 309.89 76.4Q308.09 73 308.09 68.77Q308.09 64.49 309.89 61.14Q311.69 57.8 314.86 55.89Q318.03 53.97 322.14 53.97Q325.46 53.97 327.97 55.29Q330.49 56.6 331.91 58.89V41.86H338.2V83H331.91V78.66Q330.6 80.6 328.2 82.14Q325.8 83.69 322.09 83.69ZM323.23 78.2Q325.8 78.2 327.77 77Q329.74 75.8 330.86 73.69Q331.97 71.57 331.97 68.83Q331.97 66.03 330.86 63.91Q329.74 61.8 327.77 60.63Q325.8 59.46 323.23 59.46Q320.71 59.46 318.74 60.63Q316.77 61.8 315.63 63.91Q314.49 66.03 314.49 68.77Q314.49 71.57 315.63 73.69Q316.77 75.8 318.74 77Q320.71 78.2 323.23 78.2Z M342.77 83V54.66H349.06V83ZM342.6 49.63V42.83H349.29V49.63Z M367.29 83.69Q363.06 83.69 359.69 81.83Q356.31 79.97 354.34 76.6Q352.37 73.23 352.37 68.83Q352.37 64.37 354.34 61.03Q356.31 57.69 359.71 55.83Q363.11 53.97 367.29 53.97Q371.57 53.97 374.91 55.83Q378.26 57.69 380.23 61.03Q382.2 64.37 382.2 68.83Q382.2 73.23 380.23 76.6Q378.26 79.97 374.89 81.83Q371.51 83.69 367.29 83.69ZM367.23 78.26Q369.57 78.26 371.49 77.2Q373.4 76.14 374.54 74.06Q375.69 71.97 375.69 68.83Q375.69 65.69 374.54 63.6Q373.4 61.51 371.49 60.46Q369.57 59.4 367.34 59.4Q365.06 59.4 363.11 60.46Q361.17 61.51 360.03 63.6Q358.89 65.69 358.89 68.83Q358.89 71.97 360.03 74.06Q361.17 76.14 363.09 77.2Q365 78.26 367.23 78.26Z"></path></g></symbol><symbol id="mark-cut" viewBox="0 0 208.00 100.00"><path fill-rule="evenodd" d="M9 0H91A9 9 0 0 1 100 9V91A9 9 0 0 1 91 100H9A9 9 0 0 1 0 91V9A9 9 0 0 1 9 0Z M35.09 83.69Q29.09 83.69 24.74 81.09Q20.4 78.49 18.09 73.83Q15.77 69.17 15.77 63.06Q15.77 56.89 18.09 52.23Q20.4 47.57 24.74 44.94Q29.09 42.31 35.09 42.31Q42.23 42.31 46.77 45.83Q51.31 49.34 52.46 55.74H44.91Q44.17 52.31 41.66 50.4Q39.14 48.49 35.03 48.49Q31.2 48.49 28.46 50.23Q25.71 51.97 24.23 55.26Q22.74 58.54 22.74 63.06Q22.74 67.57 24.23 70.8Q25.71 74.03 28.46 75.8Q31.2 77.57 35.03 77.57Q39.14 77.57 41.63 75.71Q44.11 73.86 44.91 70.49H52.51Q51.31 76.71 46.77 80.2Q42.23 83.69 35.09 83.69Z M64 83.69Q60.74 83.69 58.46 82.51Q56.17 81.34 54.97 79.4Q53.77 77.46 53.77 75.17Q53.77 70.71 57 68.26Q60.23 65.8 65.49 65.8Q67.89 65.8 69.74 66.17Q71.6 66.54 72.74 66.89V65.57Q72.74 62.43 71 60.94Q69.26 59.46 66.46 59.46Q64.4 59.46 62.8 60.29Q61.2 61.11 60.74 63.29H54.23Q54.57 60.2 56.29 58.14Q58 56.09 60.66 55.03Q63.31 53.97 66.46 53.97Q72.69 53.97 76.14 57.03Q79.6 60.09 79.6 65.57V72.49Q79.6 74.66 79.86 75.66Q80.11 76.66 80.71 76.91Q81.31 77.17 82.29 77.17H82.57V83H81.03Q78.11 83 76.14 82.17Q74.17 81.34 73.37 78.89Q71.94 80.94 69.6 82.31Q67.26 83.69 64 83.69ZM65.49 78.37Q67.49 78.37 68.91 77.43Q70.34 76.49 71.23 74.91Q72.11 73.34 72.4 71.46Q71.2 71.11 69.54 70.77Q67.89 70.43 66.17 70.43Q63.6 70.43 62.14 71.57Q60.69 72.71 60.69 74.66Q60.69 76.26 61.97 77.31Q63.26 78.37 65.49 78.37Z M16.08 27V26.33Q16.08 25.11 16.43 24.33Q16.78 23.54 17.44 23.04Q18.09 22.53 19.02 22.13L19.58 21.88Q20.49 21.46 21 21.04Q21.51 20.63 21.51 19.93Q21.51 19.51 21.32 19.15Q21.13 18.78 20.73 18.56Q20.33 18.33 19.68 18.33Q19.03 18.33 18.59 18.59Q18.15 18.85 17.93 19.27Q17.7 19.69 17.7 20.21H16.22Q16.23 19.17 16.7 18.47Q17.17 17.76 17.96 17.4Q18.75 17.03 19.73 17.03Q20.73 17.03 21.46 17.38Q22.2 17.72 22.6 18.35Q23.01 18.98 23.01 19.85Q23.01 20.85 22.37 21.62Q21.73 22.38 20.45 22.98L19.48 23.44Q18.75 23.77 18.36 24.13Q17.97 24.49 17.82 24.89Q17.67 25.28 17.67 25.74H23.15V27Z M28.65 27.17Q27.39 27.17 26.51 26.55Q25.63 25.92 25.16 24.78Q24.7 23.64 24.7 22.1Q24.7 20.56 25.16 19.42Q25.63 18.28 26.51 17.66Q27.39 17.03 28.65 17.03Q29.92 17.03 30.8 17.66Q31.67 18.28 32.14 19.42Q32.6 20.56 32.6 22.1Q32.6 23.64 32.14 24.78Q31.67 25.92 30.8 26.55Q29.92 27.17 28.65 27.17ZM28.65 25.8Q29.9 25.8 30.48 24.84Q31.06 23.89 31.06 22.1Q31.06 20.32 30.48 19.37Q29.9 18.42 28.65 18.42Q27.42 18.42 26.83 19.37Q26.24 20.32 26.24 22.1Q26.24 23.89 26.83 24.84Q27.42 25.8 28.65 25.8Z"></path><path d="M117 0H199A9 9 0 0 1 208 9V91A9 9 0 0 1 199 100H117A9 9 0 0 1 108 91V9A9 9 0 0 1 117 0ZM117 7A2 2 0 0 0 115 9V91A2 2 0 0 0 117 93H199A2 2 0 0 0 201 91V9A2 2 0 0 0 199 7Z"></path><path d="M139.66 83.69Q136.8 83.69 134.06 82.91Q131.31 82.14 129.06 80.49Q126.8 78.83 125.34 76.2Q123.89 73.57 123.54 69.91H129.94Q130.4 72.89 131.89 74.6Q133.37 76.31 135.46 77.06Q137.54 77.8 139.77 77.8Q142.06 77.8 143.89 77.09Q145.71 76.37 146.8 75Q147.89 73.63 147.89 71.69Q147.89 69.8 146.83 68.34Q145.77 66.89 142.51 66.31L135.43 65Q130.69 64.09 127.91 61.11Q125.14 58.14 125.14 54.09Q125.14 50.37 127.06 47.74Q128.97 45.11 132.14 43.71Q135.31 42.31 139.14 42.31Q143.14 42.31 146.29 43.69Q149.43 45.06 151.43 47.83Q153.43 50.6 153.83 54.94H147.31Q146.91 52.37 145.74 50.89Q144.57 49.4 142.89 48.77Q141.2 48.14 139.26 48.14Q137.49 48.14 135.69 48.71Q133.89 49.29 132.74 50.54Q131.6 51.8 131.6 53.91Q131.6 55.8 132.97 57.17Q134.34 58.54 137.2 59.06L143.77 60.31Q148.8 61.23 151.6 63.91Q154.4 66.6 154.4 71.51Q154.4 74.49 153.14 76.77Q151.89 79.06 149.74 80.57Q147.6 82.09 145 82.89Q142.4 83.69 139.66 83.69Z M170.69 83.69Q166.4 83.69 163.11 81.83Q159.83 79.97 157.97 76.66Q156.11 73.34 156.11 69Q156.11 64.6 157.94 61.2Q159.77 57.8 163.09 55.89Q166.4 53.97 170.74 53.97Q174.91 53.97 178.09 55.8Q181.26 57.63 183 60.74Q184.74 63.86 184.74 67.74V69Q184.74 69.69 184.63 70.49H162.86Q163.03 72.6 163.94 74.2Q164.97 76.09 166.74 77.06Q168.51 78.03 170.69 78.03Q173.03 78.03 174.63 76.97Q176.23 75.91 176.97 74.14H183.94Q183.2 76.89 181.34 79.03Q179.49 81.17 176.8 82.43Q174.11 83.69 170.69 83.69ZM163.03 66.03H177.83Q177.66 63.06 175.66 61.31Q173.66 59.57 170.74 59.57Q168.63 59.57 166.83 60.51Q165.03 61.46 163.94 63.29Q163.26 64.49 163.03 66.03Z"></path><path d="M127.56 27.17Q126.47 27.17 125.6 26.82Q124.74 26.47 124.22 25.77Q123.71 25.08 123.67 24.02H125.21Q125.21 24.52 125.48 24.94Q125.74 25.36 126.28 25.61Q126.81 25.87 127.56 25.87Q128.6 25.87 129.13 25.37Q129.66 24.87 129.66 24.16Q129.66 23.56 129.34 23.18Q129.02 22.8 128.46 22.61Q127.9 22.42 127.2 22.42H126.29V21.13H127.2Q128.15 21.13 128.75 20.76Q129.34 20.39 129.34 19.69Q129.34 19.08 128.87 18.71Q128.4 18.35 127.55 18.35Q126.61 18.35 126.1 18.78Q125.59 19.22 125.53 19.87H123.99Q124.04 19.01 124.48 18.37Q124.92 17.73 125.71 17.38Q126.5 17.03 127.55 17.03Q128.63 17.03 129.37 17.38Q130.11 17.72 130.48 18.3Q130.85 18.88 130.85 19.58Q130.85 20.36 130.38 20.95Q129.92 21.54 129.12 21.75Q130.03 21.9 130.62 22.55Q131.2 23.19 131.2 24.2Q131.2 25 130.79 25.68Q130.38 26.36 129.57 26.76Q128.75 27.17 127.56 27.17Z M137.53 27V25.07H132.52V23.85L137.32 17.2H138.96V23.72H140.33V25.07H138.96V27ZM137.59 23.72V18.88L134.17 23.72Z"></path></symbol></svg>
+
+<script>
+/* runs a looping animation only while it is on screen, the tab is visible and nobody pressed pause */
+function onVisible(el, cb) {
+  const io = new IntersectionObserver(([e]) => cb(e.isIntersecting), { threshold: 0 });
+  io.observe(el);
+  return () => io.disconnect();
+}
+function runner(btn, area, play, stop) {
+  let user = false, vis = true, on = false;
+  const sync = () => {
+    const want = !RM && !user && vis && !document.hidden;
+    if (want !== on) { on = want; want ? play() : stop(); }
+  };
+  const toggle = () => {
+    user = !user;
+    if (btn) {
+      btn.dataset.paused = user ? '1' : '';
+      btn.setAttribute('aria-label', user ? 'Reanudar animación' : 'Pausar animación');
+    }
+    sync();
+  };
+  if (btn) btn.addEventListener('click', toggle);
+  const unobs = onVisible(area, (v) => { vis = v; sync(); });
+  document.addEventListener('visibilitychange', sync);
+  sync();
+  return {
+    pause() { if (!user) toggle(); },
+    cleanup() {
+      if (btn) btn.removeEventListener('click', toggle);
+      unobs();
+      document.removeEventListener('visibilitychange', sync);
+      if (on) { on = false; stop(); }
+    }
+  };
+}
+/* jump to a point inside a scroll moment (used by "link to scroll" lists) */
+/* service buttons that pre-fill the contact message */
+
+
+/* WebGL: one full-screen triangle and a fragment shader */
+
+
+/* time loop + scroll progress + pause, shared by every hero */
+function drive({ area, btn, sec, frame, scroll, onPlay, onStop }) {
+  let t = 0, p = 0, raf = 0, last = 0, playing = false, q = 0;
+  const paint = () => { q = 0; frame(t, p); };
+  const queue = () => { if (!q && !playing) q = requestAnimationFrame(paint); };
+  const tick = (now) => { t += Math.min(50, now - last) / 1000; last = now; frame(t, p); raf = requestAnimationFrame(tick); };
+  const r = runner(btn, area,
+    () => { playing = true; cancelAnimationFrame(q); q = 0; last = performance.now(); raf = requestAnimationFrame(tick); if (onPlay) onPlay(); },
+    () => { playing = false; cancelAnimationFrame(raf); queue(); if (onStop) onStop(); });
+  /* with reduced motion the hero stays at rest: headline on screen, one still frame */
+  const stop = RM ? (scroll && scroll(0), () => {}) : moment(sec, (v) => { p = v; if (scroll) scroll(v); queue(); });
+  if (RM) { t = 4; queue(); }
+  return { cleanup() { r.cleanup(); stop(); cancelAnimationFrame(raf); cancelAnimationFrame(q); }, kick: queue };
+}
+/* the headline leaves, the statement arrives */
+function copyOut(copy, say, p, sa = .5, sb = .74) {
+  const o = easeIO(range(p, .05, .4));
+  copy.style.opacity = (1 - o).toFixed(3);
+  copy.style.transform = `translate3d(0,${(-o * 56).toFixed(1)}px,0)`;
+  copy.style.visibility = o >= 1 ? 'hidden' : '';
+  if (say) {
+    const s = easeOut(range(p, sa, sb));
+    say.style.opacity = s.toFixed(3);
+    say.style.transform = `translate(-50%,calc(-50% + ${((1 - s) * 26).toFixed(1)}px))`;
+  }
+}
+/* sections after the hero register here; order decides where each one goes */
+window.PAGES = {};
+function addSection(id, tpl, order, init) { (PAGES[id] = PAGES[id] || []).push({ tpl, order, init }); }
+/* the nav sits on dark or on light depending on what is behind it */
+
+/* the two logo tiles as sprites, drawn from the logo's own outlines (100 units a side) */
+function markSprites() {
+  const P = [...document.querySelectorAll('#mark-cut path')].map((p) => new Path2D(p.getAttribute('d')));
+  const K = 3;
+  const mk = (draw) => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 100 * K;
+    const g = c.getContext('2d');
+    g.scale(K, K);
+    draw(g);
+    return c;
+  };
+  return {
+    ca: mk((g) => {
+      const gr = g.createLinearGradient(0, 0, 100, 100);
+      gr.addColorStop(0, '#ffffff'); gr.addColorStop(1, '#c4d8ff');
+      g.fillStyle = gr; g.fill(P[0], 'evenodd');
+    }),
+    se: mk((g) => {
+      g.translate(-108, 0);
+      g.fillStyle = 'rgba(8,22,70,.8)'; g.beginPath(); g.roundRect(112, 4, 92, 92, 5); g.fill();
+      g.fillStyle = '#c2d6ff'; g.fill(P[1]); g.fill(P[2]); g.fill(P[3]);
+    })
+  };
+}
+/* smoothed pointer in 0..1 over an element */
+function pointer(el, ease = .08) {
+  const m = { x: .5, y: .5, tx: .5, ty: .5, in: 0, tin: 0 };
+  const mv = (e) => { const r = el.getBoundingClientRect(); m.tx = (e.clientX - r.left) / r.width; m.ty = (e.clientY - r.top) / r.height; m.tin = 1; };
+  const lv = () => { m.tin = 0; };
+  if (FINE && !RM) { el.addEventListener('pointermove', mv); el.addEventListener('pointerleave', lv); }
+  m.step = () => { m.x += (m.tx - m.x) * ease; m.y += (m.ty - m.y) * ease; m.in += (m.tin - m.in) * ease; };
+  m.off = () => { el.removeEventListener('pointermove', mv); el.removeEventListener('pointerleave', lv); };
+  return m;
+}
+</script>
+
+<template id="tpl-tabla">
+<div class="v v-tab" id="top">
+  <section class="hx" aria-labelledby="b-h1" style="--hh:250vh">
+    <div class="hx__stick">
+      <canvas class="hx__vis vis-in" aria-hidden="true"></canvas>
+      <header class="nav nav--dark"><a class="nav__home" href="#top" aria-label="CaSe Studio, inicio"><svg class="logo logo--dark" aria-hidden="true"><use href="#logo-cut"></use></svg></a><nav class="nav__links" aria-label="Principal"><a href="#servicios">Servicios</a><a href="#proyectos">Proyectos</a><a href="#redes">Redes</a><a href="#contacto">Contacto</a></nav><div class="nav__end"><div class="nav__lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true" aria-label="Español">ES</button><button type="button" data-lang="en" aria-pressed="false" aria-label="English">EN</button></div><a class="btn btn--sm btn--white" href="#contacto">Empezar mi proyecto</a></div></header>
+      <div class="hx__copy b-copy">
+        <h1 class="display b-h1" id="b-h1">
+          <span class="ln"><span style="--i:0">Todos los elementos</span></span>
+          <span class="ln"><span style="--i:1">de tu marca en internet.</span></span>
+        </h1>
+        <p class="lead up" style="--i:0">Sitio web, tienda, redes y marca, hechos por el mismo equipo.</p>
+        <div class="acts up" style="--i:1"><a class="btn btn--white" href="#contacto">Empezar mi proyecto <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="btn btn--ghost-dark" href="#proyectos">Ver proyectos</a></div>
+      </div>
+      <p class="hx__say h2">Juntamos lo que tu marca necesita en un solo equipo.</p>
+      <button class="pause hx__pause pause--dark" type="button" aria-label="Pausar animación"><svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" fill="currentColor"/><rect x="9.4" y="3" width="2.6" height="10" rx="1" fill="currentColor"/></svg><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg></button>
+    </div>
+  </section>
+</div>
+</template>
+
+<script>
+VARIANTS.push({
+  id: 'tabla', name: 'Tabla', tpl: 'tpl-tabla',
+  init(root) {
+    const sec = root.querySelector('.hx'), stick = sec.querySelector('.hx__stick'), cv = stick.querySelector('canvas'), ctx = cv.getContext('2d');
+    const copy = stick.querySelector('.hx__copy'), say = stick.querySelector('.hx__say');
+    const SPR = markSprites();
+    /* the symbols use the same face as the rest of the elements on the page (read again on resize: the type bar changes it) */
+    const symFace = () => getComputedStyle(document.documentElement).getPropertyValue('--sym').trim() || 'sans-serif';
+    let SYMF = symFace();
+    const gap = (a, n, b) => [...a, ...Array(n).fill(''), ...b];
+    const MAIN = [
+      gap(['H'], 16, ['He']),
+      gap(['Li', 'Be'], 10, ['B', 'C', 'N', 'O', 'F', 'Ne']),
+      gap(['Na', 'Mg'], 10, ['Al', 'Si', 'P', 'S', 'Cl', 'Ar']),
+      'K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr'.split(' '),
+      'Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe'.split(' '),
+      'Cs Ba La Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn'.split(' '),
+      'Fr Ra Ac Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og'.split(' ')
+    ];
+    const FBLOCK = ['Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu'.split(' '), 'Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr'.split(' ')];
+    const G = 1.08, R0 = 3.6;
+    /* each block of the table gets its own blue: no violet, the f block is a cooler steel blue */
+    const TINT = { s: '118,166,255', d: '88,136,255', p: '120,196,255', f: '150,182,236' };
+    const cells = [];
+    let z = 0;
+    MAIN.forEach((row, r) => row.forEach((s, c) => {
+      if (!s) return;
+      z++; if (s === 'Hf') z = 72; if (s === 'Rf') z = 104;
+      cells.push({ s, z, c, r, x: (c - 8.5) * G, v: (r - R0) * G, tint: TINT[c < 2 ? 's' : c < 12 ? 'd' : 'p'] });
+    }));
+    FBLOCK.forEach((row, k) => row.forEach((s, i) => cells.push({ s, z: (k ? 90 : 58) + i, c: i + 3, r: 7 + k, x: (i + 3 - 8.5) * G, v: (7 + k - R0 + .45) * G, tint: TINT.f })));
+    const CA = cells.find((q) => q.s === 'Ca'), SE = cells.find((q) => q.s === 'Se');
+    cells.forEach((q) => { q.dC = Math.hypot(q.x, q.v - CA.v); });
+    /* nearest first is drawn last */
+    cells.sort((a, b) => a.v - b.v);
+
+    /* at rest an element lights up here and there. Which one and when comes from a hash of the time slot, so it reads as
+       chance but the same moment always draws the same (a paused frame stays put). A flash rises fast and fades slowly,
+       spills a little light on the squares around it, and there are never more than three at once */
+    const POOL = cells.filter((q) => q !== CA && q !== SE);
+    const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+    const STEP = 1.05, LIFE = 3.1, flashes = [];
+    const lightUp = (t) => {
+      flashes.length = 0;
+      if (t < 1.6) return;                      /* first the table is laid */
+      const k1 = Math.floor(t / STEP);
+      for (let k = Math.max(0, k1 - 3); k <= k1; k++) {
+        if (hash(k * 3.17) < .2) continue;       /* now and then a slot stays dark, so the rhythm is not a metronome */
+        const age = t - k * STEP - hash(k + .5) * STEP * .7;
+        if (age < 0 || age > LIFE) continue;
+        const q = POOL[Math.floor(hash(k) * POOL.length)];
+        const env = (age < .5 ? easeOut(age / .5) : Math.exp(-(age - .5) * 1.5)) * (.75 + .25 * hash(k + .9));
+        flashes.push({ q, env });
+      }
+    };
+    const idle = (q) => {
+      let v = 0;
+      for (const f of flashes) {
+        if (f.q === q) { v = Math.max(v, f.env); continue; }
+        const d2 = (q.x - f.q.x) ** 2 + (q.v - f.q.v) ** 2;
+        if (d2 < 2.6) v = Math.max(v, f.env * .32 * Math.exp(-d2 / .9));
+      }
+      return v;
+    };
+
+    const D = 13;
+    let W = 1, H = 1, DPR = 1, U0 = 60, CY0 = .66;
+    const size = () => {
+      SYMF = symFace();
+      W = cv.clientWidth; H = cv.clientHeight; DPR = Math.min(2, devicePixelRatio || 1);
+      cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+      /* the whole table at rest: under the copy, as large as the width or the free height allows, and in the middle of what is free */
+      const th = W < 700 ? .74 : .9, c = Math.cos(th), s = Math.sin(th), sc = (v) => D / (D - v * s);
+      const far = 2.8 * c * sc(-2.8), near = 5.75 * c * sc(5.75);        /* from the centre of the floor up to period 2 and down to the last row, in tiles */
+      const cb = copy.offsetTop + copy.offsetHeight, gp = Math.min(44, Math.max(22, H * .045));
+      U0 = Math.max(19, Math.min(W / 20.6, (H * 1.02 - cb - gp) / (far + near)));
+      CY0 = (cb + Math.max(gp, (H - cb - (far + near) * U0) * .5) + far * U0) / H;
+    };
+    size();
+    const m = pointer(stick, .12);
+    let cosT = 1, sinT = 0, U = 60, cx = 0, cy = 0;
+    /* a point on the tilted floor (x across, v toward the viewer, h above it) and the affine frame of a tile there, in 1/100 tile units */
+    const at = (x, v, h, o) => {
+      const py = v * cosT - h * sinT, s = D / (D - v * sinT - h * cosT);
+      o.e = cx + x * s * U; o.f = cy + py * s * U; o.s = s;
+      o.a = s * U / 100;
+      o.c = x * U * s * s * sinT / D / 100; o.d = U * (cosT * s + py * s * s * sinT / D) / 100;
+      return o;
+    };
+    const O = {}, A = {}, B = {};
+    /* a soft light, eased so its edge never shows a ring */
+    const glow = (x, y, rx, ry, rgb, a) => {
+      if (a <= .004) return;
+      ctx.save(); ctx.translate(x, y); ctx.scale(1, ry / rx);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+      g.addColorStop(0, `rgba(${rgb},${a})`); g.addColorStop(.25, `rgba(${rgb},${(a * .72).toFixed(3)})`);
+      g.addColorStop(.55, `rgba(${rgb},${(a * .28).toFixed(3)})`); g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g; ctx.fillRect(-rx, -rx, rx * 2, rx * 2); ctx.restore();
+    };
+    /* the tile's own light, built once in tile units and reused by every tile through its transform:
+       a sheen that falls from the top edge, a core that lights it from within, and an edge brighter on top than below */
+    const SHEEN = ctx.createLinearGradient(0, -46, 0, 46);
+    SHEEN.addColorStop(0, 'rgba(160,196,255,.13)'); SHEEN.addColorStop(.38, 'rgba(160,196,255,.03)'); SHEEN.addColorStop(1, 'rgba(0,4,16,.22)');
+    const CORE = ctx.createRadialGradient(0, 10, 0, 0, 10, 66);
+    CORE.addColorStop(0, 'rgba(130,186,255,.85)'); CORE.addColorStop(.45, 'rgba(48,118,255,.5)'); CORE.addColorStop(1, 'rgba(30,85,224,0)');
+    const EDGE = {};
+    Object.values(TINT).forEach((rgb) => {
+      const g = ctx.createLinearGradient(0, -46, 0, 46);
+      g.addColorStop(0, `rgba(${rgb},1)`); g.addColorStop(1, `rgba(${rgb},.38)`);
+      EDGE[rgb] = g;
+    });
+    /* the entrance: the table is laid tile by tile, in the order of the atomic numbers */
+    const born = (z, t) => (RM ? 1 : easeOut(clamp01((t - .2 - z / 118 * .95) / .6)));
+    const halos = [];
+    const frame = (t, p) => {
+      m.step();
+      lightUp(t);
+      const cam = easeIO(range(p, .03, .5)), K = easeIO(range(p, .26, .7));
+      const narrow = W < 700;
+      /* a high camera at rest shows the outline of the table; on a phone it is the only way to recognise it */
+      const TH = lerp(narrow ? .74 : .9, .6, cam);
+      cosT = Math.cos(TH); sinT = Math.sin(TH); U = U0 * lerp(1, .82, cam); cx = W / 2; cy = H * lerp(CY0, .56, cam);
+      const mx = m.x * W, my = m.y * H, sig = 2 * (1.9 * U) ** 2;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+      ctx.clearRect(0, 0, W, H);
+      /* the room: a horizon that glows behind the far rows, light that pools on the floor around Ca and Se, and a deep blue under the table */
+      at(0, (0 - R0) * G - .8, 0, O);
+      const hz = O.f, rest = 1 - K;
+      glow(cx, hz, W * .78, H * .24, '22,72,210', (.26 * (1 - .55 * K)).toFixed(3));
+      glow(cx, hz + H * .01, W * .42, H * .065, '96,156,255', (.2 * (1 - .7 * K)).toFixed(3));
+      at(CA.x, CA.v, 0, A); at(SE.x, SE.v, 0, B);
+      glow((A.e + B.e) / 2, (A.f + B.f) / 2, W * .46, H * .2, '30,96,255', (.15 * rest).toFixed(3));
+      glow(cx, cy + H * .12, W * .72, H * .42, '14,46,150', (.2 * rest).toFixed(3));
+      ctx.textBaseline = 'alphabetic';
+      const showText = U >= 26;
+      halos.length = 0;
+      for (const q of cells) {
+        const isLogo = q === CA || q === SE, a0 = born(q.z, t);        /* the two squares that have a tile floating over them */
+        if (a0 <= 0) continue;
+        at(q.x, q.v, 0, O);
+        const hv = m.in * Math.exp(-((O.e - mx) ** 2 + (O.f - my) ** 2) / sig);
+        const rg = isLogo ? 0 : idle(q) * rest;
+        /* on the scroll the tiles sink and go dark from the middle of the row outward */
+        const fall = clamp01(K * 2.4 - q.dC / 8);
+        const h = (isLogo ? 0 : .5 * hv + .16 * rg - fall * 1.4) + (1 - a0) * 1.3;
+        if (h !== 0) at(q.x, q.v, h, O);
+        const far = clamp01((O.s - .74) / .36), vis = (.3 + .7 * far) * (1 - fall) * a0;
+        if (vis <= .01) continue;
+        const lit = Math.min(1, hv + rg), warm = Math.min(1, hv * .8 + rg * .9);
+        ctx.setTransform(DPR * O.a, 0, DPR * O.c, DPR * O.d, DPR * O.e, DPR * O.f);
+        ctx.globalAlpha = 1;
+        if (h > .04) {            /* a lifted tile shows its edge */
+          ctx.beginPath(); ctx.roundRect(-46, -46 + h * 26, 92, 92, 9);
+          ctx.fillStyle = `rgba(6,16,58,${(.9 * vis).toFixed(3)})`; ctx.fill();
+        }
+        ctx.beginPath(); ctx.roundRect(-46, -46, 92, 92, 9);
+        /* body: deep navy at rest, warming to the brand blue when it lights */
+        ctx.fillStyle = isLogo ? `rgba(30,107,255,${(.14 * vis).toFixed(3)})`
+          : `rgba(${Math.round(8 + 14 * warm)},${Math.round(17 + 52 * warm)},${Math.round(44 + 150 * warm)},${((.58 + .38 * warm) * vis).toFixed(3)})`;
+        ctx.fill();
+        ctx.globalAlpha = vis; ctx.fillStyle = SHEEN; ctx.fill();
+        if (warm > .02) { ctx.globalAlpha = warm * vis; ctx.fillStyle = CORE; ctx.fill(); }
+        ctx.globalAlpha = (isLogo ? .9 : .24 + .76 * lit) * vis;
+        ctx.lineWidth = (1.1 + lit * 1.1) / O.a;
+        ctx.strokeStyle = EDGE[q.tint]; ctx.stroke();
+        ctx.globalAlpha = 1;
+        if (showText && !isLogo) {
+          const ta = (.4 + .6 * lit) * vis;
+          ctx.fillStyle = `rgba(${Math.round(222 + 33 * lit)},${Math.round(232 + 23 * lit)},255,${ta.toFixed(3)})`;
+          ctx.font = `600 38px ${SYMF}`; ctx.textAlign = 'left';
+          ctx.fillText(q.s, -34, 32);
+          if (O.a > .5) { ctx.fillStyle = `rgba(${q.tint},${(ta * .9).toFixed(3)})`; ctx.font = `500 13px ${SYMF}`; ctx.fillText(q.z, -33, -22); }
+        }
+        if (rg > .2) halos.push([O.e, O.f, O.a * 100, rg * vis]);
+      }
+      /* the light a flash throws on the floor around it */
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const [x, y, s, a] of halos) glow(x, y, s * 1.5, s * .7, '52,124,255', (.4 * a).toFixed(3));
+      const Tz = Math.min(Math.max(W * .15, 84), 190);
+      /* the two logo tiles float over their squares, then leave the table and meet as the mark */
+      [[CA, SPR.ca, -1], [SE, SPR.se, 1]].forEach(([q, spr, side]) => {
+        const a0 = born(q.z, t); if (a0 <= 0) return;
+        at(q.x, q.v, 0, O);
+        const fx = O.e, fy = O.f, fs = O.a * 100;
+        at(q.x, q.v, .7 + .1 * Math.sin(t * 1.3 + side) + (1 - a0) * 1.4, O);
+        const k0 = Math.max(1, (narrow ? .34 : 0) / O.a);        /* on a phone the two tiles stay big enough to read */
+        const a = lerp(O.a * k0, Tz / 100, K), c = lerp(O.c * k0, 0, K), d = lerp(O.d * k0, Tz / 100, K);
+        const e = lerp(O.e, cx + side * .54 * Tz, K), f = lerp(O.f, H * .47, K) - Math.sin(Math.PI * K) * H * .05;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        ctx.globalCompositeOperation = 'lighter';
+        /* the square it floats over is lit from above, and the tile carries a halo of its own */
+        glow(fx, fy, fs * 1.6, fs * .72, '50,120,255', (.5 * rest * a0).toFixed(3));
+        glow(fx, fy, fs * .7, fs * .32, '150,196,255', (.22 * rest * a0).toFixed(3));
+        glow(e, f, a * 220, a * 220, '30,96,255', (.38 * a0).toFixed(3));
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = a0;
+        ctx.setTransform(DPR * a, 0, DPR * c, DPR * d, DPR * e, DPR * f);
+        ctx.drawImage(spr, -50, -50, 100, 100);
+        ctx.globalAlpha = 1;
+      });
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+      /* the corners fall into shadow so the eye stays on the middle */
+      const vg = ctx.createRadialGradient(cx, H * .58, Math.min(W, H) * .32, cx, H * .58, Math.hypot(W, H) * .62);
+      vg.addColorStop(0, 'rgba(2,4,10,0)'); vg.addColorStop(.6, 'rgba(2,4,10,.22)'); vg.addColorStop(1, 'rgba(2,4,10,.62)');
+      ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+      /* the near edge fades into the page, on an eased curve so no band shows */
+      const fg = ctx.createLinearGradient(0, H * .8, 0, H);
+      fg.addColorStop(0, 'rgba(2,4,10,0)'); fg.addColorStop(.35, 'rgba(2,4,10,.18)'); fg.addColorStop(.7, 'rgba(2,4,10,.6)'); fg.addColorStop(1, 'rgba(2,4,10,.94)');
+      ctx.fillStyle = fg; ctx.fillRect(0, H * .8, W, H * .2);
+    };
+    const d = drive({
+      area: stick, btn: stick.querySelector('.hx__pause'), sec, frame,
+      scroll: (p) => copyOut(copy, say, p, .64, .86)
+    });
+    const onResize = () => { size(); d.kick(); };
+    addEventListener('resize', onResize);
+    /* when the font arrives the copy changes height */
+    if (document.fonts) document.fonts.ready.then(onResize);
+    return () => { d.cleanup(); m.off(); removeEventListener('resize', onResize); };
+  }
+});
+</script>
+
+<template id="tpl2-tabla">
+<section class="moment f2" id="servicios" aria-labelledby="f2-h" style="--mh:460vh">
+  <div class="moment__stick f2-stick">
+    <div class="f2-head">
+      <h2 class="h2" id="f2-h">Cuatro elementos. Tú eliges la fórmula.</h2>
+      <p class="lead">Puedes empezar con uno y sumar los demás cuando tu negocio los pida.</p>
+    </div>
+    <ol class="f2-row">
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">01</span><div><div class="f2-sym">Sw</div><div class="f2-name">Sitios web</div></div></div><div class="f2-f f2-back"><h3>Sitios web</h3><p>Cargan rápido, se leen bien en el celular y llevan a tu cliente a escribirte.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">02</span><div><div class="f2-sym">Ti</div><div class="f2-name">Tiendas en línea</div></div></div><div class="f2-f f2-back"><h3>Tiendas en línea</h3><p>Catálogo, carrito y pagos conectados con tu inventario.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">03</span><div><div class="f2-sym">Rs</div><div class="f2-name">Redes sociales</div></div></div><div class="f2-f f2-back"><h3>Redes sociales</h3><p>Calendario del mes, fotos, videos y textos listos para publicar.</p></div></li>
+      <li class="f2-t"><div class="f2-f f2-front" aria-hidden="true"><span class="mono">04</span><div><div class="f2-sym">Ma</div><div class="f2-name">Marca</div></div></div><div class="f2-f f2-back"><h3>Marca</h3><p>Logo, colores y tipografías con una guía corta para usarlos.</p></div></li>
+    </ol>
+    <div class="f2-foot">
+      <p class="f2-eq" aria-hidden="true"><b>Sw</b>+<b>Ti</b>+<b>Rs</b>+<b>Ma</b><span>en un solo equipo</span></p>
+      <a class="btn btn--white" href="#contacto">Armar mi fórmula <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</section>
+</template>
+
+<script>
+addSection('tabla', 'tpl2-tabla', 1, (root) => {
+  const sec = root.querySelector('.f2'), tiles = [...sec.querySelectorAll('.f2-t')], chips = [...sec.querySelectorAll('.f2-eq b')];
+  return moment(sec, (p) => {
+    tiles.forEach((el, i) => {
+      const r = RM ? 1 : easeOut(range(p, .02 + i * .03, .2 + i * .03));
+      const f = easeIO(range(p, .27 + i * .13, .43 + i * .13));
+      el.style.opacity = r >= 1 ? '' : r.toFixed(3);
+      el.style.transform = `translate3d(0,${((1 - r) * 110).toFixed(1)}px,${(Math.sin(Math.PI * f) * 90).toFixed(1)}px) rotateX(${((1 - r) * 62).toFixed(2)}deg) rotateY(${(f * 180).toFixed(2)}deg)`;
+      chips[i].classList.toggle('on', f > .5);
+    });
+  });
+});
+</script>
+
+<template id="tpl-rd"><section class="moment rd" id="rediseno" aria-labelledby="rd-h" style="--mh:320vh"><div class="moment__stick rd-stick">
+  <div class="rd-left"><h2 class="h2" id="rd-h">¿Ya tienes un sitio? Lo llevamos al siguiente nivel.</h2><p class="lead">Conservamos lo que funciona y rediseñamos el resto.</p><p class="rd-tags" aria-hidden="true"><span class="rd-tag on">Antes</span><span class="rd-tag">Después</span></p></div>
+  <div class="rd-stage" role="img" aria-label="Ejemplo: un sitio genérico rediseñado como un sitio claro"></div>
+</div></section></template>
+
+<script>
+const RD_SLOP = '<div class="rd-site rd-slop"><div class="rd-nav"><b>✨ BrandAI</b><span>Inicio</span><span>Soluciones</span><span>Blog</span><em>Empezar 🚀</em></div><div class="rd-hero"><p class="rd-badge">🔥 Nuevo · Potenciado con IA</p><h4>Desbloquea el poder de tu negocio</h4><p>Soluciones innovadoras, robustas y de vanguardia para potenciar tu transformación digital.</p><div><em>Empezar ahora</em><em class="g">Saber más</em></div></div><div class="rd-cards"><div><i>⚡</i>Innovador</div><div><i>🎯</i>Robusto</div><div><i>💎</i>Potente</div></div></div>';
+const RD_ART = '<svg viewBox="0 0 240 250" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><circle class="s" cx="120" cy="146" r="96"/><ellipse class="g" cx="124" cy="236" rx="96" ry="7"/><path class="l" d="M56 204 184 108"/><path class="c" d="M70 183l26 6M94 165l26 6M118 147l26 6M142 129l26 6"/></svg>';
+const RD_CLEAN = '<div class="rd-site rd-clean"><div class="rd-nav"><b>Tu marca</b><span>Menú</span><span>Ubicación</span><em>Pedir</em></div><div class="rd-main"><div class="rd-hero"><h4>Pan recién horneado, todos los días a las 7.</h4><p>Pídelo por WhatsApp y recógelo en la tienda.</p><div><em>Hacer un pedido</em></div><ul class="rd-menu"><li>Masa madre</li><li>Croissant</li><li>Pan de queso</li></ul></div><div class="rd-pic"><span class="rd-time">07:00</span>' + RD_ART + '</div></div></div>';
+function initRedo(theme, mode) {
+  return (root) => {
+    const sec = root.querySelector('.rd'); sec.classList.add('rd--' + theme, 'rd-m-' + (RM ? 'still' : mode));
+    const stage = sec.querySelector('.rd-stage'), tags = [...sec.querySelectorAll('.rd-tag')];
+    if (RM) { stage.innerHTML = RD_SLOP + RD_CLEAN; tags.forEach((t) => t.classList.add('on')); return; }
+    const faces = `<div class="rd-face">${RD_SLOP}</div><div class="rd-face rd-back">${RD_CLEAN}</div>`;
+    stage.innerHTML = (Array.from({ length: 8 }, (_, i) => `<div class="rd-strip" style="--i:${i}">${faces}</div>`).join(''));
+    const strips = [...stage.querySelectorAll('.rd-strip')];
+    const suns = [...stage.querySelectorAll('.rd-clean .s')], clocks = [...stage.querySelectorAll('.rd-time')];
+    let state = -1, min = -1;
+    const off = moment(sec, (p) => {
+      const k = easeIO(range(p, .16, .82));
+      strips.forEach((s, i) => { const f = easeIO(range(p, .14 + i * .055, .46 + i * .055)); s.style.transform = `rotateY(${(f * 180).toFixed(2)}deg) translateZ(${(Math.sin(Math.PI * f) * 60).toFixed(1)}px)`; });
+      const st = k > .5 ? 1 : 0;
+      if (st !== state) { state = st; tags.forEach((t, i) => t.classList.toggle('on', i === st)); }
+      const up = easeOut(range(p, .5, .94)), m = Math.round(48 + up * 12);
+      suns.forEach((c) => { c.style.transform = `translateY(${((1 - up) * 96).toFixed(1)}px)`; });
+      if (m !== min) { min = m; const t = m >= 60 ? '07:00' : '06:' + m; clocks.forEach((c) => { c.textContent = t; }); }
+    });
+    return () => { if (typeof off === 'function') off(); };
+  };
+}
+addSection('tabla', 'tpl-rd', 1.5, initRedo('tab', 'strips'));
+</script>
+
+<div class="vw" role="dialog" aria-modal="true" aria-label="Vista previa del proyecto">
+  <div class="vw-back"></div>
+  <div class="vw-win">
+    <div class="vw-bar">
+      <span class="vw-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <p class="vw-name"></p>
+      <p class="vw-url"></p>
+      <button class="vw-btn vw-prev" type="button" aria-label="Proyecto anterior"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="vw-btn vw-next" type="button" aria-label="Proyecto siguiente"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <a class="vw-btn vw-btn--txt vw-ext" target="_blank" rel="noopener">Abrir en pestaña nueva</a>
+      <button class="vw-btn vw-close" type="button" aria-label="Cerrar vista previa"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="vw-body" tabindex="0"><div class="vw-page"></div></div>
+  </div>
+</div>
+
+<script>
+/* the real projects. Each has a poster (img) and a tour: a strip of real screens of the site that scrolls by itself */
+window.PROJECTS = [
+  { id: 'duches', name: 'Los Duches', kind: 'Menú y pedidos en línea', url: 'https://losduches.com/', n: 4, cat: 'Restaurantes',
+    lead: 'Sitio para un restaurante de hamburguesas, sánduches de autor y papas cargadas en Laureles. El cliente arma su pedido en la web y lo envía listo por WhatsApp, a domicilio o para recoger.',
+    facts: ['Restaurantes', 'Laureles, Medellín', 'Menú + pedidos', 'Español'],
+    feats: ['Menú digital con hamburguesas, Duches y papas cargadas', 'Armado del pedido directamente en la web', 'Envío del pedido listo por WhatsApp', 'Opciones de domicilio o para recoger'] },
+  { id: 'neuralnet', name: 'NeuralNet', kind: 'Sitio corporativo de inteligencia artificial', url: 'https://www.neuralnet.com.co/', n: 3, cat: 'Tecnología',
+    lead: 'Sitio del ecosistema NeuralNet, que reúne sus dos líneas de inteligencia artificial para empresas: NeuralBI y NeuralFin.',
+    facts: ['Inteligencia artificial', 'Colombia', 'Sitio corporativo', ''],
+    feats: ['Portada con texto en movimiento', 'Entrada a las dos líneas del grupo: NeuralBI y NeuralFin', 'Selector de idioma'] },
+  { id: 'neuralbi', name: 'NeuralBI', kind: 'Sitio corporativo bilingüe', url: 'https://www.neuralnet.com.co/NeuralBI', n: 4, cat: 'Tecnología',
+    lead: 'Sitio corporativo bilingüe para una firma que construye tableros de Power BI, apps a medida y agentes de IA para empresas. El reto era explicar servicios muy técnicos de forma clara y verse a la altura de clientes corporativos.',
+    facts: ['Consultoría tecnológica', 'Colombia · clientes internacionales', 'Sitio corporativo / B2B', 'Español e inglés'],
+    feats: ['Diseño oscuro y tecnológico con animaciones que explican cada servicio', 'Secciones por producto: Power BI, Power Apps, Power Automate y Copilot Studio', 'Proceso de trabajo en tres fases y soluciones por industria', 'Tablero de ejemplo interactivo y preguntas frecuentes', 'Formulario para agendar una auditoría'] },
+  { id: 'akua', name: 'AKUA Residencia', kind: 'Landing de proyecto inmobiliario', url: 'https://akua-apartamentos.vercel.app/', n: 4, cat: 'Inmobiliario',
+    lead: 'Página de ventas para un proyecto de vivienda y comercio en Medellín. Todo está pensado para captar compradores e inversionistas: tipologías con precios, galería de renders y formularios de cotización.',
+    facts: ['Finca raíz', 'La Pilarica, Medellín', 'Landing de ventas', 'Español'],
+    feats: ['Formulario de cotización visible desde la primera pantalla', 'Comparador de apartamentos tipo A y B con áreas y precios', 'Galería de 14 renders interiores en pantalla completa', 'Mapa con sitios cercanos y argumentos de inversión', 'Sección de locales comerciales con disponibilidad'] },
+  { id: 'weedhoney', name: 'Weed Honey', kind: 'Sitio de marca y tienda', url: 'https://www.weedhoney.co/', n: 4, cat: 'E-commerce', embed: false,
+    lead: 'Sitio para una marca de bebidas funcionales con CBD. La idea era crear una experiencia divertida y llamativa que presentara cada sabor como un producto propio y permitiera pedir por paquetes.',
+    facts: ['Bebidas', 'Medellín', 'Sitio de marca + tienda', 'Español'],
+    feats: ['Portada animada con la identidad de la marca', 'Presentación de los tres sabores con sus beneficios', 'Selector de sabor y paquetes de 6, 12 o 24 latas con carrito', 'Tabla nutricional e ingredientes por producto', 'Información legal y de licencias visible'] },
+  { id: 'mimarte', name: 'Mimarte', kind: 'Tienda en línea de jabones artesanales', url: 'https://mimarte.com.co/', n: 4, cat: 'E-commerce',
+    lead: 'Tienda virtual para una marca de jabones artesanales hechos en frío. Buscábamos una experiencia cálida y sensorial que transmitiera lo natural del producto y facilitara comprar y pedir por WhatsApp.',
+    facts: ['Cuidado personal', 'Medellín', 'E-commerce', 'Español'],
+    feats: ['Catálogo con filtros por categoría, favoritos y carrito de compras', 'Diagnóstico de piel que recomienda la barra ideal', 'Formulario para diseñar un jabón a la medida, enviado por WhatsApp', 'Sección de bodas, eventos y regalos corporativos'] }
+].map((p) => Object.assign(p, { img: `assets/pf-${p.id}.jpg`, tour: `assets/tour-${p.id}.webp` }));
+/* brands whose social media the team has run */
+window.BRANDS = [
+  { name: 'Weed Honey', sym: 'We', nets: [['Instagram', '@weedhoney.co', 'https://www.instagram.com/weedhoney.co/'], ['TikTok', '@weedhoney.co', 'https://www.tiktok.com/@weedhoney.co']], bg: 'linear-gradient(150deg,#FFFDF7,#F6ECD6)', fg: '#B07F24',
+    tag: 'Bebidas con CBD con una voz fresca y relajada, alineada con su sitio web.', lead: 'Llevamos la identidad que diseñamos para su sitio web a Instagram y TikTok, para que redes y tienda hablaran el mismo idioma y vendieran juntas.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok', 'Coherencia visual entre redes y sitio web'] },
+  { name: 'Agilcash', sym: 'Ag', nets: [['Instagram', '@agilcash.co', 'https://www.instagram.com/agilcash.co/'], ['TikTok', '@agilcash.co', 'https://www.tiktok.com/@agilcash.co']], bg: 'linear-gradient(150deg,#115450,#0B3D3A)', fg: '#FFFFFF',
+    tag: 'Una plataforma para pasar dólares digitales a pesos, explicada de forma clara y cercana.', lead: 'Agilcash convierte dólares digitales a pesos colombianos. Nuestro reto fue hacer que un tema financiero se entendiera fácil y generara confianza en Instagram y TikTok.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram', 'Contenido para TikTok'] },
+  { name: 'La Miguería', sym: 'Mi', nets: [['Instagram', '@lamigueria', 'https://www.instagram.com/lamigueria/']], bg: 'linear-gradient(150deg,#77513F,#5C3D30)', fg: '#F4E7D4',
+    tag: 'Una panadería con una comunidad de más de 280 mil seguidores en Instagram.', lead: 'Acompañamos a La Miguería en Instagram, donde su comunidad supera los 280 mil seguidores, con contenido que antoja y conversaciones que no se quedan sin respuesta.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Speedo Colombia', sym: 'Sp', nets: [['Instagram', '@speedocolombia', 'https://www.instagram.com/speedocolombia/']], bg: 'linear-gradient(150deg,#FFFFFF,#F2F2F2)', fg: '#E2231A',
+    tag: 'La marca de natación en el país, con más de 70 mil seguidores en Instagram.', lead: 'Trabajamos con Speedo Colombia, la cuenta local de la marca de trajes de baño y accesorios de natación, cuidando una comunidad de más de 70 mil seguidores en Instagram.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: "O'Neill Colombia", sym: "O'", nets: [['Instagram', '@oneillcolombia', 'https://www.instagram.com/oneillcolombia/']], bg: 'linear-gradient(150deg,#000000,#161616)', fg: '#FFFFFF',
+    tag: 'Ropa de surf y playa con tienda en línea y envíos a toda Colombia.', lead: "Para O'Neill Colombia, la marca de ropa de surf y playa, trabajamos en Instagram para conectar el espíritu de la marca con su tienda en línea.",
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] },
+  { name: 'Graduados EAFIT', sym: 'Ea', nets: [['Instagram', '@graduadoseafit', 'https://www.instagram.com/graduadoseafit/']], bg: 'linear-gradient(150deg,#2447E0,#1734BE)', fg: '#FFFFFF',
+    tag: 'El canal de una comunidad de más de 70.000 egresados de la universidad.', lead: 'Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.',
+    did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] }
+];
+const host = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+/* the page itself may not frame other sites while it lives in this prototype; on its own domain the viewer loads the real site */
+const LIVE = !/claude|anthropic|localhost|127\.0\.0\.1/.test(location.hostname);
+
+/* a tour is one tall image of n screens plus the first one again; it rests on each screen and glides to the next, like someone scrolling the site */
+const tourHTML = (p, cls) => `<span class="tour${cls ? ' ' + cls : ''}" style="--f:${p.n + 1}" data-n="${p.n}"><img src="${p.tour}" alt="" decoding="async"></span>`;
+const Tours = (() => {
+  const live = new Map();
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { const a = live.get(e.target); if (a) { if (e.isIntersecting) a.play(); else a.pause(); } }), { rootMargin: '12% 0px' }) : null;
+  const start = (root) => {
+    if (RM || !root) return () => {};
+    const made = [];
+    root.querySelectorAll('.tour').forEach((t, i) => {
+      if (live.has(t)) return;
+      const n = +t.dataset.n, img = t.firstElementChild, hold = 1900, move = 950, total = n * (hold + move), kf = [];
+      for (let k = 0; k <= n; k++) {
+        const tr = `translate3d(-50%,${(-k * 100 / (n + 1)).toFixed(4)}%,0)`;
+        if (k < n) kf.push({ transform: tr, offset: k * (hold + move) / total }, { transform: tr, offset: (k * (hold + move) + hold) / total, easing: 'cubic-bezier(.77,0,.175,1)' });
+        else kf.push({ transform: tr, offset: 1 });
+      }
+      const a = img.animate(kf, { duration: total, iterations: Infinity, delay: -((i * 733) % total) });
+      a.pause(); live.set(t, a); made.push(t);
+      if (io) io.observe(t); else a.play();
+    });
+    return () => made.forEach((t) => { const a = live.get(t); if (a) a.cancel(); live.delete(t); if (io) io.unobserve(t); });
+  };
+  return { start };
+})();
+window.Tours = Tours;
+
+const Viewer = (() => {
+  const el = document.querySelector('.vw'), win = el.querySelector('.vw-win'), body = el.querySelector('.vw-body'), page = el.querySelector('.vw-page');
+  const name = el.querySelector('.vw-name'), url = el.querySelector('.vw-url'), ext = el.querySelector('.vw-ext');
+  let idx = 0, src = null, last = null, open = false, list = [], stop = null;
+  const insetFor = (node) => {
+    if (!node || !node.isConnected) return null;
+    const r = node.getBoundingClientRect(), w = win.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return null;
+    return `inset(${Math.max(0, r.top - w.top).toFixed(1)}px ${Math.max(0, w.right - r.right).toFixed(1)}px ${Math.max(0, w.bottom - r.bottom).toFixed(1)}px ${Math.max(0, r.left - w.left).toFixed(1)}px round 12px)`;
+  };
+  const li = (a) => a.map((x) => `<li>${x}</li>`).join('');
+  const out = (href, label) => `<a class="btn btn--white btn--sm" href="${href}" target="_blank" rel="noopener">${label} <span aria-hidden="true">↗</span></a>`;
+  const projectHTML = (p) => {
+    const F = ['Sector', 'Ubicación', 'Tipo de sitio', 'Idioma'], framed = LIVE && p.embed !== false;
+    const info = `<aside class="vw-info"><p class="mono">${p.cat}</p><h3>${p.name}</h3><p class="vw-lead">${p.lead}</p>
+      <dl>${p.facts.map((f, i) => (f ? `<div><dt>${F[i]}</dt><dd>${f}</dd></div>` : '')).join('')}</dl>
+      <h4>Lo que construimos</h4><ul>${li(p.feats)}</ul><p class="vw-acts">${out(p.url, 'Visitar sitio')}</p></aside>`;
+    if (framed) return `<div class="vw-split vw-split--live"><iframe src="${p.url}" title="Sitio de ${p.name}" loading="eager"></iframe>${info}</div>`;
+    const why = LIVE ? `${p.name} no permite abrirse dentro de otra página, así que aquí ves su recorrido. Ábrelo en una pestaña nueva para navegarlo.`
+      : `Recorrido con pantallas reales de ${p.name}. Cuando esta página esté en su propio dominio, aquí se abre el sitio real y se navega sin salir.`;
+    return `<div class="vw-split"><div class="vw-shot"><div class="vw-tour">${tourHTML(p)}</div><p class="vw-why">${why}</p></div>${info}</div>`;
+  };
+  const brandHTML = (b) => `<div class="vw-split"><div class="vw-shot"><div class="vw-cover" style="background:${b.bg};color:${b.fg}"><i>${b.sym}</i><b>${b.name}</b><span>${b.nets.map((n) => `<em>${n[0]} · ${n[1]}</em>`).join('')}</span></div></div>
+    <aside class="vw-info"><p class="mono">Redes sociales</p><h3>${b.name}</h3><p class="vw-lead">${b.lead}</p>
+      <dl><div><dt>Redes</dt><dd>${b.nets.map((n) => n[0]).join(', ')}</dd></div><div><dt>Servicio</dt><dd>Community management y contenido</dd></div></dl>
+      <h4>Lo que hicimos</h4><ul>${li(b.did)}</ul><p class="vw-acts">${b.nets.map((n) => out(n[2], 'Ver en ' + n[0])).join('')}</p></aside></div>`;
+  const fill = (dir) => {
+    const p = list[idx], brand = !!p.nets;
+    if (stop) { stop(); stop = null; }
+    name.innerHTML = '';
+    name.append(p.name + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + (brand ? 'Redes sociales' : p.kind) }));
+    url.textContent = brand ? p.nets[0][1] : host(p.url);
+    ext.href = brand ? p.nets[0][2] : p.url;
+    ext.textContent = brand ? 'Ver en ' + p.nets[0][0] : 'Abrir en pestaña nueva';
+    page.innerHTML = brand ? brandHTML(p) : projectHTML(p);
+    stop = Tours.start(page);
+    body.scrollTop = 0;
+    if (dir && !RM) page.animate([{ opacity: 0, transform: `translate3d(${dir * 40}px,0,0)` }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.23,1,.32,1)' });
+  };
+  const go = (d) => { idx = (idx + d + list.length) % list.length; fill(d); };
+  const close = () => {
+    if (!open) return;
+    open = false;
+    el.classList.remove('is-in');
+    const back = RM ? null : insetFor(src);
+    const done = () => { el.classList.remove('is-open'); document.documentElement.classList.remove('vw-on'); if (stop) { stop(); stop = null; } page.innerHTML = ''; win.style.clipPath = ''; if (last) last.focus({ preventScroll: true }); };
+    if (back) { win.style.clipPath = back; setTimeout(done, 520); } else done();
+  };
+  const show = (i, from, items) => {
+    list = items || PROJECTS; idx = i; src = from || null; last = document.activeElement; open = true;
+    fill(0);
+    document.documentElement.classList.add('vw-on');
+    el.classList.add('is-open');
+    const start = RM ? null : insetFor(src);
+    if (start) {
+      win.style.transition = 'none'; win.style.clipPath = start;
+      win.getBoundingClientRect();
+      win.style.transition = '';
+      requestAnimationFrame(() => { el.classList.add('is-in'); win.style.clipPath = 'inset(0 round 16px)'; });
+      page.animate([{ transform: 'scale(1.04)' }, { transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.23,1,.32,1)' });
+    } else el.classList.add('is-in');
+    el.querySelector('.vw-close').focus({ preventScroll: true });
+  };
+  el.querySelector('.vw-close').addEventListener('click', close);
+  el.querySelector('.vw-back').addEventListener('click', close);
+  el.querySelector('.vw-prev').addEventListener('click', () => go(-1));
+  el.querySelector('.vw-next').addEventListener('click', () => go(1));
+  /* while it is open the viewer owns the keyboard: Esc closes, arrows change project, Tab stays inside */
+  addEventListener('keydown', (e) => {
+    if (!open) return;
+    e.stopImmediatePropagation();
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === 'Tab') {
+      const f = [...el.querySelectorAll('button,a[href],[tabindex="0"]')], a = document.activeElement, i = f.indexOf(a);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  }, true);
+  return { show, close };
+})();
+</script>
+
+<template id="tpl-pg"><section class="moment pg" id="proyectos" aria-labelledby="pg-h" style="--mh:320vh"><div class="moment__stick pg-stick"><h2 class="h2" id="pg-h">Proyectos</h2><div class="pg-grid"></div></div></section></template>
+
+<script>
+/* a grid of elements; each one opens the viewer */
+addSection('tabla', 'tpl-pg', 2, (root) => {
+  const sec = root.querySelector('.pg'), grid = sec.querySelector('.pg-grid'), SYM = ['Ld', 'Nn', 'Nb', 'Ak', 'Wh', 'Mi'];
+  grid.innerHTML = PROJECTS.map((p, i) => `<button class="pg-t" type="button" aria-label="Abrir vista previa de ${p.name}"><span class="pg-el" aria-hidden="true"><span class="mono">0${i + 1}</span><span><b>${SYM[i]}</b><br><span>${p.name}</span></span></span>${tourHTML(p)}<i>${p.name}</i></button>`).join('');
+  const tiles = [...grid.children], imgs = tiles.map((t) => t.querySelector('.tour')), tags = tiles.map((t) => t.querySelector('i'));
+  const offs = tiles.map((t, i) => { const fn = () => Viewer.show(i, t); t.addEventListener('click', fn); return () => t.removeEventListener('click', fn); });
+  const stop = moment(sec, (p) => {
+    const k = RM ? 1 : easeIO(range(p, .02, .46));
+    grid.style.transform = `rotateX(${lerp(62, 0, k).toFixed(2)}deg) scale(${lerp(.78, 1, k).toFixed(4)})`;
+    tiles.forEach((t, i) => {
+      const o = RM ? 1 : easeOut(range(p, .44 + i * .06, .62 + i * .06));
+      imgs[i].style.opacity = o.toFixed(3);
+      imgs[i].style.transform = `scale(${(1.12 - o * .12).toFixed(4)})`;
+      tags[i].style.opacity = o.toFixed(3);
+    });
+  });
+  return () => { stop(); offs.forEach((f) => f()); };
+});
+</script>
+
+<template id="tpl-br"><section class="moment br" id="marcas" aria-labelledby="br-h" style="--mh:250vh"><div class="moment__stick br-stick is-flow">
+  <div class="br-head"><h2 class="h2" id="br-h">Marcas con las que hemos trabajado en redes</h2><p class="lead">Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.</p></div>
+  <div class="br-stage"></div>
+</div></section></template>
+
+<script>
+function initBrands(theme, mode) {
+  return (root) => {
+    const sec = root.querySelector('.br'); sec.classList.add('br--' + theme, 'br-m-' + mode);
+    const stage = sec.querySelector('.br-stage'), offs = [];
+    const nets = (b) => b.nets.map((x) => x[0]).join(' + ');
+    const card = (b, i, extra) => `<button class="br-it" type="button" data-i="${i}" data-no="0${i + 1}" style="--bg:${b.bg};--fg:${b.fg};--r:${[-7, 5, -4, 6, -5, 8][i]}" aria-label="Ver el trabajo con ${b.name}"><i>${b.sym}</i><b>${b.name}</b>${extra || ''}<span>${nets(b)}</span><em>${b.nets[0][1]}</em></button>`;
+    stage.innerHTML = BRANDS.map((b, i) => card(b, i)).join('');
+    stage.insertAdjacentHTML('afterend', '<p class="br-cap"><span class="mono">We + Ag + Mi + Sp + O\' + Ea</span>seis comunidades atendidas por el mismo equipo</p>');
+    const its = [...stage.querySelectorAll('.br-it')];
+    const open = (e) => { const b = e.target.closest('[data-i]'); if (b) Viewer.show(+b.dataset.i, b, BRANDS); };
+    stage.addEventListener('click', open); offs.push(() => stage.removeEventListener('click', open));
+    
+    const off = moment(sec, (p0) => {
+      const p = RM ? 1 : p0;
+      its.forEach((el, i) => { const k = easeOut(range(p, .08 + i * .07, .34 + i * .07)); el.style.opacity = k.toFixed(3); el.style.transform = `translate3d(0,${((1 - k) * -46).toFixed(1)}vh,0) rotateX(${((1 - k) * 68).toFixed(1)}deg)`; });
+    });
+    return () => { offs.forEach((f) => f()); if (typeof off === 'function') off(); };
+  };
+}
+addSection('tabla', 'tpl-br', 2.5, initBrands('tab', 'tiles'));
+</script>
+
+<template id="tpl-pq"><section class="moment pq" id="proceso" aria-labelledby="pq-h" style="--mh:320vh"><div class="moment__stick pq-stick"><h2 class="h2" id="pq-h">Así trabajamos contigo</h2><ol class="pq-row"></ol></div></section></template>
+
+<script>
+const STEPS = [
+  { s: 'Cn', t: 'Conversamos', c: 'Tu negocio y tus clientes', d: 'Entendemos tu negocio, tus clientes y qué debe lograr la web.' },
+  { s: 'Di', t: 'Diseñamos', c: 'Estilo y estructura', d: 'Proponemos el estilo y la estructura antes de programar.' },
+  { s: 'Cs', t: 'Construimos', c: 'Rápido y adaptado a celulares', d: 'Desarrollamos un sitio rápido y adaptado a celulares.' },
+  { s: 'La', t: 'Lanzamos', c: 'Seguimos contigo', d: 'Publicamos, te enseñamos a usarlo y seguimos contigo.' }
+];
+
+/* the elements fill one after another */
+addSection('tabla', 'tpl-pq', 3, (root) => {
+  const sec = root.querySelector('.pq'), ol = sec.querySelector('.pq-row');
+  ol.innerHTML = STEPS.map((s, i) => `<li class="pq-wrap">${i ? '<i class="pq-link" aria-hidden="true"></i>' : ''}<div class="pq-t"><i class="pq-fill" aria-hidden="true"></i><div class="pq-in"><span class="mono">0${i + 1}</span><div><b aria-hidden="true">${s.s}</b><h3>${s.t}</h3><p>${s.d}</p></div></div></div></li>`).join('');
+  const tiles = [...ol.querySelectorAll('.pq-t')], links = [...ol.querySelectorAll('.pq-link')];
+  return moment(sec, (p) => {
+    tiles.forEach((t, i) => t.style.setProperty('--f', (RM ? 1 : easeIO(range(p, .06 + i * .21, .24 + i * .21))).toFixed(3)));
+    links.forEach((l, i) => l.style.setProperty('--f', (RM ? 1 : range(p, .2 + i * .21, .27 + i * .21)).toFixed(3)));
+  });
+});
+</script>
+
+<template id="tpl-sm"><section class="moment sm" id="redes" aria-labelledby="sm-h" style="--mh:400vh"><div class="moment__stick sm-stick"><div class="sm-left"><h2 class="h2" id="sm-h">Manejo de redes sociales</h2><p class="lead">Seis elementos que se enlazan alrededor de tus redes.</p><div class="sm-ds"></div></div><div class="sm-mol" aria-hidden="true"></div></div></section></template>
+
+<script>
+/* what the social media service covers; a third item marks the ones that are our edge */
+const SOCIAL = [
+  ['Estrategia y calendario', 'Definimos contigo los temas, los formatos y las fechas del mes.'],
+  ['Fotos y videos', 'Producimos el contenido: sesiones de fotos, reels y piezas gráficas.'],
+  ['Motion graphics', 'Animamos tus ideas en reels y piezas con movimiento, hechas por nosotros.', 1],
+  ['Contenido con IA', 'Usamos inteligencia artificial para producir más piezas en el estilo de tu marca.', 1],
+  ['Community management', 'Publicamos, respondemos comentarios, mensajes y reseñas, y cuidamos el tono de tu marca.'],
+  ['Publicación', 'Programamos cada pieza con su fecha y la publicamos en tus redes.']
+];
+const PLUS = ' <em class="plus">Nuestro plus</em>';
+
+/* six elements bond to the one in the middle */
+addSection('tabla', 'tpl-sm', 4, (root) => {
+  const sec = root.querySelector('.sm'), mol = sec.querySelector('.sm-mol'), ds = sec.querySelector('.sm-ds'), SYM = ['Ec', 'Fv', 'Mg', 'Ai', 'Cm', 'Pu'];
+  ds.innerHTML = SOCIAL.map(([t, d, pl]) => `<p class="sm-d"><strong>${t}${pl ? PLUS : ''}</strong><span>${d}</span></p>`).join('');
+  mol.innerHTML = SYM.map((s, i) => `<div class="sm-bond" style="transform:rotate(${i * 60 - 90}deg)"><i></i></div>`).join('') + SYM.map((s, i) => { const a = (i * 60 - 90) * Math.PI / 180; return `<div class="sm-t" style="left:${(50 + 38 * Math.cos(a)).toFixed(2)}%;top:${(50 + 38 * Math.sin(a)).toFixed(2)}%"><span class="mono">0${i + 1}</span><b>${s}</b></div>`; }).join('') + '<div class="sm-t sm-t--c"><span class="mono">Redes</span><b>Rs</b></div>';
+  const bonds = [...mol.querySelectorAll('.sm-bond i')], tiles = [...mol.querySelectorAll('.sm-t')], dd = [...ds.children];
+  let act = -2;
+  return moment(sec, (p) => {
+    const rot = RM ? 0 : lerp(-18, 30, p);
+    mol.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+    let k = -1;
+    bonds.forEach((b, i) => { const f = RM ? 1 : range(p, .06 + i * .145, .16 + i * .145); b.style.setProperty('--f', f.toFixed(3)); tiles[i].classList.toggle('on', f >= 1); if (f > .5) k = i; });
+    tiles.forEach((t) => { t.style.transform = `rotate(${(-rot).toFixed(2)}deg)`; });
+    if (k === act) return;
+    act = k;
+    dd.forEach((el, i) => el.classList.toggle('on', i === Math.max(0, k)));
+  });
+});
+</script>
+
+<template id="tpl-ab"><section class="moment ab" id="nosotros" aria-labelledby="ab-h" style="--mh:320vh"><div class="moment__stick ab-stick is-flow">
+  <div class="ab-head"><h2 class="h2" id="ab-h">Dos amigos desde la guardería, un mismo equipo.</h2><p class="lead">Así nació CaSe Studio y así trabajamos con cada cliente.</p></div>
+  <div class="ab-stage"></div>
+</div></section></template>
+<script>
+/* their own words, from their portfolio */
+window.TEAM = [
+  { n: 'Camilo Corrales', r: 'Diseño y desarrollo', s: 'Ca', z: '20', d: 'Programación, diseño visual y construcción de cada sitio, desde la primera pantalla hasta el último detalle.' },
+  { n: 'Sebastián Vanegas', r: 'Ventas y relaciones comerciales', s: 'Se', z: '34', d: 'Entiende el negocio de cada cliente, define qué debe lograr la web y acompaña el proyecto de principio a fin.' },
+  { n: 'Catalina Vanegas', r: 'Redes sociales y contenido', s: 'Cv', z: '03', d: 'Comunicadora social. Planea el contenido de cada marca, maneja su comunidad y cuida que cada publicación conecte con su público.' }
+];
+function initAbout(theme, mode) {
+  const person = (t, i, art = '') => `<article class="ab-p" style="--j:${i}">${art || `<span class="ab-sym" aria-hidden="true">${t.s}</span>`}<div class="ab-tx"><h3>${t.n}</h3><p class="ab-role">${t.r}</p><p class="ab-d">${t.d}</p></div></article>`;
+  return (root) => {
+    const sec = root.querySelector('.ab'), stick = sec.querySelector('.ab-stick'), stage = sec.querySelector('.ab-stage'), head = sec.querySelector('.ab-head');
+    sec.classList.add('ab--' + theme, 'ab-m-' + mode);
+    let orbs = [], map = null, hot = [], cam = null;
+    {
+      const g = (a, n, b) => [...a, ...Array(n).fill(''), ...b];
+      const ROWS = [g(['H'], 16, ['He']), g(['Li', 'Be'], 10, ['B', 'C', 'N', 'O', 'F', 'Ne']), g(['Na', 'Mg'], 10, ['Al', 'Si', 'P', 'S', 'Cl', 'Ar']),
+        ['K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr'], ['Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe']];
+      const cell = (s, r, c) => { const j = s === 'Ca' ? 0 : s === 'Se' ? 1 : -1; return s ? `<i ${j >= 0 ? `class="hot" data-j="${j}"` : ''} style="grid-area:${r}/${c}">${j >= 0 ? `<small>${TEAM[j].z}</small>` : ''}${s}</i>` : ''; };
+      stage.innerHTML = `<div class="ab-map" aria-hidden="true">${ROWS.map((row, r) => row.map((s, c) => cell(s, r + 1, c + 1)).join('')).join('')}<i class="hot" data-j="2" style="grid-area:7/9"><small>${TEAM[2].z}</small>Cv</i></div><div class="ab-info">${TEAM.map((t, i) => person(t, i)).join('')}</div>`;
+      map = stage.querySelector('.ab-map'); hot = [0, 1, 2].map((j) => map.querySelector(`[data-j="${j}"]`));
+    }
+    const ps = [...stage.querySelectorAll('.ab-p')];
+    let act = -2;
+    const setAct = (i) => {
+      if (i === act) return; act = i;
+      ps.forEach((el, j) => el.classList.toggle('on', j === i)); orbs.forEach((el, j) => el.classList.toggle('on', j === i)); hot.forEach((el, j) => el.classList.toggle('on', j === i));
+      sec.style.setProperty('--act', Math.max(0, i));
+    };
+    /* where the camera is for the overview and for each of the three stops */
+    const shots = () => {
+      const W = stick.clientWidth, H = stick.clientHeight, mw = map.offsetWidth, mh = map.offsetHeight, c = hot[0].offsetWidth, ph = W <= 860;
+      const over = { x: (W - mw) / 2, y: ph ? H * .34 : Math.max(head.offsetTop + head.offsetHeight + 28, (H - mh) / 2 + 30), s: 1 };
+      const S = Math.min(H * .3, W * .2) / c, ax = ph ? W * .5 : W * .29, ay = ph ? H * .36 : H * .52;
+      cam = [over, ...hot.map((el) => ({ x: ax - S * (el.offsetLeft + c / 2), y: ay - S * (el.offsetTop + c / 2), s: S }))];
+    };
+    const place = (a, b, t) => { map.style.transform = `translate(${lerp(a.x, b.x, t).toFixed(1)}px,${lerp(a.y, b.y, t).toFixed(1)}px) scale(${lerp(a.s, b.s, t).toFixed(4)})`; };
+    if (RM) { setAct(-1); ps.forEach((el) => el.classList.add('on')); orbs.forEach((el) => el.classList.add('on')); ps.forEach((el) => el.style.setProperty('--k', 1)); sec.style.setProperty('--k', 1); return () => {}; }
+    let onResize = null;
+    shots(); onResize = () => { shots(); }; addEventListener('resize', onResize);
+    const stop = moment(sec, (p) => {
+      {
+        /* overview, then Ca, Se and Cv, then the overview again with the three lit */
+        const K = [[0, 0], [.1, 0], [.24, 1], [.38, 1], [.5, 2], [.62, 2], [.74, 3], [.86, 3], [.96, 0], [1, 0]];
+        let n = 0; while (n < K.length - 2 && p > K[n + 1][0]) n++;
+        place(cam[K[n][1]], cam[K[n + 1][1]], easeIO(range(p, K[n][0], K[n + 1][0])));
+        setAct(p > .17 && p < .44 ? 0 : p >= .44 && p < .68 ? 1 : p >= .68 && p < .91 ? 2 : -1);
+        head.style.opacity = (1 - range(p, .08, .16) + range(p, .91, .98)).toFixed(3);
+      }
+    });
+    return () => { stop(); if (onResize) removeEventListener('resize', onResize); };
+  };
+}
+
+addSection('tabla', 'tpl-ab', 4.5, initAbout('tab', 'map'));
+</script>
+
+<template id="tpl-zb"><section class="moment zb" aria-labelledby="zb-h" style="--mh:260vh"><div class="moment__stick zb-stick"><div class="zb-row" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#mark-cut" width="208" height="100"></use></svg><div class="zb-slot"><div class="zb-you"><span>01</span>Tú</div></div><svg viewBox="108 0 100 100"><use href="#mark-cut" width="208" height="100"></use></svg></div><div class="zz-copy"><h2 class="h2" id="zb-h">El elemento que falta es tu marca.</h2><a class="btn btn--white" href="#contacto">Empezar mi proyecto <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></section></template>
+
+<script>
+const fadeIn = (el, p, a, b) => { const e = RM ? 1 : easeOut(range(p, a, b)); el.style.opacity = e.toFixed(3); el.style.transform = `translate3d(0,${((1 - e) * 22).toFixed(1)}px,0)`; };
+
+/* the missing element drops in */
+addSection('tabla', 'tpl-zb', 5, (root) => {
+  const sec = root.querySelector('.zb'), you = sec.querySelector('.zb-you'), tiles = [...sec.querySelectorAll('.zb-row>svg')], copy = sec.querySelector('.zz-copy');
+  return moment(sec, (p) => {
+    const k = RM ? 1 : easeOut(range(p, .1, .5)), b = RM ? 0 : Math.sin(Math.PI * range(p, .44, .62));
+    you.style.transform = `translate3d(0,${((k - 1) * 260).toFixed(1)}%,0) rotate(${((1 - k) * -24).toFixed(2)}deg)`;
+    you.style.opacity = range(p, .08, .2) || (RM ? 1 : 0);
+    tiles.forEach((t, i) => { t.style.transform = `translate3d(${((i ? 1 : -1) * (1 - k) * 34 + (i ? 1 : -1) * b * -6).toFixed(1)}%,0,0)`; });
+    fadeIn(copy, p, .52, .74);
+  });
+});
+</script>
+
+<script>
+/* ---------- forms ---------- */
+const NEEDS = [
+  ['Web', [['Sitio corporativo', 'un sitio corporativo', 'Sc'], ['Tienda en línea', 'una tienda en línea', 'Tl'], ['Landing de ventas', 'una landing de ventas', 'Lv'], ['Menú y pedidos', 'un menú con pedidos', 'Mp'], ['Rediseño de mi sitio', 'rediseñar mi sitio', 'Rd']]],
+  ['Redes', [['Manejo de redes', 'manejo de redes', 'Mr'], ['Community manager', 'community manager', 'Cm'], ['Fotografía de producto', 'fotos de producto', 'Fp'], ['Parrilla de contenido', 'una parrilla de contenido', 'Pc']]],
+  ['Marca', [['Logo e identidad', 'el logo y la identidad de mi marca', 'Li']]],
+  ['Plus', [['Motion graphics', 'motion graphics', 'Mg'], ['Contenido con IA', 'contenido con IA', 'Ai']]]
+];
+const WHEN = [['Lo antes posible', 'Ya'], ['En uno o dos meses', '2m'], ['Sin afán', 'Sa']];
+
+function Ask(ct, onChange) {
+  const form = ct.querySelector('.contact__form');
+  form.classList.add('ask');
+  form.innerHTML = `<fieldset class="ask-g ask-need"><legend>¿Qué necesitas?</legend><p class="ask-hint">Elige una o varias opciones.</p>
+    ${NEEDS.map(([g, items]) => `<div class="ask-row"><span class="ask-lb">${g}</span><div class="ask-opts">${items.map(([t, ph, sy]) => `<label class="opt"><input type="checkbox" name="need" value="${t}" data-ph="${ph}" data-sym="${sy}"><span><b aria-hidden="true">${sy}</b>${t}</span></label>`).join('')}</div></div>`).join('')}</fieldset>
+    <fieldset class="ask-g ask-when"><legend>¿Para cuándo?</legend><div class="ask-opts">${WHEN.map(([t, sy]) => `<label class="opt"><input type="radio" name="when" value="${t}"><span><b aria-hidden="true">${sy}</b>${t}</span></label>`).join('')}</div></fieldset>
+    <div class="ask-who"><div class="field"><label for="c-name">Nombre</label><input id="c-name" name="name" autocomplete="name" required></div><div class="field"><label for="c-mail">Correo o WhatsApp</label><input id="c-mail" name="contact" required></div></div>
+    <div class="ask-end"><button class="btn btn--ink" type="submit">Enviar solicitud</button><p class="contact__ok" role="status" aria-live="polite"></p></div>`;
+  const ok = form.querySelector('.contact__ok'), q = (s) => form.querySelector(s);
+  const state = () => ({ needs: [...form.querySelectorAll('[name=need]:checked')], when: (q('[name=when]:checked') || {}).value || '', name: q('#c-name').value.trim(), contact: q('#c-mail').value.trim() });
+  const change = () => { ct.classList.remove('is-sent'); ok.textContent = ''; if (onChange) onChange(state(), false); };
+  const submit = (e) => {
+    e.preventDefault();
+    const s = state();
+    if (!s.needs.length) { ok.textContent = 'Elige al menos una opción de lo que necesitas.'; q('[name=need]').focus(); return; }
+    if (!s.name) { ok.textContent = 'Escribe tu nombre para saber a quién responder.'; q('#c-name').focus(); return; }
+    if (!s.contact) { ok.textContent = 'Deja un correo o un WhatsApp para responderte.'; q('#c-mail').focus(); return; }
+    ct.classList.add('is-sent');
+    ok.textContent = `Listo, ${s.name}. Pediste: ${s.needs.map((n) => n.value).join(', ')}${s.when ? ' · ' + s.when.toLowerCase() : ''}. En este prototipo la solicitud todavía no se envía.`;
+    if (onChange) onChange(s, true);
+  };
+  form.addEventListener('input', change); form.addEventListener('submit', submit);
+  if (onChange) onChange(state(), false);
+  return { form, state, off: () => { form.removeEventListener('input', change); form.removeEventListener('submit', submit); } };
+}
+const FORMS = {
+  tabla(ct) {
+    let line;
+    const a = Ask(ct, (st) => {
+      if (line) line.innerHTML = st.needs.length ? `<span class="mono">${st.needs.map((x) => x.dataset.sym).join(' + ')}</span> es tu fórmula` : 'Toca los elementos que necesitas y arma tu fórmula.';
+      ct.querySelectorAll('.ask-who .field').forEach((f) => f.classList.toggle('is-full', !!f.querySelector('input').value.trim()));
+    });
+    a.form.querySelector('.ask-need').insertAdjacentHTML('beforeend', '<p class="tb-f" aria-live="polite">Toca los elementos que necesitas y arma tu fórmula.</p>');
+    line = a.form.querySelector('.tb-f');
+    a.form.querySelector('.ask-need .ask-hint').remove();
+    [...ct.querySelectorAll('.ask-who .field')].forEach((f, i) => { f.dataset.sym = ['No', 'Co'][i]; });
+    return a.off;
+  }
+};
+
+/* ---------- the panel beside the options: a live picture of what the visitor has chosen ---------- */
+(() => {
+  const state = (form) => ({ needs: [...form.querySelectorAll('[name=need]:checked')], when: (form.querySelector('[name=when]:checked') || {}).value || '', name: form.querySelector('#c-name').value.trim(), contact: form.querySelector('#c-mail').value.trim() });
+  const upgrade = (id, fn) => {
+    const base = FORMS[id];
+    FORMS[id] = (ct) => {
+      const off = base(ct), form = ct.querySelector('.contact__form'), side = document.createElement('div');
+      side.className = 'ask-side';
+      form.querySelectorAll('legend').forEach((l, i) => l.insertAdjacentHTML('afterbegin', `<span class="ask-no">0${i + 1}</span>`));
+      const who = form.querySelector('.ask-who');
+      who.insertAdjacentHTML('beforebegin', '<p class="ask-leg"><span class="ask-no">03</span>¿A quién le respondemos?</p>'); ct.querySelector('.contact__mail').before(side);
+      form.querySelector('.ask-end').insertAdjacentHTML('beforeend', '<p class="ask-note">Te escribimos por el medio que nos dejes.</p>');
+      const update = fn(ct, form, side), run = () => update(state(form), ct.classList.contains('is-sent'));
+      const later = () => requestAnimationFrame(run);
+      form.addEventListener('input', run); form.addEventListener('submit', later);
+      run();
+      return () => { if (typeof off === 'function') off(); form.removeEventListener('input', run); form.removeEventListener('submit', later); };
+    };
+  };
+  
+  
+  
+  
+  upgrade('tabla', (ct, form, side) => {
+    side.innerHTML = '<div class="tb-big" aria-hidden="true"></div><p class="tb-cap" aria-live="polite"></p>';
+    const big = side.firstElementChild, cap = side.lastElementChild; let last = null;
+    return (s) => {
+      const key = s.needs.map((x) => x.dataset.sym).join('+');
+      if (key !== last) {
+        last = key;
+        big.innerHTML = s.needs.length ? s.needs.map((x, i) => `${i ? '<em>+</em>' : ''}<b><small>0${i + 1}</small>${x.dataset.sym}</b>`).join('') + '<em>→</em><b class="res"><small>tu</small>Tm</b>' : '<b class="q"><small>01</small>?</b><em>+</em><b class="q"><small>02</small>?</b><em>→</em><b class="q"><small>tu</small>Tm</b>';
+      }
+      cap.textContent = s.needs.length ? `${s.needs.map((x) => x.value).join(' + ')}: la fórmula de tu marca.` : 'Toca los elementos de la derecha y tu fórmula se arma aquí.';
+    };
+  });
+})();
+</script>
+
+<template id="tpl-ou"><section class="moment ou" aria-labelledby="ou-t" style="--mh:270vh"><div class="moment__stick ou-stick is-flow">
+  <p class="sr-only" id="ou-t">Uno lo diseña, el otro lo hace vender. Camilo más Sebastián: CaSe Studio.</p>
+  <p class="ou-say" aria-hidden="true"></p>
+  <p class="ou-eq" aria-hidden="true"><b data-no="20">Ca</b><i class="x" style="--n:4.6">milo</i><i class="x" style="--n:3.4"> + </i><b data-no="34">Se</b><i class="x" style="--n:7.6">bastián</i><i class="y" style="--n:7.6"> Studio</i></p>
+</div></section></template>
+
+<script>
+/* ---------- the last line ---------- */
+const OU_SAY = { es: [['Uno', 'lo', 'diseña,', 'el', 'otro', 'lo', 'hace', 'vender.'], [2, 7]], en: [['One', 'designs', 'it,', 'the', 'other', 'makes', 'it', 'sell.'], [1, 7]] };
+let OU_WORDS = OU_SAY.es[0];
+
+function initOutro(sec, id) {
+  const say = sec.querySelector('.ou-say'), eq = sec.querySelector('.ou-eq'), stick = sec.querySelector('.ou-stick');
+  const [ouW, ouH] = OU_SAY[(window.LANG && window.LANG.cur) || 'es']; OU_WORDS = ouW;
+  say.innerHTML = OU_WORDS.map((w, i) => `<span${ouH.includes(i) ? ' class="hl"' : ''}>${w}</span>`).join(' ');
+  const words = [...say.children], xs = [...eq.querySelectorAll('.x')], y = eq.querySelector('.y');
+  let beam = null, ring = null;
+  
+  
+  const word = {
+    tabla: (el, k) => { el.style.opacity = k.toFixed(3); el.style.transform = `rotateX(${((1 - k) * -86).toFixed(1)}deg) translate3d(0,${((1 - k) * 22).toFixed(1)}px,0)`; }
+  }[id];
+  const off = moment(sec, (p0) => {
+    const p = RM ? 1 : p0;
+    words.forEach((el, i) => word(el, easeOut(range(p, .05 + i * .035, .2 + i * .035)), i));
+    const ka = easeOut(range(p, .4, .54)), kc = easeIO(range(p, .58, .86));
+    eq.style.opacity = ka.toFixed(3);
+    eq.style.transform = `translate3d(0,${((1 - ka) * 30).toFixed(1)}px,0) scale(${(1 + kc * (.7)).toFixed(3)})`;
+    say.style.opacity = (RM ? 1 : 1 - kc * .5).toFixed(3); say.style.transform = `translate3d(0,${(kc * -3).toFixed(2)}vh,0) scale(${(1 - kc * .1).toFixed(3)})`;
+    xs.forEach((el) => { el.style.setProperty('--o', (1 - kc).toFixed(3)); el.style.opacity = (1 - kc).toFixed(3); });
+    y.style.setProperty('--o', kc.toFixed(3)); y.style.opacity = kc.toFixed(3);
+    if (beam) { const kb = range(p, .02, .46); beam.style.transform = `translate3d(0,${((kb - .5) * 70).toFixed(1)}vh,0) scaleX(${Math.sin(Math.PI * kb).toFixed(3)})`; beam.style.opacity = Math.sin(Math.PI * kb).toFixed(3); }
+    if (ring) { const kr = easeOut(range(p, .84, .97)); ring.style.opacity = (kr * .9).toFixed(3); ring.style.transform = `rotate(${(-12 - (1 - kr) * 30).toFixed(1)}deg) scale(${(1.7 - kr * .7).toFixed(3)})`; }
+    
+  });
+  return () => { if (typeof off === 'function') off(); };
+}
+</script>
+
+<script>
+/* What is added once the sections are in place: the form, the last line and the footer.
+   color.html and menu.html wrap this function to add the colour edges and the menu, so it has to be defined before them. */
+window.FINALE = (id, root, ct) => {
+  const offs = [];
+  offs.push(FORMS[id](ct));
+  const ou = document.getElementById('tpl-ou').content.firstElementChild.cloneNode(true);
+  ou.classList.add('ou--' + id); ct.after(ou); offs.push(initOutro(ou, id));
+  const ft = document.createElement('footer'); ft.className = 'ft ft--' + id; ft.innerHTML = window.FOOT[id]();
+  root.append(ft);
+  ft.querySelector('.ft-top').addEventListener('click', () => scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }));
+  if (window.FOOT_INIT && window.FOOT_INIT[id]) offs.push(window.FOOT_INIT[id](ft));
+  return () => offs.forEach((f) => { if (typeof f === 'function') f(); });
+};
+</script>
+
+<script>
+const FT = {
+  nav: [['Servicios', '#servicios'], ['Rediseño', '#rediseno'], ['Proyectos', '#proyectos'], ['Marcas', '#marcas'], ['Proceso', '#proceso'], ['Redes', '#redes'], ['Contacto', '#contacto']],
+  svc: [['Sitios y tiendas web', '#servicios'], ['Rediseño de sitios', '#rediseno'], ['Marca e identidad', '#servicios'], ['Redes sociales y contenido', '#redes'], ['Motion graphics y contenido con IA', '#redes']],
+  team: [['Camilo Corrales', 'Diseño y desarrollo', 'Ca', '20'], ['Sebastián Vanegas', 'Ventas y relaciones comerciales', 'Se', '34'], ['Catalina Vanegas', 'Redes sociales y contenido', 'Cv', '03']],
+  mail: 'hola@casestudio.example', place: 'Medellín, Colombia', free: 'Disponibles para nuevos proyectos'
+};
+const FT_LOGO = '<svg class="logo" role="img" aria-label="CaSe Studio" viewBox="0 0 959.36 250"><use href="#logo-cut"></use></svg>';
+const FT_TOP = '<button class="ft-top" type="button">Volver arriba <span aria-hidden="true">↑</span></button>';
+const ftNav = () => FT.nav.map(([t, h]) => `<a href="${h}">${t}</a>`).join('');
+const ftSvc = () => FT.svc.map(([t, h]) => `<a href="${h}">${t}</a>`).join('');
+const ftCols = (teamHTML) => `<nav class="ft-col" aria-label="Pie de página"><h3>Explorar</h3>${ftNav()}</nav><div class="ft-col"><h3>Servicios</h3>${ftSvc()}</div>${teamHTML}`;
+
+window.FOOT = {
+  tabla: () => {
+    /* the real outline of the table: periods one to five */
+    const tiles = [];
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 18; c++) {
+      const off = (r === 0 && c > 0 && c < 17) || ((r === 1 || r === 2) && c > 1 && c < 12);
+      tiles.push(`<i class="${off ? 'off' : r === 3 && c === 1 ? 'ca' : r === 3 && c === 15 ? 'se' : ''}"></i>`);
+    }
+    return `<div class="fb-land" aria-hidden="true"><div class="fb-floor">${tiles.join('')}</div></div>
+    <div class="ft-in"><div class="fb-cols"><div class="fb-me">${FT_LOGO}<p>${FT.mail}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${ftCols(`<div class="ft-col"><h3>Equipo</h3><div class="fb-team">${FT.team.map(([n, r, s, no]) => `<div class="fb-t"><span class="mono">${no}</span><b>${s}</b><i>${n}</i></div>`).join('')}</div></div>`)}</div>
+    <p class="ft-legal"><span>© 2026 CaSe Studio</span>${FT_TOP}</p></div>`;
+  }
+};
+window.FOOT_INIT = {
+  /* the light on the glass name follows the pointer; without one, it crosses as the footer comes into view */
+  
+};
+</script>
+
+
+<script>
+(() => {
+  const rng = (a) => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
+  const fit = (el, cv) => { const d = Math.min(2, devicePixelRatio || 1), W = el.clientWidth, H = el.clientHeight; cv.width = Math.round(W * d); cv.height = Math.round(H * d); return [W, H, d]; };
+
+
+
+
+  /* the next colour, tile by tile */
+  function mosaic(el, o, n) {
+    const cv = el.appendChild(document.createElement('canvas')), ctx = cv.getContext('2d');
+    const r = rng(31 + n * 7), J = Array.from({ length: 400 }, r), B = rgb(o.b), F = rgb(o.flash);
+    let W = 0, H = 0, d = 1, s = 80, cells = [], font = 'sans-serif';
+    const box = (x, y, w, h, q) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, q); else ctx.rect(x, y, w, h); };
+    return {
+      size() {
+        W = el.clientWidth; const cols = W < 700 ? 9 : 18; s = W / cols;
+        const rows = Math.max(5, Math.round(innerHeight * (W < 700 ? .4 : .52) / s));
+        el.style.height = Math.ceil(rows * s) + 'px';
+        [W, H, d] = fit(el, cv);
+        const sky = cols === 18 ? [[0, 17], [0, 1, 12, 13, 14, 15, 16, 17], [0, 1, 12, 13, 14, 15, 16, 17]] : [[0, 8], [0, 1, 6, 7, 8], [0, 1, 5, 6, 7, 8]];
+        cells = [];
+        for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+          if (y < 3 && !sky[y].includes(x)) continue;
+          cells.push({ x: x * s, y: y * s, t: .13 + (1 - y / (rows - 1)) * .36 + (J[(y * 18 + x) % 400] - .5) * (.34 - .22 * y / (rows - 1)), mark: y === 3 ? (x === 1 ? 'Ca' : x === (cols === 18 ? 15 : 7) ? 'Se' : '') : '' });
+        }
+        font = getComputedStyle(el).fontFamily;
+      },
+      draw(u) {
+        ctx.setTransform(d, 0, 0, d, 0, 0); ctx.clearRect(0, 0, W, H);
+        cells.forEach((c) => {
+          const f = easeOut(range(u, c.t, c.t + .12)); if (f <= 0) return;
+          const z = s * f + (f >= 1 ? .8 : 0), x = c.x + (s - z) / 2, y = c.y + (s - z) / 2;
+          ctx.fillStyle = f >= 1 ? o.b : mix(F, B, f);
+          if (f >= 1) ctx.fillRect(x, y, z, z); else { box(x, y, z, z, (1 - f) * s * .3); ctx.fill(); }
+          if (c.mark && f >= 1) {
+            const k = easeOut(range(u, c.t + .12, c.t + .26)), m = s * .1, w = s - m * 2;
+            ctx.globalAlpha = k; ctx.fillStyle = o.mk; box(c.x + m, c.y + m, w, w, s * .09); ctx.fill();
+            if (o.mkLine) { ctx.strokeStyle = o.mkLine; ctx.lineWidth = 1.5; ctx.stroke(); }
+            ctx.fillStyle = o.mkText; ctx.font = `600 ${(s * .34).toFixed(1)}px ${font}`; ctx.textBaseline = 'alphabetic';
+            ctx.fillText(c.mark, c.x + m + w * .16, c.y + m + w * .8); ctx.globalAlpha = 1;
+          }
+        });
+      }
+    };
+  }
+
+  const KIND = { mosaic };
+  const TONE = {
+    tabla: { kind: 'mosaic', base: '#02040a', map: [['#proceso', '#f4f7ff'], ['.zb', '#1b55e8']], look: {
+      '#f4f7ff': { flash: '#9fc0ff', mk: '#1e55e0', mkText: '#ffffff' },
+      '#1b55e8': { flash: '#cfe0ff', mk: '#ffffff', mkText: '#1b55e8' },
+      '#02040a': { flash: '#1e6bff', mk: '#0a1638', mkText: '#ffffff', mkLine: 'rgba(118,166,255,.6)' } } }
+  };
+
+  function edges(root, id) {
+    const T = TONE[id]; if (!T) return () => {};
+    const colour = (s) => { const m = T.map.find(([sel]) => s.matches(sel)); return m ? m[1] : T.base; };
+    const list = []; let prev = null, pc = null;
+    [...root.children].filter((n) => n.matches('section,footer')).forEach((s) => {
+      const c = colour(s);
+      if (prev && c !== pc) {
+        const el = document.createElement('div'); el.className = 'edge edge--' + T.kind; el.setAttribute('aria-hidden', 'true');
+        el.style.setProperty('--ea', pc); el.style.setProperty('--eb', c);
+        s.before(el); prev.classList.add('tone-b0'); s.classList.add('tone-t0');
+        list.push({ el, api: KIND[T.kind](el, Object.assign({ a: pc, b: c }, T.look[c]), list.length) });
+      }
+      if (c !== T.base) s.classList.add('tone');
+      prev = s; pc = c;
+    });
+    let raf = 0;
+    const frame = () => {
+      raf = 0; const vh = innerHeight;
+      list.forEach((e) => { const r = e.el.getBoundingClientRect(); if (RM) e.api.draw(.66); else if (r.bottom > -80 && r.top < vh + 80) e.api.draw(clamp01((vh - r.top) / (vh + r.height))); });
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    const resize = () => { list.forEach((e) => e.api.size()); queue(); };
+    list.forEach((e) => e.api.size()); frame();
+    if (!RM) addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', resize);
+    return () => { removeEventListener('scroll', queue); removeEventListener('resize', resize); cancelAnimationFrame(raf); };
+  }
+
+  
+
+  
+
+  const F = window.FINALE;
+  window.FINALE = (id, root, ct) => {
+    const a = F ? F(id, root, ct) : null;
+    const b = edges(root, id), c = null, e = null;
+    return () => { b(); if (c) c(); if (e) e(); if (typeof a === 'function') a(); };
+  };
+})();
+</script>
+
+<script>
+(() => {
+  /* section id, name and symbol in the period row; the symbols change with the language */
+  const ITEMS = [['servicios', 'Servicios', 'Sv'], ['rediseno', 'Rediseño', 'Rd'], ['proyectos', 'Proyectos', 'Py'], ['marcas', 'Marcas', 'Mc'], ['proceso', 'Proceso', 'Pc'], ['redes', 'Redes', 'Rs'], ['nosotros', 'Nosotros', 'No'], ['contacto', 'Contacto', 'Co']];
+  const SYM_EN = ['Sv', 'Rd', 'Pj', 'Br', 'Pc', 'So', 'Ab', 'Co'];
+  const light = (el) => { const m = getComputedStyle(el).backgroundColor.match(/[\d.]+/g); return m ? (.2126 * m[0] + .7152 * m[1] + .0722 * m[2]) / 255 > .6 : false; };
+
+  window.MENU = (id, root) => {
+    const lang = (window.LANG && window.LANG.cur) || 'es';
+    const list = `<ol class="mn-list" id="mn-index">${ITEMS.map(([k, t, s], i) => `<li><a href="#${k}" style="--i:${i}"><span class="mn-k">0${i + 1}</span><span class="mn-s" aria-hidden="true">${lang === 'en' ? SYM_EN[i] : s}</span><span class="mn-t">${t}</span></a></li>`).join('')}</ol>`;
+    const side = `<div class="mn-side"><div class="mn-lang" role="group" aria-label="Idioma">${[['es', 'ES', 'Español'], ['en', 'EN', 'English']].map(([c, t, n]) => `<button type="button" data-lang="${c}" aria-pressed="${c === lang}" aria-label="${n}">${t[0] + t[1].toLowerCase()}</button>`).join('')}</div><a class="btn btn--sm btn--white mn-cta" href="#contacto">Empezar mi proyecto</a></div>`;
+    const nav = document.createElement('nav'); nav.className = 'mn mn--' + id; nav.setAttribute('aria-label', 'Secciones');
+    nav.innerHTML = list + side;
+    if (!window.LANG) nav.classList.add('no-lang');
+    root.appendChild(nav);
+    const links = [...nav.querySelectorAll('.mn-list a')], secs = ITEMS.map(([k]) => root.querySelector('#' + k));
+    const all = [...root.children].filter((n) => n.matches('section')), hero = all[0], foot = root.querySelector('.ft');
+    const tones = all.map(light), owner = all.map((s) => secs.indexOf(s));
+    /* the closing section and the last phrase belong to Contacto; anything before the first item belongs to none */
+    for (let i = 0, last = -1; i < owner.length; i++) { if (owner[i] >= 0) last = owner[i]; else owner[i] = all[i].matches('.ou') ? ITEMS.length - 1 : last; }
+    for (let i = owner.length - 2; i > 0; i--) if (all[i + 1] && owner[i + 1] === ITEMS.length - 1 && secs.indexOf(all[i]) < 0 && !all[i].matches('.ab')) owner[i] = ITEMS.length - 1;
+    let act = -1, shown = null, raf = 0;
+    const setAct = (i) => {
+      if (i === act) return; act = i;
+      links.forEach((a, j) => { a.classList.toggle('on', j === i); a.classList.toggle('done', j < i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    };
+    /* the menu shows once the hero is behind and hides before the footer; the section in the middle of the screen is the one marked */
+    const frame = () => {
+      raf = 0; const vh = innerHeight, mid = vh * .5;
+      let k = 0; all.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) k = i; });
+      const on = hero.getBoundingClientRect().bottom < vh * .45 && (!foot || foot.getBoundingClientRect().top > vh * .8);
+      if (on !== shown) { shown = on; nav.classList.toggle('is-in', on); }
+      setAct(Math.max(0, owner[k])); nav.classList.toggle('on-light', tones[k]);
+    };
+    const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue);
+    frame(); requestAnimationFrame(() => { act = -1; frame(); });
+    return () => { removeEventListener('scroll', queue); removeEventListener('resize', queue); cancelAnimationFrame(raf); nav.remove(); };
+  };
+
+  /* the menu is added with the rest of what comes after the sections */
+  const F = window.FINALE;
+  window.FINALE = (id, root, ct) => {
+    const a = F ? F(id, root, ct) : null, b = window.MENU(id, root);
+    return () => { b(); if (typeof a === 'function') a(); };
+  };
+})();
+</script>
+
+<!-- GENERADO por i18n/generar.py a partir de i18n/en.py. No se edita a mano. -->
+<script>
+/* ===== Two languages. Spanish is the page as written; English is a dictionary applied to the page before its sections start,
+   to the data the sections draw from, and to whatever they write afterwards ===== */
+(() => {
+  const D = {"Reanudar animación":"Resume animation","Pausar animación":"Pause animation","Todos los elementos":"All the elements","de tu marca en internet.":"of your brand online.","Sitio web, tienda, redes y marca, hechos por el mismo equipo.":"Website, store, social media and brand, made by the same team.","Empezar mi proyecto":"Start my project","Ver proyectos":"See projects","Juntamos lo que tu marca necesita en un solo equipo.":"We bring what your brand needs into one team.","Cuatro elementos. Tú eliges la fórmula.":"Four elements. You choose the formula.","Puedes empezar con uno y sumar los demás cuando tu negocio los pida.":"You can start with one and add the rest when your business asks for them.","Sitios web":"Websites","Cargan rápido, se leen bien en el celular y llevan a tu cliente a escribirte.":"They load fast, read well on a phone and lead your customer to message you.","Tiendas en línea":"Online stores","Catálogo, carrito y pagos conectados con tu inventario.":"Catalog, cart and payments connected to your inventory.","Redes sociales":"Social media","Calendario del mes, fotos, videos y textos listos para publicar.":"The month's calendar, photos, videos and copy, ready to publish.","Marca":"Brand","Logo, colores y tipografías con una guía corta para usarlos.":"Logo, colors and typefaces, with a short guide for using them.","en un solo equipo":"in one team","Armar mi fórmula":"Build my formula","Vista previa del proyecto":"Project preview","Proyecto anterior":"Previous project","Proyecto siguiente":"Next project","Abrir en pestaña nueva":"Open in a new tab","Cerrar vista previa":"Close preview","Menú y pedidos en línea":"Online menu and ordering","Restaurantes":"Restaurants","Sitio para un restaurante de hamburguesas, sánduches de autor y papas cargadas en Laureles. El cliente arma su pedido en la web y lo envía listo por WhatsApp, a domicilio o para recoger.":"A site for a restaurant serving burgers, signature sandwiches and loaded fries in Laureles. The customer builds the order on the site and sends it ready over WhatsApp, for delivery or pickup.","Menú + pedidos":"Menu + ordering","Español":"Spanish","Menú digital con hamburguesas, Duches y papas cargadas":"Digital menu with burgers, Duches and loaded fries","Armado del pedido directamente en la web":"Order built directly on the site","Envío del pedido listo por WhatsApp":"Order sent ready over WhatsApp","Opciones de domicilio o para recoger":"Delivery or pickup options","Sitio corporativo de inteligencia artificial":"Corporate site for artificial intelligence","Tecnología":"Technology","Sitio del ecosistema NeuralNet, que reúne sus dos líneas de inteligencia artificial para empresas: NeuralBI y NeuralFin.":"The site of the NeuralNet ecosystem, which brings together its two lines of artificial intelligence for companies: NeuralBI and NeuralFin.","Inteligencia artificial":"Artificial intelligence","Sitio corporativo":"Corporate site","Portada con texto en movimiento":"Cover with moving text","Entrada a las dos líneas del grupo: NeuralBI y NeuralFin":"Entry to the group's two lines: NeuralBI and NeuralFin","Selector de idioma":"Language switch","Sitio corporativo bilingüe":"Bilingual corporate site","Sitio corporativo bilingüe para una firma que construye tableros de Power BI, apps a medida y agentes de IA para empresas. El reto era explicar servicios muy técnicos de forma clara y verse a la altura de clientes corporativos.":"A bilingual corporate site for a firm that builds Power BI dashboards, custom apps and AI agents for companies. The challenge was to explain very technical services clearly and look the part for corporate clients.","Consultoría tecnológica":"Technology consulting","Colombia · clientes internacionales":"Colombia · international clients","Sitio corporativo / B2B":"Corporate site / B2B","Español e inglés":"Spanish and English","Diseño oscuro y tecnológico con animaciones que explican cada servicio":"Dark, tech-style design with animations that explain each service","Secciones por producto: Power BI, Power Apps, Power Automate y Copilot Studio":"Sections by product: Power BI, Power Apps, Power Automate and Copilot Studio","Proceso de trabajo en tres fases y soluciones por industria":"A three-phase work process and solutions by industry","Tablero de ejemplo interactivo y preguntas frecuentes":"Interactive sample dashboard and frequently asked questions","Formulario para agendar una auditoría":"Form to book an audit","Landing de proyecto inmobiliario":"Landing page for a real estate project","Inmobiliario":"Real estate","Página de ventas para un proyecto de vivienda y comercio en Medellín. Todo está pensado para captar compradores e inversionistas: tipologías con precios, galería de renders y formularios de cotización.":"A sales page for a housing and retail project in Medellín. Everything is designed to attract buyers and investors: unit types with prices, a gallery of renders and quote forms.","Finca raíz":"Property","Landing de ventas":"Sales landing page","Formulario de cotización visible desde la primera pantalla":"Quote form visible from the first screen","Comparador de apartamentos tipo A y B con áreas y precios":"Comparison of type A and B apartments with areas and prices","Galería de 14 renders interiores en pantalla completa":"Gallery of 14 interior renders in full screen","Mapa con sitios cercanos y argumentos de inversión":"Map with nearby places and reasons to invest","Sección de locales comerciales con disponibilidad":"Retail units section with availability","Sitio de marca y tienda":"Brand site and store","Sitio para una marca de bebidas funcionales con CBD. La idea era crear una experiencia divertida y llamativa que presentara cada sabor como un producto propio y permitiera pedir por paquetes.":"A site for a brand of functional CBD drinks. The idea was to create a fun, eye-catching experience that presented each flavor as a product of its own and let people order by the pack.","Bebidas":"Beverages","Sitio de marca + tienda":"Brand site + store","Portada animada con la identidad de la marca":"Animated cover with the brand's identity","Presentación de los tres sabores con sus beneficios":"The three flavors presented with their benefits","Selector de sabor y paquetes de 6, 12 o 24 latas con carrito":"Flavor picker and packs of 6, 12 or 24 cans with a cart","Tabla nutricional e ingredientes por producto":"Nutrition facts and ingredients for each product","Información legal y de licencias visible":"Legal and licensing information in plain view","Tienda en línea de jabones artesanales":"Online store for handmade soaps","Tienda virtual para una marca de jabones artesanales hechos en frío. Buscábamos una experiencia cálida y sensorial que transmitiera lo natural del producto y facilitara comprar y pedir por WhatsApp.":"An online store for a brand of cold-process handmade soaps. We were after a warm, sensory experience that conveyed how natural the product is and made it easy to buy and order over WhatsApp.","Cuidado personal":"Personal care","Catálogo con filtros por categoría, favoritos y carrito de compras":"Catalog with category filters, favorites and a shopping cart","Diagnóstico de piel que recomienda la barra ideal":"Skin quiz that recommends the ideal bar","Formulario para diseñar un jabón a la medida, enviado por WhatsApp":"Form to design a custom soap, sent over WhatsApp","Sección de bodas, eventos y regalos corporativos":"Section for weddings, events and corporate gifts","Bebidas con CBD con una voz fresca y relajada, alineada con su sitio web.":"CBD drinks with a fresh, relaxed voice, aligned with their website.","Llevamos la identidad que diseñamos para su sitio web a Instagram y TikTok, para que redes y tienda hablaran el mismo idioma y vendieran juntas.":"We took the identity we designed for their website to Instagram and TikTok, so that social media and store spoke the same language and sold together.","Gestión de comentarios y mensajes":"Comment and message management","Contenido para Instagram":"Content for Instagram","Contenido para TikTok":"Content for TikTok","Coherencia visual entre redes y sitio web":"Visual consistency between social media and website","Una plataforma para pasar dólares digitales a pesos, explicada de forma clara y cercana.":"A platform for turning digital dollars into pesos, explained in a clear, friendly way.","Agilcash convierte dólares digitales a pesos colombianos. Nuestro reto fue hacer que un tema financiero se entendiera fácil y generara confianza en Instagram y TikTok.":"Agilcash converts digital dollars into Colombian pesos. Our challenge was to make a financial topic easy to understand and build trust on Instagram and TikTok.","Una panadería con una comunidad de más de 280 mil seguidores en Instagram.":"A bakery with a community of more than 280 thousand followers on Instagram.","Acompañamos a La Miguería en Instagram, donde su comunidad supera los 280 mil seguidores, con contenido que antoja y conversaciones que no se quedan sin respuesta.":"We work alongside La Miguería on Instagram, where its community is over 280 thousand followers, with content that makes you hungry and conversations that never go unanswered.","La marca de natación en el país, con más de 70 mil seguidores en Instagram.":"The swimming brand in the country, with more than 70 thousand followers on Instagram.","Trabajamos con Speedo Colombia, la cuenta local de la marca de trajes de baño y accesorios de natación, cuidando una comunidad de más de 70 mil seguidores en Instagram.":"We work with Speedo Colombia, the local account of the swimwear and swimming accessories brand, looking after a community of more than 70 thousand followers on Instagram.","Ropa de surf y playa con tienda en línea y envíos a toda Colombia.":"Surf and beach wear with an online store and shipping across Colombia.","Para O'Neill Colombia, la marca de ropa de surf y playa, trabajamos en Instagram para conectar el espíritu de la marca con su tienda en línea.":"For O'Neill Colombia, the surf and beach wear brand, we work on Instagram to connect the brand's spirit with its online store.","El canal de una comunidad de más de 70.000 egresados de la universidad.":"The channel of a community of more than 70,000 university alumni.","Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.":"Graduados EAFIT brings together more than 70,000 alumni of the university in Medellín. On Instagram we work to keep that community close, informed and connected.","Sector":"Industry","Ubicación":"Location","Tipo de sitio":"Type of site","Idioma":"Language","Lo que construimos":"What we built","Visitar sitio":"Visit site","Redes":"Social","Servicio":"Service","Community management y contenido":"Community management and content","Lo que hicimos":"What we did","Proyectos":"Projects","Así trabajamos contigo":"How we work with you","Conversamos":"We talk","Tu negocio y tus clientes":"Your business and your customers","Entendemos tu negocio, tus clientes y qué debe lograr la web.":"We get to know your business, your customers and what the website must achieve.","Diseñamos":"We design","Estilo y estructura":"Style and structure","Proponemos el estilo y la estructura antes de programar.":"We propose the style and the structure before coding.","Construimos":"We build","Rápido y adaptado a celulares":"Fast and phone-friendly","Desarrollamos un sitio rápido y adaptado a celulares.":"We develop a fast site that works on phones.","Lanzamos":"We launch","Seguimos contigo":"We stay with you","Publicamos, te enseñamos a usarlo y seguimos contigo.":"We publish it, show you how to use it and stay with you.","Tú":"You","El elemento que falta es tu marca.":"The missing element is your brand.","Manejo de redes sociales":"Social media management","Seis elementos que se enlazan alrededor de tus redes.":"Six elements that bond around your social media.","Estrategia y calendario":"Strategy and calendar","Definimos contigo los temas, los formatos y las fechas del mes.":"We define the topics, formats and dates of the month with you.","Fotos y videos":"Photos and videos","Producimos el contenido: sesiones de fotos, reels y piezas gráficas.":"We produce the content: photo shoots, reels and graphic pieces.","Animamos tus ideas en reels y piezas con movimiento, hechas por nosotros.":"We animate your ideas into reels and motion pieces, made by us.","Contenido con IA":"AI content","Usamos inteligencia artificial para producir más piezas en el estilo de tu marca.":"We use artificial intelligence to produce more pieces in your brand's style.","Publicamos, respondemos comentarios, mensajes y reseñas, y cuidamos el tono de tu marca.":"We post, reply to comments, messages and reviews, and look after your brand's tone.","Publicación":"Publishing","Programamos cada pieza con su fecha y la publicamos en tus redes.":"We schedule every piece with its date and publish it on your channels.","Nuestro plus":"Our edge","¿Ya tienes un sitio? Lo llevamos al siguiente nivel.":"Already have a site? We take it to the next level.","Conservamos lo que funciona y rediseñamos el resto.":"We keep what works and redesign the rest.","Antes":"Before","Después":"After","Ejemplo: un sitio genérico rediseñado como un sitio claro":"Example: a generic site redesigned as a clear one","Inicio":"Home","Soluciones":"Solutions","Empezar 🚀":"Get started 🚀","🔥 Nuevo · Potenciado con IA":"🔥 New · Powered by AI","Desbloquea el poder de tu negocio":"Unlock the power of your business","Soluciones innovadoras, robustas y de vanguardia para potenciar tu transformación digital.":"Innovative, robust, cutting-edge solutions to power your digital transformation.","Empezar ahora":"Get started now","Saber más":"Learn more","Innovador":"Innovative","Robusto":"Robust","Potente":"Powerful","Tu marca":"Your brand","Menú":"Menu","Pedir":"Order","Pan recién horneado, todos los días a las 7.":"Fresh-baked bread, every day at 7.","Pídelo por WhatsApp y recógelo en la tienda.":"Order on WhatsApp and pick it up at the shop.","Hacer un pedido":"Place an order","Masa madre":"Sourdough","Pan de queso":"Cheese bread","un sitio corporativo":"a corporate site","Tienda en línea":"Online store","una tienda en línea":"an online store","una landing de ventas":"a sales landing page","Menú y pedidos":"Menu and ordering","un menú con pedidos":"a menu with ordering","Rediseño de mi sitio":"Redesign of my site","rediseñar mi sitio":"a redesign of my site","Manejo de redes":"Social media management","manejo de redes":"social media management","Fotografía de producto":"Product photography","fotos de producto":"product photos","Parrilla de contenido":"Content calendar","una parrilla de contenido":"a content calendar","Logo e identidad":"Logo and identity","el logo y la identidad de mi marca":"my brand's logo and identity","Plus":"Extras","contenido con IA":"AI content","Lo antes posible":"As soon as possible","En uno o dos meses":"In one or two months","Sin afán":"No rush","¿Qué necesitas?":"What do you need?","Elige una o varias opciones.":"Choose one or more options.","¿Para cuándo?":"By when?","Nombre":"Name","Correo o WhatsApp":"Email or WhatsApp","Enviar solicitud":"Send request","Elige al menos una opción de lo que necesitas.":"Choose at least one option of what you need.","Escribe tu nombre para saber a quién responder.":"Write your name so we know who to reply to.","Deja un correo o un WhatsApp para responderte.":"Leave an email or a WhatsApp number so we can reply.","es tu fórmula":"is your formula","Toca los elementos que necesitas y arma tu fórmula.":"Tap the elements you need and build your formula.","¿A quién le respondemos?":"Who do we reply to?","Te escribimos por el medio que nos dejes.":"We will write to you on whichever one you leave us.","tu":"your","Toca los elementos de la derecha y tu fórmula se arma aquí.":"Tap the elements on the right and your formula builds up here.","Uno lo diseña, el otro lo hace vender. Camilo más Sebastián: CaSe Studio.":"One designs it, the other makes it sell. Camilo plus Sebastián: CaSe Studio.","Marcas con las que hemos trabajado en redes":"Brands we have worked with on social media","Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.":"Beyond the web, we have managed the community and created the content for these brands on Instagram and TikTok.","seis comunidades atendidas por el mismo equipo":"six communities looked after by the same team","Servicios":"Services","Rediseño":"Redesign","Marcas":"Brands","Proceso":"Process","Contacto":"Contact","Sitios y tiendas web":"Websites and online stores","Rediseño de sitios":"Site redesign","Marca e identidad":"Brand and identity","Redes sociales y contenido":"Social media and content","Motion graphics y contenido con IA":"Motion graphics and AI content","Diseño y desarrollo":"Design and development","Ventas y relaciones comerciales":"Sales and client relations","Disponibles para nuevos proyectos":"Available for new projects","Volver arriba":"Back to top","Pie de página":"Footer","Explorar":"Explore","Equipo":"Team","Dos amigos desde la guardería, un mismo equipo.":"Two friends since nursery school, one team.","Así nació CaSe Studio y así trabajamos con cada cliente.":"That is how CaSe Studio was born and how we work with every client.","Programación, diseño visual y construcción de cada sitio, desde la primera pantalla hasta el último detalle.":"Code, visual design and the build of every site, from the first screen to the last detail.","Entiende el negocio de cada cliente, define qué debe lograr la web y acompaña el proyecto de principio a fin.":"He gets to know each client's business, defines what the website must achieve and stays with the project from start to finish.","Comunicadora social. Planea el contenido de cada marca, maneja su comunidad y cuida que cada publicación conecte con su público.":"Social communicator. She plans each brand's content, manages its community and makes sure every post connects with its audience.","Nosotros":"About us","Secciones":"Sections","Hablemos de tu proyecto":"Let's talk about your project","Marca lo que necesitas y te escribimos con los siguientes pasos.":"Check what you need and we will write to you with the next steps.","También puedes escribirnos a hola@casestudio.example":"You can also write to us at hola@casestudio.example","Principal":"Main","CaSe Studio, inicio":"CaSe Studio, home"};
+  const one = (s) => D[s] || s;
+  /* sentences that are put together while the page runs */
+  const RULES = [
+    [/^Abrir vista previa de (.+)$/, (m) => `Open preview of ${m[1]}`],
+    [/^Ver el trabajo con (.+)$/, (m) => `See the work with ${m[1]}`],
+    [/^Ver en (.+)$/, (m) => `See on ${m[1]}`],
+    [/^· (.+)$/, (m) => (D[m[1]] ? `· ${D[m[1]]}` : null)],
+    [/^, (.+)$/, (m) => (D[m[1]] ? `, ${D[m[1]]}` : null)],
+    [/^Recorrido con pantallas reales de (.+)\. Cuando esta página esté en su propio dominio, aquí se abre el sitio real y se navega sin salir\.$/, (m) => `A tour with real screens of ${m[1]}. Once this page is on its own domain, the real site opens here and you can browse it without leaving.`],
+    [/^(.+): la fórmula de tu marca\.$/, (m) => `${m[1].split(' + ').map(one).join(' + ')}: your brand's formula.`],
+    [/^Listo, (.+?)\. Pediste: (.+?)(?: · (.+))?\. En este prototipo la solicitud todavía no se envía\.$/, (m) => `Done, ${m[1]}. You asked for: ${m[2].split(', ').map(one).join(', ')}${m[3] ? ' · ' + one(m[3]) : ''}. In this prototype the request is not sent yet.`]
+  ];
+  const tr = (s) => {
+    const k = s.replace(/\s+/g, ' ').trim(); if (k.length < 2) return null;
+    let t = D[k];
+    if (t === undefined) for (const [re, fn] of RULES) { const m = re.exec(k); if (m) { t = fn(m); break; } }
+    if (t == null || t === k) return null;
+    return s.match(/^\s*/)[0] + t + s.match(/\s*$/)[0];
+  };
+  const ATTR = /^(aria-label|placeholder|alt|title|data-ph)$/;
+  const node = (n) => {
+    if (LANG.cur !== 'en') return;
+    if (n.nodeType === 3) { const t = tr(n.nodeValue); if (t !== null) n.nodeValue = t; return; }
+    if (n.nodeType !== 1 || /^(SCRIPT|STYLE|TEMPLATE|TEXTAREA)$/.test(n.tagName) || n.classList.contains('proto-picker')) return;
+    for (const a of n.attributes) if (ATTR.test(a.name) || (a.name === 'value' && /^(checkbox|radio)$/.test(n.type))) { const t = tr(a.value); if (t !== null) n.setAttribute(a.name, t); }
+    for (let c = n.firstChild; c; c = c.nextSibling) node(c);
+  };
+  /* the lists the sections are drawn from: translated in place, and put back when Spanish returns */
+  const sources = () => [window.PROJECTS, window.BRANDS, window.TEAM, typeof STEPS !== 'undefined' && STEPS, typeof SOCIAL !== 'undefined' && SOCIAL, typeof NEEDS !== 'undefined' && NEEDS, typeof WHEN !== 'undefined' && WHEN].filter(Boolean);
+  const keep = new Map();
+  const deep = (v, f) => { for (const k in v) { if (typeof v[k] === 'string') v[k] = f(v[k], k); else if (v[k] && typeof v[k] === 'object') deep(v[k], f); } };
+  const SKIP = /^(id|img|tour|url|bg|fg|sym|s|z)$/;
+  const data = (code) => sources().forEach((src) => {
+    if (!keep.has(src)) keep.set(src, JSON.stringify(src));
+    const es = JSON.parse(keep.get(src)); src.length = 0; es.forEach((x) => src.push(x));
+    if (code === 'en') deep(src, (s, k) => (SKIP.test(k) ? s : D[s] || s));
+  });
+  const LANG = window.LANG = {
+    cur: 'es',
+    set(code) {
+      if (code === LANG.cur || !/^(es|en)$/.test(code)) return;
+      /* come back to the same place after the page is drawn again */
+      const stage = document.getElementById('stage'), mid = innerHeight / 2; let k = 0, r = 0;
+      stage.querySelectorAll('.v > section').forEach((s, i) => { const b = s.getBoundingClientRect(); if (b.top <= mid) { k = i; r = Math.min(1, Math.max(0, (mid - b.top) / b.height)); } });
+      LANG.cur = code; document.documentElement.lang = code; data(code); chrome(code);
+      if (window.REMOUNT) window.REMOUNT();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const s = stage.querySelectorAll('.v > section')[k]; if (!s || !k) return;
+        const b = s.getBoundingClientRect(); scrollTo({ top: scrollY + b.top + r * b.height - innerHeight / 2, behavior: 'instant' });
+      }));
+    }
+  };
+  /* what lives outside the page (the preview window) is translated in place and remembers its Spanish */
+  const outside = [];
+  const chrome = (code) => {
+    while (outside.length) { const [n, a, v] = outside.pop(); if (a) n.setAttribute(a, v); else n.nodeValue = v; }
+    if (code !== 'en') return;
+    const walk = (n) => {
+      if (n.nodeType === 3) { const t = tr(n.nodeValue); if (t !== null) { outside.push([n, null, n.nodeValue]); n.nodeValue = t; } return; }
+      if (n.nodeType !== 1 || /^(SCRIPT|STYLE|TEMPLATE|TEXTAREA)$/.test(n.tagName) || n.id === 'stage' || n.classList.contains('proto-picker')) return;
+      for (const a of n.attributes) if (ATTR.test(a.name)) { const t = tr(a.value); if (t !== null) { outside.push([n, a.name, a.value]); n.setAttribute(a.name, t); } }
+      for (let c = n.firstChild; c; c = c.nextSibling) walk(c);
+    };
+    walk(document.body);
+  };
+  /* every switch on the page shows the language that is on, and any of them changes it */
+  const mark = (root) => root.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.lang === LANG.cur));
+  document.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (b) LANG.set(b.dataset.lang); });
+  window.I18N = { node: (root) => { mark(root); node(root); }, tr };
+  /* whatever is written after the sections start (lists, counters, messages) is translated as it arrives */
+  new MutationObserver((ms) => {
+    if (LANG.cur !== 'en') return;
+    for (const m of ms) {
+      if (m.type === 'characterData') node(m.target);
+      else if (m.type === 'attributes') { const v = m.target.getAttribute(m.attributeName), t = v && tr(v); if (t) m.target.setAttribute(m.attributeName, t); }
+      else m.addedNodes.forEach(node);
+    }
+  }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['aria-label', 'placeholder', 'alt', 'title', 'data-ph'] });
+})();
+</script>
+
+<template id="tpl-contact">
+  <section class="contact" id="contacto" aria-labelledby="contact-h">
+    <div class="contact__in wrap">
+      <h2 class="h2" id="contact-h">Hablemos de tu proyecto</h2>
+      <p class="lead">Marca lo que necesitas y te escribimos con los siguientes pasos.</p>
+      <form class="contact__form" novalidate></form>
+      <p class="contact__mail">También puedes escribirnos a hola@casestudio.example</p>
+    </div>
+  </section>
+</template>
+
+<main id="stage"></main>
+
+<nav class="proto-picker type-picker" aria-label="Combinación de fuentes">
+  <span class="proto-picker-highlight" aria-hidden="true"></span>
+  <span class="tp-label" aria-hidden="true">Aa</span>
+</nav>
+
+<script>
+/* Puts the page together: the hero, the sections in their order, the contact block and what FINALE adds
+   (form, last line, footer, colour edges and menu). REMOUNT draws it again; the language switch uses it. */
+(() => {
+  const page = window.VARIANTS[0];
+  const stage = document.getElementById('stage');
+  let cleanup = null, first = true;
+
+  function mount() {
+    if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+    stage.innerHTML = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      const frag = document.getElementById(page.tpl).content.cloneNode(true);
+      const pages = (window.PAGES[page.id] || []).slice().sort((x, y) => x.order - y.order);
+      pages.forEach((pg) => frag.firstElementChild.appendChild(document.getElementById(pg.tpl).content.cloneNode(true)));
+      frag.firstElementChild.appendChild(document.getElementById('tpl-contact').content.cloneNode(true));
+      stage.appendChild(frag);
+      const root = stage.firstElementChild;
+      if (window.I18N) window.I18N.node(root);
+      root.classList.add('is-entering');
+      document.documentElement.style.background = getComputedStyle(root).backgroundColor;
+      const done = page.init ? page.init(root) : null;
+      const done2 = pages.map((pg) => pg.init(root));
+      const ct = root.querySelector('.contact');
+      ct.classList.add('contact--' + page.id);
+      const stopTours = window.Tours ? Tours.start(root) : null;
+      const fin = window.FINALE ? window.FINALE(page.id, root, ct) : null;
+      cleanup = () => { if (fin) fin(); if (stopTours) stopTours(); if (typeof done === 'function') done(); done2.forEach((f) => { if (typeof f === 'function') f(); }); };
+      /* a link to a section (index.html#contacto) lands on it the first time the page is drawn */
+      if (first) { first = false; let t = null; try { t = location.hash.length > 1 ? stage.querySelector(location.hash) : null; } catch (e) {} if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); }
+    });
+  }
+
+  window.REMOUNT = mount;
+
+  /* in-page links scroll to their section */
+  stage.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    e.preventDefault();
+    if (href === '#top') { scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
+    const target = stage.querySelector(href);
+    if (target) target.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  mount();
+})();
+</script>
+<script>
+/* type sets: the chosen one (Funnel) plus the two finalists it was weighed against; F cycles them */
+(() => {
+  const TYPES = [
+    { id: 'funnel', name: 'Funnel + Martian Mono' },
+    { id: 'schibsted', name: 'Schibsted + Plex Mono' },
+    { id: 'newsreader', name: 'Newsreader + Hanken' }
+  ];
+  const tp = document.querySelector('.type-picker'), hl = tp.querySelector('.proto-picker-highlight');
+  const btns = TYPES.map((t) => {
+    const b = document.createElement('button');
+    b.className = 'proto-picker-item';
+    b.type = 'button';
+    b.textContent = t.name;
+    tp.appendChild(b);
+    return b;
+  });
+  let cur = 0;
+  try { const i = TYPES.findIndex((t) => t.id === localStorage.getItem('case-type')); if (i >= 0) cur = i; } catch (e) {}
+  const move = () => { const el = btns[cur]; hl.style.width = el.offsetWidth + 'px'; hl.style.transform = `translateX(${el.offsetLeft}px)`; };
+  const relayout = () => dispatchEvent(new Event('resize'));
+  const set = (i) => {
+    cur = (i + TYPES.length) % TYPES.length;
+    document.documentElement.dataset.type = TYPES[cur].id;
+    btns.forEach((b, j) => { b.toggleAttribute('data-active', j === cur); b.setAttribute('aria-pressed', j === cur ? 'true' : 'false'); });
+    move();
+    try { localStorage.setItem('case-type', TYPES[cur].id); } catch (e) {}
+    /* fonts load after the next layout; measure again once they arrive */
+    requestAnimationFrame(() => document.fonts.ready.then(relayout));
+    setTimeout(relayout, 900);
+  };
+  btns.forEach((b, i) => b.addEventListener('click', () => set(i)));
+  addEventListener('resize', move);
+  document.addEventListener('keydown', (e) => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'f' || e.key === 'F') set(cur + 1);
+  });
+  set(cur);
+  requestAnimationFrame(() => requestAnimationFrame(() => tp.setAttribute('data-ready', '')));
+})();
+</script>
+</body>
+</html>

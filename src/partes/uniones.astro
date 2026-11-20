@@ -1,0 +1,10 @@
+<style is:global>
+/* ===== One continuous page. No gradient is cut at the edge of a section, and a change of colour arrives as an object or as a field of light, never as a line across the screen ===== */
+:root{--fade:linear-gradient(transparent,#000 24%,#000 76%,transparent)}
+/* 1. the glow of a pinned section dies out before its top and bottom edges */
+.rd-stick::before,.zb-stick::before{-webkit-mask-image:var(--fade);mask-image:var(--fade)}
+.v-tab .f2-stick::before{-webkit-mask-image:linear-gradient(transparent,#000 45%,transparent 96%);mask-image:linear-gradient(transparent,#000 45%,transparent 96%)}
+/* 2. the light that joins two sections: half of it closes one and the other half opens the next, so together they are one glow */.v-tab{--join:rgba(var(--glow-rgb),.25)}
+:is(.v-tab)>section:not(:first-of-type){background-image:radial-gradient(62vw 34vh at 50% 100%,var(--jb,var(--join)),transparent 72%)}
+:is(.v-tab)>section:not(:first-of-type):not(:nth-of-type(2)){background-image:radial-gradient(62vw 34vh at 50% 100%,var(--jb,var(--join)),transparent 72%),radial-gradient(62vw 34vh at 50% 0%,var(--jt,var(--join)),transparent 72%)}
+</style>

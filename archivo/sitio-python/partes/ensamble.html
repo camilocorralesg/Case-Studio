@@ -1,0 +1,15 @@
+<script>
+/* What is added once the sections are in place: the form, the last line and the footer.
+   color.html and menu.html wrap this function to add the colour edges and the menu, so it has to be defined before them. */
+window.FINALE = (id, root, ct) => {
+  const offs = [];
+  offs.push(FORMS[id](ct));
+  const ou = document.getElementById('tpl-ou').content.firstElementChild.cloneNode(true);
+  ou.classList.add('ou--' + id); ct.after(ou); offs.push(initOutro(ou, id));
+  const ft = document.createElement('footer'); ft.className = 'ft ft--' + id; ft.innerHTML = window.FOOT[id]();
+  root.append(ft);
+  ft.querySelector('.ft-top').addEventListener('click', () => scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }));
+  if (window.FOOT_INIT && window.FOOT_INIT[id]) offs.push(window.FOOT_INIT[id](ft));
+  return () => offs.forEach((f) => { if (typeof f === 'function') f(); });
+};
+</script>

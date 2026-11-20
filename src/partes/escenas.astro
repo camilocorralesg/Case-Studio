@@ -1,0 +1,482 @@
+<script is:inline>
+/* ===== Servicios: one 2D animation per service, drawn with the brand's own material (element tiles, its blues, its two
+   faces). Each one tells its service's sentence in steps, for "tu marca": the visitor's own brand, Tú (119), the same element that falls into the table
+   at the closing (EL_Z in Base.astro). The words inside the pictures are interface words, in the page's language; none of them is a claim.
+   A scene draws in a 600 x 400 box at progress t (0..1), which the scroll drives. On a narrow canvas a camera follows the
+   step being told, so its words stay readable. ===== */
+window.SCN = (() => {
+  const SANS = '"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif', MONO = '"IBM Plex Mono", ui-monospace, monospace';
+  const P = { panel: '#ffffff', line: 'rgba(10,31,92,.14)', ink: '#0a1020', ink2: '#4a5878', strong: '#0a1638', accent: '#1e55e0', accent2: '#3d8bff', pale: '#cfe0ff', wash: '#eef3ff', mute: '#5f6b87', shadow: 'rgba(10,31,92,.14)' };
+  /* paint() says where the picture is drawn: on the night of a frame (the stage of Servicios: the cards float with no board), and
+     whether the canvas is wide enough for the whole box */
+  let NIGHT = false, WIDE = true;
+  const en = () => !!(window.LANG && window.LANG.cur === 'en');
+  const T = (es, e) => (en() ? e : es);
+  const sg = (t, a, b) => clamp01((t - a) / (b - a));
+  const eo = easeOut;
+  const eb = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 + 2.4 * Math.pow(x - 1, 3) + 1.4 * Math.pow(x - 1, 2));      /* out, with a small settle */
+
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.roundRect(x, y, Math.max(0, w), Math.max(0, h), Math.max(0, Math.min(r, w / 2, h / 2))); }
+  function box(c, x, y, w, h, r, fill, line, lw) { rr(c, x, y, w, h, r); if (fill) { c.fillStyle = fill; c.fill(); } if (line) { c.strokeStyle = line; c.lineWidth = lw || 1.5; c.stroke(); } }
+  function dot(c, x, y, r, fill) { c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fillStyle = fill; c.fill(); }
+  function font(c, size, o) {
+    c.font = `${(o && o.w) || 500} ${size}px ${o && o.mono ? MONO : SANS}`;
+    if ('letterSpacing' in c) c.letterSpacing = o && !o.mono && size >= 18 ? `${(-.03 * size).toFixed(2)}px` : '0px';
+  }
+  function word(c, s, x, y, size, fill, o) { o = o || {}; font(c, size, o); c.fillStyle = fill; c.textAlign = o.align || 'left'; c.textBaseline = 'alphabetic'; c.fillText(s, x, y); }
+  function wrap(c, s, size, o, maxW) {
+    font(c, size, o); const out = []; let line = '';
+    s.split(' ').forEach((w) => { const n = line ? line + ' ' + w : w; if (line && c.measureText(n).width > maxW) { out.push(line); line = w; } else line = n; });
+    if (line) out.push(line); return out;
+  }
+  function para(c, s, x, y, size, lh, fill, o, maxW) { const ls = wrap(c, s, size, o, maxW); ls.forEach((l, i) => word(c, l, x, y + i * lh, size, fill, o)); return ls.length; }
+  /* a piece that settles into place from its centre */
+  function pop(c, k, cx, cy, draw) {
+    if (k <= 0) return;
+    const s = .9 + .1 * eb(k);
+    c.save(); c.globalAlpha *= Math.min(1, k * 1.6); c.translate(cx, cy); c.scale(s, s); c.translate(-cx, -cy); draw(); c.restore();
+  }
+  /* on the night the cards need a deeper shadow to lift off it */
+  function lift(c, draw) { c.save(); c.shadowColor = NIGHT ? 'rgba(0,4,16,.55)' : P.shadow; c.shadowBlur = NIGHT ? 34 : 24; c.shadowOffsetY = NIGHT ? 16 : 10; draw(); c.restore(); }
+  /* on the night, with no board, what is on screen stays in the middle: a scene whose pieces sit to one side moves them over */
+  function centred(c, dx, draw) { if (!NIGHT || !WIDE || !dx) { draw(); return; } c.save(); c.translate(dx, 0); draw(); c.restore(); }
+  function stroke(c, pts, k, col, w) {
+    let len = 0; for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    c.save(); c.strokeStyle = col; c.lineWidth = w; c.lineCap = 'round'; c.lineJoin = 'round'; c.setLineDash([len, len]); c.lineDashOffset = len * (1 - k);
+    c.beginPath(); pts.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y))); c.stroke(); c.restore();
+  }
+  const tick = (c, x, y, k, col, s) => k > 0 && stroke(c, [[x - 11 * s, y], [x - 3 * s, y + 8 * s], [x + 12 * s, y - 9 * s]], k, col, 3.2 * s);
+  const cross = (c, x, y, k, col, s) => { if (k <= 0) return; stroke(c, [[x - 8 * s, y - 8 * s], [x + 8 * s, y + 8 * s]], Math.min(1, k * 2), col, 3.2 * s); stroke(c, [[x + 8 * s, y - 8 * s], [x - 8 * s, y + 8 * s]], Math.max(0, k * 2 - 1), col, 3.2 * s); };
+  /* a tap: where the visitor's finger lands */
+  function tap(c, x, y, k) {
+    if (k <= 0 || k >= 1) return;
+    c.save(); c.globalAlpha *= Math.sin(Math.PI * k);
+    c.strokeStyle = P.accent; c.lineWidth = 2; c.beginPath(); c.arc(x, y, 6 + 18 * eo(k), 0, Math.PI * 2); c.stroke();
+    dot(c, x, y, 6, 'rgba(30,85,224,.35)'); c.restore();
+  }
+  /* three dots that breathe while someone writes; the scroll drives the breath, so a still page keeps a still picture */
+  function typing(c, x, y, k, col) {
+    if (k <= 0 || k >= 1) return;
+    const env = Math.min(1, k * 5, (1 - k) * 5);
+    for (let i = 0; i < 3; i++) {
+      const ph = ((k * 4 - i * .22) % 1 + 1) % 1;
+      c.save(); c.globalAlpha *= env * (.3 + .7 * Math.sin(Math.PI * ph)); dot(c, x + i * 9, y - 2 * Math.sin(Math.PI * ph), 3, col); c.restore();
+    }
+  }
+  /* a short burst of light where something is confirmed: eight strokes that open and fade */
+  function burst(c, x, y, k, col, r) {
+    if (k <= 0 || k >= 1) return;
+    c.save(); c.globalAlpha *= 1 - eo(k); c.strokeStyle = col; c.lineWidth = 2.4; c.lineCap = 'round';
+    for (let i = 0; i < 8; i++) {
+      const an = i * Math.PI / 4 + Math.PI / 8, r0 = r + 3 + 12 * eo(k), r1 = r0 + 8 * (1 - k);
+      c.beginPath(); c.moveTo(x + Math.cos(an) * r0, y + Math.sin(an) * r0); c.lineTo(x + Math.cos(an) * r1, y + Math.sin(an) * r1); c.stroke();
+    }
+    c.restore();
+  }
+  /* a point of light that runs along a line, carrying something from one piece to the next */
+  function pulse(c, pts, k) {
+    if (k <= 0 || k >= 1) return;
+    const seg = []; let len = 0;
+    for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); len += l; }
+    let d = eo(k) * len, i = 0; while (i < seg.length - 1 && d > seg[i]) { d -= seg[i]; i++; }
+    const f = seg[i] ? d / seg[i] : 0, x = lerp(pts[i][0], pts[i + 1][0], f), y = lerp(pts[i][1], pts[i + 1][1], f);
+    c.save(); c.globalAlpha *= Math.min(1, k * 6, (1 - k) * 6);
+    const g = c.createRadialGradient(x, y, 0, x, y, 16); g.addColorStop(0, 'rgba(61,139,255,.85)'); g.addColorStop(1, 'rgba(61,139,255,0)');
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, 16, 0, Math.PI * 2); c.fill(); dot(c, x, y, 3.5, '#ffffff'); c.restore();
+  }
+  /* a number that rolls to the next one: the old goes up and out, the new comes up from below */
+  function roll(c, a, b, x, y, size, k, fill, o) {
+    const e = eo(clamp01(k));
+    c.save(); c.beginPath(); c.rect(x - size * 3.4, y - size * 1.1, size * 3.6, size * 1.45); c.clip();
+    if (e < 1) { c.save(); c.globalAlpha *= 1 - e; word(c, a, x, y - e * size * 1.1, size, fill, o); c.restore(); }
+    if (e > 0) { c.save(); c.globalAlpha *= e; word(c, b, x, y + (1 - e) * size * 1.1, size, fill, o); c.restore(); }
+    c.restore();
+  }
+  /* pressing: a piece gives a little under the finger and comes back */
+  function press(c, cx, cy, k, draw) {
+    const p = k > 0 && k < 1 ? Math.sin(Math.PI * k) * .06 : 0;
+    if (!p) { draw(); return; }
+    c.save(); c.translate(cx, cy); c.scale(1 - p, 1 - p); c.translate(-cx, -cy); draw(); c.restore();
+  }
+  /* an image in the brand's material: a small field of tiles, from light at the top to deep at the bottom */
+  function tiles(c, x, y, w, h, k, seed) {
+    const q = Math.max(18, Math.min(w, h) / 5.2), n = Math.max(3, Math.round(w / q)), m = Math.max(2, Math.round(h / q)), cw = w / n, ch = h / m, g = Math.min(cw, ch) * .14;
+    const cols = [P.pale, P.accent2, P.accent, P.strong];
+    for (let j = 0; j < m; j++) for (let i = 0; i < n; i++) {
+      const v = (j / (m - 1 || 1)) * .7 + ((Math.sin((i + 1) * (seed + 3) * 1.7 + j * 2.3) + 1) / 2) * .34;
+      const d = (i + j) / (n + m) * .6, kk = sg(k, d, d + .4); if (kk <= 0) continue;
+      c.save(); c.globalAlpha *= kk; box(c, x + i * cw + g / 2, y + j * ch + g / 2, cw - g, ch - g, Math.min(cw, ch) * .24, cols[Math.min(3, Math.floor(v * 3.1))]); c.restore();
+    }
+  }
+  const bez = (a, b, q, e) => (1 - e) * (1 - e) * a + 2 * (1 - e) * e * q + e * e * b;
+
+  /* (17 November 2026: every step shows its cause and its effect: the page loads, a button gives, someone writes, a sale travels to
+     the inventory, a day lights up, a colour comes out of the logo. Labels are words, in the sans; the mono stays for numbers and
+     data: a day, a price, a value, an address) */
+  /* ---------- Sw · Sitios web: "Cargan rápido, se leen bien en el celular y llevan a tu cliente a escribirte." ----------
+     1 · the page of tu marca arrives at once, piece by piece   2 · the window becomes a phone and the page reflows
+     3 · a tap on its WhatsApp button, and a message reaches you, sent from the site */
+  /* the phone and the chat that arrives beside it stand to the right: they move left as the chat comes */
+  function sw(c, t) { centred(c, -86 * eo(sg(t, .7, .8)), () => sw0(c, t)); }
+  function sw0(c, t) {
+    const a = eo(sg(t, 0, .06)); if (a <= 0) return;
+    const m = easeIO(sg(t, .36, .6));
+    const F = { x: lerp(44, 186, m), y: lerp(40, 18, m), w: lerp(512, 200, m), h: lerp(304, 364, m), r: lerp(14, 30, m) };
+    c.save(); c.globalAlpha *= a;
+    lift(c, () => box(c, F.x, F.y, F.w, F.h, F.r, P.panel)); box(c, F.x, F.y, F.w, F.h, F.r, null, P.line);
+    /* the address bar, which becomes the phone's speaker */
+    const B = { x: F.x + lerp(14, F.w / 2 - 24, m), y: F.y + lerp(11, 12, m), w: lerp(220, 48, m), h: lerp(20, 8, m) };
+    box(c, B.x, B.y, B.w, B.h, B.h / 2, P.wash);
+    if (m < .5) {
+      c.save(); c.globalAlpha *= 1 - m * 2;
+      word(c, 'tumarca.com', B.x + 12, B.y + 14, 10.5, P.ink2, { mono: 1 });
+      const ld = sg(t, .05, .2); if (ld > 0) { c.globalAlpha *= ld; dot(c, B.x + B.w - 11, B.y + 10, 4, P.accent); }
+      c.restore();
+    }
+    const pad = lerp(20, 14, m), X = F.x + pad, W = F.w - pad * 2, Y = F.y + lerp(46, 34, m);
+    const k1 = sg(t, .05, .1), k2 = sg(t, .08, .15), k3 = sg(t, .1, .2), k4 = sg(t, .14, .22);
+    const hs = lerp(32, 24, m), hW = lerp(W * .5, W, m), hy = Y + lerp(60, 52, m);
+    const Im = { x: lerp(X + W * .56, X, m), y: lerp(Y + 24, Y + 112, m), w: lerp(W * .44, W, m), h: lerp(176, 96, m) };
+    const Bt = { x: X, y: lerp(Y + 156, Y + 224, m), w: lerp(204, W, m), h: lerp(32, 38, m) };
+    /* it loads fast: a line runs along the address bar, the shape of the page is there at once, and the content takes it over */
+    const lb = sg(t, .02, .12), lf = 1 - sg(t, .14, .2);
+    if (lb > 0 && lf > 0 && m < .5) { c.save(); c.globalAlpha *= lf * (1 - m * 2); rr(c, B.x + 6, B.y + B.h - 3.5, (B.w - 12) * eo(lb), 2, 1); c.fillStyle = P.accent; c.fill(); c.restore(); }
+    const sk = sg(t, .012, .035);
+    if (sk > 0 && m < .5) {
+      const bone = (k, draw) => { if (k >= 1) return; c.save(); c.globalAlpha *= sk * (1 - k) * (1 - m * 2); draw(); c.restore(); };
+      bone(k1, () => box(c, X, Y - 1, 70, 13, 6.5, P.wash));
+      bone(k2, () => { box(c, X, hy - hs * .78, hW * .94, hs * .64, 7, P.wash); box(c, X, hy + hs * .3, hW * .62, hs * .64, 7, P.wash); });
+      bone(k3, () => box(c, Im.x, Im.y, Im.w, Im.h, 12, P.wash));
+      bone(k4, () => box(c, Bt.x, Bt.y, Bt.w, Bt.h, Bt.h / 2, P.wash));
+    }
+    pop(c, k1, X + 40, Y + 6, () => {
+      word(c, T('Tu marca', 'Your brand'), X, Y + 10, 13, P.ink, { w: 600 });
+      if (m < 1) { c.save(); c.globalAlpha *= 1 - m; const lw = 76; box(c, X + W - lw, Y - 6, lw, 24, 12, null, P.line); word(c, T('Escríbenos', 'Message us'), X + W - lw / 2, Y + 10, 10, P.ink, { align: 'center' }); c.restore(); }
+    });
+    pop(c, k2, X + hW / 2, hy, () => para(c, T('Tu marca, en internet.', 'Your brand, online.'), X, hy, hs, hs * 1.04, P.ink, { w: 600 }, hW));
+    tiles(c, Im.x, Im.y, Im.w, Im.h, k3, 2);
+    /* the button gives under the finger, and the message goes */
+    const tk = sg(t, .64, .74);
+    pop(c, k4, Bt.x + Bt.w / 2, Bt.y + Bt.h / 2, () => press(c, Bt.x + Bt.w / 2, Bt.y + Bt.h / 2, tk, () => {
+      box(c, Bt.x, Bt.y, Bt.w, Bt.h, Bt.h / 2, P.strong);
+      word(c, T('Escríbenos por WhatsApp', 'Message us on WhatsApp'), Bt.x + Bt.w / 2, Bt.y + Bt.h / 2 + 4, 11.5, '#ffffff', { align: 'center', w: 600 });
+    }));
+    c.restore();
+    tap(c, Bt.x + Bt.w / 2, Bt.y + Bt.h / 2, tk);
+    /* the chat: the message reaches you, and it says where it came from */
+    const ch = eo(sg(t, .7, .8)); if (ch <= 0) return;
+    const C = { x: lerp(560, 404, ch), y: 64, w: 182, h: 230 };
+    c.save(); c.globalAlpha *= Math.min(1, ch * 1.4);
+    lift(c, () => box(c, C.x, C.y, C.w, C.h, 18, P.panel)); box(c, C.x, C.y, C.w, C.h, 18, null, P.line);
+    /* the chat is yours: the one who writes is the customer the site sent */
+    word(c, 'WhatsApp', C.x + 16, C.y + 26, 10.5, P.mute);
+    word(c, T('Cliente nuevo', 'New customer'), C.x + 16, C.y + 45, 13, P.ink, { w: 600 });
+    /* someone is writing: three dots, and then the message */
+    const ty = sg(t, .75, .81);
+    if (ty > 0 && ty < 1) { c.save(); c.globalAlpha *= Math.min(1, ty * 5) * (1 - sg(t, .795, .81)); box(c, C.x + 14, C.y + 64, 54, 28, 14, P.wash); c.restore(); typing(c, C.x + 32, C.y + 79, ty, P.mute); }
+    const mk = sg(t, .8, .87);
+    if (mk > 0) {
+      const dy = (1 - eo(mk)) * 8, ls = wrap(c, T('Hola, quiero hacer un pedido.', 'Hi, I’d like to place an order.'), 12.5, {}, 128);
+      c.save(); c.globalAlpha *= mk; box(c, C.x + 14, C.y + 64 + dy, 154, 20 + ls.length * 17, 14, P.wash);
+      ls.forEach((l, i) => word(c, l, C.x + 27, C.y + 86 + i * 17 + dy, 12.5, P.ink)); c.restore();
+    }
+    const nt = sg(t, .87, .95); if (nt > 0) { c.save(); c.globalAlpha *= nt; word(c, T('Llegó desde tumarca.com', 'Sent from tumarca.com'), C.x + 16, C.y + C.h - 20, 10.5, P.accent, { w: 600 }); c.restore(); }
+    c.restore();
+  }
+
+  /* ---------- Ti · Tiendas en línea: "Catálogo, carrito y pagos conectados con tu inventario." ----------
+     1 · the catalogue, three products, each one an element   2 · Agregar: the product goes into the cart
+     3 · Pagar: the payment is approved                        4 · the inventory knows: one unit less */
+  function product(c, i, x, y, s) {
+    const cx = x + s / 2, cy = y + s / 2 + 4;
+    if (i === 0) { box(c, cx - s * .17, cy - s * .2, s * .34, s * .4, s * .08, P.accent2); box(c, cx - s * .2, cy - s * .29, s * .4, s * .1, s * .04, P.strong); }
+    else if (i === 1) { box(c, cx - s * .12, cy - s * .25, s * .24, s * .5, s * .1, P.strong); box(c, cx - s * .06, cy - s * .33, s * .12, s * .1, s * .03, P.accent2); }
+    else { box(c, cx - s * .3, cy - s * .13, s * .6, s * .28, s * .1, P.accent); box(c, cx - s * .18, cy - s * .03, s * .36, s * .07, s * .035, 'rgba(255,255,255,.55)'); }
+  }
+  function cartIcon(c, x, y, s, col) {
+    c.save(); c.strokeStyle = col; c.lineWidth = 1.8 * s; c.lineJoin = c.lineCap = 'round';
+    c.beginPath(); c.moveTo(x, y); c.lineTo(x + 3 * s, y); c.lineTo(x + 6 * s, y + 9 * s); c.lineTo(x + 15 * s, y + 9 * s); c.lineTo(x + 17 * s, y + 3 * s); c.lineTo(x + 4.2 * s, y + 3 * s); c.stroke();
+    dot(c, x + 7 * s, y + 12.5 * s, 1.5 * s, col); dot(c, x + 14 * s, y + 12.5 * s, 1.5 * s, col); c.restore();
+  }
+  /* the store stands on the left until the inventory arrives on the right: the camera moves first, so the inventory comes in whole */
+  function ti(c, t) { centred(c, 100 * (1 - easeIO(sg(t, .68, .77))), () => ti0(c, t)); }
+  function ti0(c, t) {
+    const a = eo(sg(t, 0, .06)); if (a <= 0) return;
+    const S = { x: 22, y: 34, w: 356, h: 332 }, CH = { x: S.x + S.w - 112, y: S.y + 14, w: 96, h: 26 }, D = { x: S.x + S.w - 178, y: S.y + 50, w: 164, h: 270 };
+    const added = t >= .42, card = (i) => ({ x: S.x + 18 + i * 110, y: S.y + 60, s: 100 });
+    c.save(); c.globalAlpha *= a;
+    lift(c, () => box(c, S.x, S.y, S.w, S.h, 16, P.panel)); box(c, S.x, S.y, S.w, S.h, 16, null, P.line);
+    word(c, T('Tu marca', 'Your brand'), S.x + 18, S.y + 32, 13, P.ink, { w: 600 });
+    font(c, 13, { w: 600 }); word(c, T('Tienda', 'Store'), S.x + 26 + c.measureText(T('Tu marca', 'Your brand')).width, S.y + 32, 13, P.mute);
+    /* the cart jumps when the product lands in it */
+    const bump = Math.sin(Math.PI * sg(t, .42, .48)) * .12;
+    c.save(); if (bump > 0) { c.translate(CH.x + CH.w / 2, CH.y + CH.h / 2); c.scale(1 + bump, 1 + bump); c.translate(-CH.x - CH.w / 2, -CH.y - CH.h / 2); }
+    box(c, CH.x, CH.y, CH.w, CH.h, 13, added ? P.strong : null, added ? null : P.line);
+    cartIcon(c, CH.x + 11, CH.y + 6.5, .85, added ? '#ffffff' : P.ink);
+    word(c, added ? T('Carrito · 1', 'Cart · 1') : T('Carrito', 'Cart'), CH.x + 32, CH.y + 17, 10.5, added ? '#ffffff' : P.ink);
+    c.restore();
+    for (let i = 0; i < 3; i++) {
+      const { x, y, s } = card(i), sold = i === 1 && t > .3, pressed = i === 1 && t > .26;
+      pop(c, sg(t, .03 + i * .03, .13 + i * .03), x + s / 2, y + s / 2, () => {
+        box(c, x, y, s, s, 12, P.wash);
+        word(c, `0${i + 1}`, x + 9, y + 17, 9.5, P.mute, { mono: 1 });
+        if (sold) { c.save(); c.globalAlpha *= .25; product(c, i, x, y, s); c.restore(); } else product(c, i, x, y, s);
+        press(c, x + s / 2, y + s + 26, i === 1 ? sg(t, .22, .3) : 0, () => {
+          box(c, x, y + s + 12, s, 28, 14, pressed ? P.strong : null, pressed ? null : P.line);
+          word(c, T('Agregar', 'Add'), x + s / 2, y + s + 30, 11, pressed ? '#ffffff' : P.ink, { align: 'center' });
+        });
+      });
+    }
+    c.restore();
+    const b = card(1);
+    tap(c, b.x + b.s / 2, b.y + b.s + 26, sg(t, .22, .3));
+    /* the product flies into the cart */
+    const fl = sg(t, .3, .42);
+    if (fl > 0 && fl < 1) {
+      const e = easeIO(fl), sx = b.x + b.s / 2, sy = b.y + b.s / 2, ex = CH.x + 20, ey = CH.y + 13, x = bez(sx, ex, (sx + ex) / 2 + 40, e), y = bez(sy, ey, Math.min(sy, ey) - 40, e), s = lerp(1, .22, e);
+      /* it flies with a little turn, as a thing thrown does */
+      c.save(); c.translate(x, y); c.rotate(Math.sin(Math.PI * e) * .22); c.scale(s, s); lift(c, () => box(c, -50, -50, 100, 100, 12, P.wash)); product(c, 1, -50, -50, 100); c.restore();
+    }
+    /* the cart opens with what you are buying; Pagar turns it into an approved payment */
+    const dr = eo(sg(t, .44, .52));
+    if (dr > 0) {
+      const dx = (1 - dr) * 26, pay = sg(t, .6, .68);
+      c.save(); c.globalAlpha *= dr;
+      lift(c, () => box(c, D.x + dx, D.y, D.w, D.h, 14, P.panel)); box(c, D.x + dx, D.y, D.w, D.h, 14, null, P.line);
+      c.save(); c.globalAlpha *= 1 - pay;
+      word(c, T('Tu carrito', 'Your cart'), D.x + dx + 16, D.y + 30, 13, P.ink, { w: 600 });
+      box(c, D.x + dx + 16, D.y + 46, 52, 52, 10, P.wash);
+      c.save(); c.translate(D.x + dx + 16, D.y + 46); c.scale(.52, .52); product(c, 1, 0, 0, 100); c.restore();
+      word(c, '× 1', D.x + dx + 80, D.y + 77, 12, P.ink2, { mono: 1 });
+      const pressed = t > .58;
+      box(c, D.x + dx + 16, D.y + D.h - 52, D.w - 32, 36, 18, pressed ? P.strong : P.accent);
+      word(c, T('Pagar', 'Pay'), D.x + dx + D.w / 2, D.y + D.h - 29, 12, '#ffffff', { align: 'center', w: 600 });
+      c.restore();
+      if (pay > 0) {
+        c.save(); c.globalAlpha *= pay;
+        box(c, D.x + 22, D.y + 36, 120, 76, 12, P.accent); box(c, D.x + 36, D.y + 54, 22, 16, 4, P.pale); box(c, D.x + 36, D.y + 88, 64, 6, 3, 'rgba(255,255,255,.55)');
+        dot(c, D.x + D.w / 2, D.y + 166, 26, P.wash);
+        /* it turns while the payment goes through, then the tick, and a burst of light */
+        const rg = sg(t, .6, .67), ro = 1 - sg(t, .655, .675);
+        if (rg > 0 && ro > 0) { c.save(); c.globalAlpha *= ro; c.strokeStyle = P.accent; c.lineWidth = 3; c.lineCap = 'round'; const a0 = -Math.PI / 2 + rg * Math.PI * 3; c.beginPath(); c.arc(D.x + D.w / 2, D.y + 166, 26, a0, a0 + Math.PI * .7); c.stroke(); c.restore(); }
+        tick(c, D.x + D.w / 2, D.y + 166, sg(t, .66, .74), P.accent, 1);
+        burst(c, D.x + D.w / 2, D.y + 166, sg(t, .7, .8), P.accent2, 26);
+        word(c, T('Pago aprobado', 'Payment approved'), D.x + D.w / 2, D.y + 222, 13, P.ink, { align: 'center', w: 600 });
+        c.restore();
+      }
+      c.restore();
+      tap(c, D.x + D.w / 2, D.y + D.h - 34, sg(t, .53, .61));
+    }
+    /* the inventory is connected: the unit you bought leaves the stock */
+    const iv = eo(sg(t, .76, .84));
+    if (iv > 0) {
+      const V = { x: 396, y: 116, w: 188, h: 168 };
+      stroke(c, [[D.x + D.w + 4, D.y + 166], [V.x - 6, V.y + V.h / 2]], sg(t, .76, .84), P.accent2, 2);
+      /* the sale travels down the line to the inventory */
+      pulse(c, [[D.x + D.w + 4, D.y + 166], [V.x - 6, V.y + V.h / 2]], sg(t, .8, .87));
+      c.save(); c.globalAlpha *= iv;
+      lift(c, () => box(c, V.x, V.y, V.w, V.h, 16, P.panel)); box(c, V.x, V.y, V.w, V.h, 16, null, P.line);
+      word(c, T('Inventario', 'Inventory'), V.x + 16, V.y + 30, 13, P.ink, { w: 600 });
+      box(c, V.x + 16, V.y + 46, 44, 44, 10, P.wash); c.save(); c.translate(V.x + 16, V.y + 46); c.scale(.44, .44); product(c, 1, 0, 0, 100); c.restore();
+      word(c, T('Disponibles', 'In stock'), V.x + 72, V.y + 74, 12, P.ink2);
+      /* the count is the end of the story, so it reads at a glance: the number rolls from 6 to 5 and the unit sold goes up and out */
+      roll(c, '6', '5', V.x + V.w - 16, V.y + 77, 22, sg(t, .86, .93), P.ink, { mono: 1, align: 'right' });
+      const out = eo(sg(t, .86, .96));
+      for (let u = 0; u < 6; u++) {
+        const ux = V.x + 16 + u * 26, uy = V.y + 118;
+        if (u < 5) box(c, ux, uy, 22, 22, 6, P.strong);
+        else { c.save(); c.globalAlpha *= 1 - out; box(c, ux, uy - out * 26, 22, 22, 6, P.accent2); c.restore(); }
+      }
+      if (out > 0) { c.save(); c.globalAlpha *= Math.sin(Math.PI * Math.min(1, out * 1.2)); word(c, '−1', V.x + 16 + 5 * 26 + 11, V.y + 106 - out * 26, 14, P.accent, { mono: 1, align: 'center' }); c.restore(); }
+      c.restore();
+    }
+  }
+
+  /* ---------- Rs · Redes sociales: "Calendario del mes, fotos, videos y textos listos para publicar." ----------
+     1 · this month's calendar   2 · photos, videos and texts land on their days   3 · they go out to the feed, ready
+     4 · the community writes, and gets an answer */
+  function month() {
+    const d = new Date(), lang = en() ? 'en-US' : 'es-CO';
+    let name = d.toLocaleString(lang, { month: 'long' }); name = name[0].toUpperCase() + name.slice(1);
+    return { name, first: (new Date(d.getFullYear(), d.getMonth(), 1).getDay() + 6) % 7, days: new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate() };
+  }
+  function piece(c, kind, x, y, s) {
+    if (kind === 0) { box(c, x, y, s, s, s * .2, P.pale); tiles(c, x + s * .1, y + s * .1, s * .8, s * .8, 1, 5); }
+    else if (kind === 1) { box(c, x, y, s, s, s * .2, P.accent); c.beginPath(); c.moveTo(x + s * .4, y + s * .3); c.lineTo(x + s * .72, y + s * .5); c.lineTo(x + s * .4, y + s * .7); c.closePath(); c.fillStyle = '#ffffff'; c.fill(); }
+    else { box(c, x, y, s, s, s * .2, P.strong); word(c, 'Aa', x + s / 2, y + s * .64, s * .4, '#ffffff', { align: 'center', w: 600 }); }
+  }
+  function rs(c, t) {
+    const a = eo(sg(t, 0, .06)); if (a <= 0) return;
+    const M = month(), C = { x: 20, y: 28, w: 318, h: 344 }, gx = C.x + 16, gy = C.y + 90, cw = 41;
+    const rows = Math.ceil((M.first + M.days) / 7), chh = Math.min(42, (C.y + C.h - 12 - gy) / rows);
+    const cellOf = (d) => { const i = M.first + d - 1; return { x: gx + (i % 7) * cw, y: gy + Math.floor(i / 7) * chh }; };
+    c.save(); c.globalAlpha *= a;
+    lift(c, () => box(c, C.x, C.y, C.w, C.h, 16, P.panel)); box(c, C.x, C.y, C.w, C.h, 16, null, P.line);
+    word(c, M.name, C.x + 18, C.y + 33, 16, P.ink, { w: 600 });
+    word(c, T('Calendario de contenido', 'Content calendar'), C.x + 18, C.y + 53, 11, P.mute);
+    (en() ? 'MTWTFSS' : 'LMMJVSD').split('').forEach((d, i) => word(c, d, gx + i * cw + (cw - 4) / 2, gy - 9, 10, P.mute, { align: 'center', w: 600 }));
+    for (let d = 1; d <= M.days; d++) {
+      const { x, y } = cellOf(d), i = M.first + d - 1, k = sg(t, .02 + ((i % 7) + Math.floor(i / 7)) * .012, .1 + ((i % 7) + Math.floor(i / 7)) * .012);
+      if (k <= 0) continue;
+      c.save(); c.globalAlpha *= k; box(c, x, y, cw - 4, chh - 4, 7, P.wash); word(c, String(d), x + 5, y + 12, 8.5, P.ink2, { mono: 1 }); c.restore();
+    }
+    c.restore();
+    /* the phone where they go out */
+    const Ph = { x: 358, y: 18, w: 222, h: 364 };
+    pop(c, sg(t, .08, .18), Ph.x + Ph.w / 2, Ph.y + Ph.h / 2, () => {
+      lift(c, () => box(c, Ph.x, Ph.y, Ph.w, Ph.h, 28, P.panel)); box(c, Ph.x, Ph.y, Ph.w, Ph.h, 28, null, P.line);
+      box(c, Ph.x + Ph.w / 2 - 22, Ph.y + 11, 44, 7, 3.5, P.wash);
+      dot(c, Ph.x + 30, Ph.y + 44, 12, P.strong); word(c, T('Tú', 'You'), Ph.x + 30, Ph.y + 48, en() ? 9 : 10, '#ffffff', { align: 'center', w: 600 });
+      word(c, T('@tumarca', '@yourbrand'), Ph.x + 50, Ph.y + 42, 12, P.ink, { w: 600 });
+      word(c, 'Instagram · TikTok', Ph.x + 50, Ph.y + 57, 10, P.mute);
+      for (let j = 0; j < 6; j++) box(c, Ph.x + 16 + (j % 3) * 65, Ph.y + 72 + Math.floor(j / 3) * 65, 60, 60, 10, P.wash);
+    });
+    /* the pieces: they land on their days, then fly to the feed */
+    const PCS = [[3, 0], [6, 1], [10, 2], [13, 0], [17, 1], [20, 2]], s0 = Math.min(cw, chh) - 18;
+    PCS.forEach(([day, kind], j) => {
+      if (day > M.days) return;
+      const land = sg(t, .26 + j * .045, .36 + j * .045); if (land <= 0) return;
+      const cell = cellOf(day), px = cell.x + cw - 8 - s0, py = cell.y + chh - 8 - s0;
+      const go = easeIO(sg(t, .58 + j * .035, .7 + j * .035)), sx = Ph.x + 16 + (j % 3) * 65, sy = Ph.y + 72 + Math.floor(j / 3) * 65;
+      if (go >= 1) {
+        piece(c, kind, sx, sy, 60); tick(c, cell.x + 22, cell.y + chh - 14, 1, P.accent, .45);
+        /* it shines once as it goes up on the profile */
+        const sh = sg(t, .7 + j * .035, .78 + j * .035); if (sh > 0 && sh < 1) { c.save(); c.globalAlpha *= (1 - sh) * .7; box(c, sx, sy, 60, 60, 12, '#ffffff'); c.restore(); }
+        return;
+      }
+      if (go > 0) { const s = lerp(s0, 60, go); c.save(); lift(c, () => piece(c, kind, bez(px, sx, (px + sx) / 2, go), bez(py, sy, Math.min(py, sy) - 60, go), s)); c.restore(); return; }
+      /* its day lights up as it lands */
+      const fl = Math.sin(Math.PI * sg(land, .55, 1)); if (fl > 0) { c.save(); c.globalAlpha *= fl * .9; box(c, cell.x, cell.y, cw - 4, chh - 4, 7, P.pale); c.restore(); }
+      c.save(); c.globalAlpha *= Math.min(1, land * 2); piece(c, kind, px, lerp(py - 30, py, eb(land)), s0); c.restore();
+    });
+    const pb = sg(t, .74, .8);
+    if (pb > 0) {
+      c.save(); c.globalAlpha *= pb; word(c, T('Publicado', 'Published'), Ph.x + Ph.w - 18, Ph.y + 42, 10.5, P.accent, { align: 'right', w: 600 });
+      font(c, 10.5, { w: 600 }); tick(c, Ph.x + Ph.w - 30 - c.measureText(T('Publicado', 'Published')).width, Ph.y + 38, pb, P.accent, .4); c.restore();
+    }
+    /* the community: a question, and the answer */
+    const cm = sg(t, .8, .86), an = sg(t, .9, .97), ta = sg(t, .855, .905);
+    /* the answer is being written */
+    if (ta > 0 && ta < 1) { c.save(); c.globalAlpha *= Math.min(1, ta * 5) * (1 - sg(t, .89, .905)); box(c, Ph.x + Ph.w - 70, Ph.y + 268, 54, 28, 14, P.accent); c.restore(); typing(c, Ph.x + Ph.w - 52, Ph.y + 283, ta, '#ffffff'); }
+    if (cm > 0) {
+      const y = Ph.y + 222 + (1 - eo(cm)) * 8, ls = wrap(c, T('¿Tienen envíos?', 'Do you ship?'), 11.5, {}, 140);
+      c.save(); c.globalAlpha *= cm; dot(c, Ph.x + 28, y + 14, 10, P.pale);
+      box(c, Ph.x + 44, y, 150, 14 + ls.length * 15, 13, P.wash); ls.forEach((l, i) => word(c, l, Ph.x + 56, y + 18 + i * 15, 11.5, P.ink)); c.restore();
+    }
+    if (an > 0) {
+      const y = Ph.y + 268 + (1 - eo(an)) * 8, ls = wrap(c, T('Sí, te escribimos por DM.', 'Yes, we’ll DM you.'), 11.5, {}, 140);
+      c.save(); c.globalAlpha *= an; box(c, Ph.x + Ph.w - 172, y, 156, 14 + ls.length * 15, 13, P.accent);
+      ls.forEach((l, i) => word(c, l, Ph.x + Ph.w - 160, y + 18 + i * 15, 11.5, '#ffffff')); c.restore();
+    }
+  }
+
+  /* ---------- Ma · Marca: "Logo, colores y tipografías con una guía corta para usarlos." ----------
+     1 · four tiles meet and become the logo, with its name   2 · its colours, named   3 · its two typefaces
+     4 · the guide's pages close around all of it, with the right and the wrong way to use the logo */
+  function mark(c, x, y, s, fill, ink, sx) {
+    box(c, x, y, s, s, s * .19, fill);
+    c.save(); c.translate(x + s * .12, y + s * .84); c.scale(sx || 1, 1);
+    word(c, T('Tú', 'You'), 0, 0, s * (en() ? .4 : .5), ink, { w: 600 }); c.restore();
+  }
+  function ma(c, t) {
+    /* on the night every piece stands on a sheet from the start: the left one (logo and colours) at once, the right one when the
+       typefaces arrive; the guide gets its name at the end */
+    if (NIGHT) {
+      [[18, eo(sg(t, 0, .06))], [306, eo(sg(t, .44, .52))]].forEach(([x, k]) => {
+        if (k <= 0) return;
+        /* the left sheet is there at once; the right one opens from the spine, as a page does */
+        c.save();
+        if (x > 100) { c.globalAlpha *= Math.min(1, k * 3); c.translate(x, 200); c.scale(lerp(.08, 1, k), 1); c.translate(-x, -200); }
+        else { c.globalAlpha *= k; const s = .97 + .03 * k; c.translate(x + 138, 200); c.scale(s, s); c.translate(-x - 138, -200); }
+        lift(c, () => box(c, x, 22, 276, 356, 16, P.panel)); box(c, x, 22, 276, 356, 16, null, P.line); c.restore();
+      });
+      const gl = sg(t, .7, .8); if (gl > 0) { c.save(); c.globalAlpha *= gl; word(c, T('Guía de marca', 'Brand guide'), 40, 50, 11, P.mute, { w: 600 }); c.restore(); }
+    }
+    const gd = NIGHT ? 0 : eo(sg(t, .7, .8));
+    if (gd > 0) {
+      c.save(); c.globalAlpha *= gd; const s = .97 + .03 * gd; c.translate(300, 200); c.scale(s, s); c.translate(-300, -200);
+      lift(c, () => { box(c, 18, 22, 276, 356, 16, P.panel); box(c, 306, 22, 276, 356, 16, P.panel); });
+      box(c, 18, 22, 276, 356, 16, null, P.line); box(c, 306, 22, 276, 356, 16, null, P.line);
+      word(c, T('Guía de marca', 'Brand guide'), 40, 50, 11, P.mute, { w: 600 });
+      c.restore();
+    }
+    /* the logo: four tiles fly in, sit two by two, become one, and the name joins it */
+    const L = { x: 42, y: 68, s: 104 }, from = [[-46, -40], [120, -52], [-60, 120], [140, 130]];
+    const fuse = eo(sg(t, .14, .22));
+    [[0, 0], [54, 0], [0, 54], [54, 54]].forEach(([dx, dy], i) => {
+      const f = eo(sg(t, .01 + i * .025, .12 + i * .025)); if (f <= 0) return;
+      c.save(); c.globalAlpha *= Math.min(1, f * 1.8) * (1 - fuse);
+      box(c, lerp(L.x + from[i][0], L.x + dx, f), lerp(L.y + from[i][1], L.y + dy, f), 50, 50, 10, i === 3 ? P.accent : P.strong); c.restore();
+    });
+    if (fuse > 0) {
+      c.save(); c.globalAlpha *= fuse; box(c, L.x, L.y, L.s, L.s, 20, P.strong);
+      /* the four become one with a flash, and the new element has its number from the moment it exists: 119, one element, one number */
+      const fl = Math.sin(Math.PI * sg(t, .14, .24)); if (fl > 0) { c.save(); c.globalAlpha *= fl * .55; box(c, L.x, L.y, L.s, L.s, 20, P.accent2); c.restore(); }
+      const tx = eo(sg(t, .18, .26)); c.globalAlpha *= tx;
+      word(c, zOf('Tú'), L.x + 13, L.y + 22, 11, P.accent2, { mono: 1 }); word(c, T('Tú', 'You'), L.x + 12, L.y + L.s - 14, en() ? 40 : 50, '#ffffff', { w: 600 });
+      c.restore();
+    }
+    burst(c, L.x + L.s / 2, L.y + L.s / 2, sg(t, .2, .32), P.accent2, L.s * .6);
+    const nm = sg(t, .22, .3); if (nm > 0) { c.save(); c.globalAlpha *= nm; word(c, T('Tu marca', 'Your brand'), L.x + L.s + 18 + (1 - eo(nm)) * 10, L.y + 66, en() ? 23 : 26, P.ink, { w: 600 }); c.restore(); }
+    /* the colours, each with its name and its value */
+    const SW = [[P.strong, T('Tinta', 'Ink'), '#0A1638'], [P.accent, T('Azul', 'Blue'), '#1E55E0'], [P.accent2, T('Cielo', 'Sky'), '#3D8BFF'], [P.pale, T('Hielo', 'Ice'), '#CFE0FF']];
+    /* they come out of the logo to their places, and then say their names */
+    SW.forEach(([col, name, hex], i) => {
+      const x = 42 + i * 62, y = 210, k = sg(t, .3 + i * .035, .42 + i * .035); if (k <= 0) return;
+      const e = eo(k), ox = L.x + L.s / 2 - 26, oy = L.y + L.s / 2 - 26, bx = bez(ox, x, (ox + x) / 2, e), by = bez(oy, y, Math.max(oy, y) + 24, e), s = lerp(.4, 1, e);
+      c.save(); c.globalAlpha *= Math.min(1, k * 2.5); c.translate(bx + 26, by + 26); c.scale(s, s); box(c, -26, -26, 52, 52, 12, col, i === 3 ? P.line : null); c.restore();
+      const tn = sg(k, .6, 1); if (tn > 0) { c.save(); c.globalAlpha *= tn; word(c, name, x, y + 72, 11.5, P.ink, { w: 600 }); word(c, hex, x, y + 87, 8.5, P.mute, { mono: 1 }); c.restore(); }
+    });
+    /* the type: one for headings, one for data */
+    /* the heading face gains its weight as it arrives (it is variable, from 400 to 600) */
+    const ka = eo(sg(t, .5, .64));
+    pop(c, sg(t, .5, .6), 400, 100, () => { word(c, 'Aa', 330, 122, 64, P.ink, { w: Math.round(lerp(400, 600, ka)) }); word(c, T('Títulos', 'Headings'), 332, 146, 11, P.ink2); });
+    pop(c, sg(t, .56, .66), 490, 100, () => { word(c, 'Aa', 466, 120, 42, P.accent, { mono: 1 }); word(c, T('Datos', 'Data'), 468, 146, 11, P.ink2); });
+    /* how to use it: the right way, and the wrong way */
+    const us = sg(t, .82, .9);
+    if (us > 0) {
+      c.save(); c.globalAlpha *= us;
+      word(c, T('Usos', 'Usage'), 330, 196, 11, P.mute, { w: 600 });
+      mark(c, 330, 208, 96, P.strong, '#ffffff'); tick(c, 378, 338, sg(t, .88, .95), P.accent, 1);
+      /* the wrong way shakes, as a no does, before its cross */
+      const sh = sg(t, .86, .92), sx = sh > 0 && sh < 1 ? Math.sin(sh * Math.PI * 8) * 3 * (1 - sh) : 0;
+      c.save(); c.translate(sx, 0);
+      box(c, 450, 208, 108, 96, 18, P.wash); c.save(); c.translate(458, 288); c.scale(1.55, .62); word(c, T('Tú', 'You'), 0, 0, en() ? 38 : 48, P.strong, { w: 600 }); c.restore();
+      c.restore();
+      cross(c, 504, 338, sg(t, .9, .97), P.ink2, 1);
+      c.restore();
+    }
+  }
+
+  const SCENES = [sw, ti, rs, ma];
+  /* where each scene changes step: the sentence of its service, in the list, is split at the same places */
+  const STEPS = [[0, .36, .64], [0, .22, .53, .76], [0, .26, .58], [0, .3, .5, .7]];
+  /* on a narrow canvas the camera follows the step being told: [t, x, y, w, h] in the 600 x 400 box */
+  const CAM = [
+    [[0, 34, 30, 532, 330], [.36, 34, 30, 532, 330], [.6, 176, 8, 416, 384], [1, 176, 8, 416, 384]],
+    [[0, 12, 24, 376, 352], [.7, 12, 24, 376, 352], [.84, 196, 70, 392, 290], [1, 196, 70, 392, 290]],
+    [[0, 12, 20, 334, 360], [.54, 12, 20, 334, 360], [.64, 10, 10, 580, 380], [.74, 348, 10, 240, 380], [1, 348, 10, 240, 380]],
+    [[0, 26, 50, 300, 260], [.46, 26, 50, 300, 260], [.56, 300, 40, 280, 300], [.68, 300, 40, 280, 300], [.76, 12, 16, 576, 368], [1, 12, 16, 576, 368]]
+  ];
+  const cam = (i, t) => {
+    const K = CAM[i]; let j = 0; while (j < K.length - 2 && t > K[j + 1][0]) j++;
+    const [a, b] = [K[j], K[j + 1]], e = easeIO(clamp01((t - a[0]) / ((b[0] - a[0]) || 1)));
+    return [1, 2, 3, 4].map((n) => lerp(a[n], b[n], e));
+  };
+  /* draw one or more scenes into a canvas: [[scene, t, alpha], ...]; night: the canvas floats on a frame, with no board */
+  function paint(cv, layers, night) {
+    NIGHT = !!night;
+    const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+    const d = Math.min(2, devicePixelRatio || 1), W = Math.round(w * d), H = Math.round(h * d);
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    const c = cv.getContext('2d'); c.setTransform(d, 0, 0, d, 0, 0); c.clearRect(0, 0, w, h);
+    const narrow = w / h < 1.25; WIDE = !narrow;
+    layers.forEach(([i, t, al]) => {
+      if (al <= .01) return;
+      const [x, y, bw, bh] = narrow ? cam(i, t) : [0, 0, 600, 400], s = Math.min(w / bw, h / bh);
+      c.save(); c.globalAlpha = al; c.translate(w / 2 - (x + bw / 2) * s, h / 2 - (y + bh / 2) * s); c.scale(s, s); SCENES[i](c, t); c.restore();
+    });
+  }
+  return { paint, STEPS };
+})();
+</script>

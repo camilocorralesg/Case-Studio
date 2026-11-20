@@ -1,0 +1,111 @@
+<template id="tpl-contact">
+  <section class="contact" id="contacto" aria-labelledby="contact-h">
+    <div class="contact__in wrap">
+      <h2 class="h2" id="contact-h">Hablemos de tu proyecto</h2>
+      <p class="lead">Marca lo que necesitas y te escribimos con los siguientes pasos.</p>
+      <form class="contact__form" novalidate></form>
+      <p class="contact__mail">También puedes escribirnos a hola@casestudio.example</p>
+    </div>
+  </section>
+</template>
+
+<main id="stage"></main>
+
+<nav class="proto-picker type-picker" aria-label="Combinación de fuentes">
+  <span class="proto-picker-highlight" aria-hidden="true"></span>
+  <span class="tp-label" aria-hidden="true">Aa</span>
+</nav>
+
+<script>
+/* Puts the page together: the hero, the sections in their order, the contact block and what FINALE adds
+   (form, last line, footer, colour edges and menu). REMOUNT draws it again; the language switch uses it. */
+(() => {
+  const page = window.VARIANTS[0];
+  const stage = document.getElementById('stage');
+  let cleanup = null, first = true;
+
+  function mount() {
+    if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+    stage.innerHTML = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      const frag = document.getElementById(page.tpl).content.cloneNode(true);
+      const pages = (window.PAGES[page.id] || []).slice().sort((x, y) => x.order - y.order);
+      pages.forEach((pg) => frag.firstElementChild.appendChild(document.getElementById(pg.tpl).content.cloneNode(true)));
+      frag.firstElementChild.appendChild(document.getElementById('tpl-contact').content.cloneNode(true));
+      stage.appendChild(frag);
+      const root = stage.firstElementChild;
+      if (window.I18N) window.I18N.node(root);
+      root.classList.add('is-entering');
+      document.documentElement.style.background = getComputedStyle(root).backgroundColor;
+      const done = page.init ? page.init(root) : null;
+      const done2 = pages.map((pg) => pg.init(root));
+      const ct = root.querySelector('.contact');
+      ct.classList.add('contact--' + page.id);
+      const stopTours = window.Tours ? Tours.start(root) : null;
+      const fin = window.FINALE ? window.FINALE(page.id, root, ct) : null;
+      cleanup = () => { if (fin) fin(); if (stopTours) stopTours(); if (typeof done === 'function') done(); done2.forEach((f) => { if (typeof f === 'function') f(); }); };
+      /* a link to a section (index.html#contacto) lands on it the first time the page is drawn */
+      if (first) { first = false; let t = null; try { t = location.hash.length > 1 ? stage.querySelector(location.hash) : null; } catch (e) {} if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); }
+    });
+  }
+
+  window.REMOUNT = mount;
+
+  /* in-page links scroll to their section */
+  stage.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    e.preventDefault();
+    if (href === '#top') { scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
+    const target = stage.querySelector(href);
+    if (target) target.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  mount();
+})();
+</script>
+<script>
+/* type sets: the chosen one (Funnel) plus the two finalists it was weighed against; F cycles them */
+(() => {
+  const TYPES = [
+    { id: 'funnel', name: 'Funnel + Martian Mono' },
+    { id: 'schibsted', name: 'Schibsted + Plex Mono' },
+    { id: 'newsreader', name: 'Newsreader + Hanken' }
+  ];
+  const tp = document.querySelector('.type-picker'), hl = tp.querySelector('.proto-picker-highlight');
+  const btns = TYPES.map((t) => {
+    const b = document.createElement('button');
+    b.className = 'proto-picker-item';
+    b.type = 'button';
+    b.textContent = t.name;
+    tp.appendChild(b);
+    return b;
+  });
+  let cur = 0;
+  try { const i = TYPES.findIndex((t) => t.id === localStorage.getItem('case-type')); if (i >= 0) cur = i; } catch (e) {}
+  const move = () => { const el = btns[cur]; hl.style.width = el.offsetWidth + 'px'; hl.style.transform = `translateX(${el.offsetLeft}px)`; };
+  const relayout = () => dispatchEvent(new Event('resize'));
+  const set = (i) => {
+    cur = (i + TYPES.length) % TYPES.length;
+    document.documentElement.dataset.type = TYPES[cur].id;
+    btns.forEach((b, j) => { b.toggleAttribute('data-active', j === cur); b.setAttribute('aria-pressed', j === cur ? 'true' : 'false'); });
+    move();
+    try { localStorage.setItem('case-type', TYPES[cur].id); } catch (e) {}
+    /* fonts load after the next layout; measure again once they arrive */
+    requestAnimationFrame(() => document.fonts.ready.then(relayout));
+    setTimeout(relayout, 900);
+  };
+  btns.forEach((b, i) => b.addEventListener('click', () => set(i)));
+  addEventListener('resize', move);
+  document.addEventListener('keydown', (e) => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'f' || e.key === 'F') set(cur + 1);
+  });
+  set(cur);
+  requestAnimationFrame(() => requestAnimationFrame(() => tp.setAttribute('data-ready', '')));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<style is:global>
+/* ===== Process: a route. A line drawn by the scroll takes Tu marca, the visitor's own element, through four stations on the lab
+   paper. Each station is invisible until Tu marca reaches it: then its element appears, lit, and its card tells the step. The
+   dotted trace of the way is there from the start, faint, over a grid of tiles ===== */
+.pq{color:#0a1020}
+.pq-stick{display:flex;flex-direction:column;gap:clamp(12px,2.4vh,24px);padding:clamp(76px,11vh,108px) var(--gutter) clamp(28px,4.4vh,48px)}
+.pq-map{position:relative;flex:1;min-height:0;width:100%;margin:clamp(40px,7vh,80px) 0 0;padding:0;list-style:none}
+.pq-map::before{content:"";position:absolute;inset:-6% -1% -2%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52'%3E%3Crect x='4.5' y='4.5' width='43' height='43' rx='8' fill='none' stroke='rgb(30,85,224)' stroke-opacity='.09'/%3E%3C/svg%3E") 50% 50%/52px 52px;-webkit-mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%);mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%);pointer-events:none}
+.pq-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pq-base{fill:none;stroke:rgba(var(--cobalt-rgb),.26);stroke-width:3;stroke-linecap:round;stroke-dasharray:.1 12}
+.pq-line{fill:none;stroke-width:6;stroke-linecap:round}
+/* an element lit from inside, as the hero draws them */
+.pq-el{--z:clamp(60px,6vw,92px);position:relative;display:flex;flex-direction:column;width:var(--z);height:var(--z);padding:calc(var(--z) * .1) calc(var(--z) * .11);border-radius:calc(var(--z) * .2);color:#fff;
+  background:var(--lit);
+  box-shadow:inset 0 0 0 1px rgba(170,204,255,.62),inset 0 1px 0 rgba(232,240,255,.4),0 22px 44px -22px rgba(var(--deep-rgb),.7)}
+.pq-el i{font:400 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:#dbe7ff}
+.pq-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
+/* a station: nothing shows until Tu marca arrives; then the element pops in with a ring that opens once, and its card follows */
+.pq-stop{position:absolute;left:0;top:0;z-index:2;translate:-50% -50%}
+.pq-stop .pq-el,.pq-card{opacity:0;visibility:hidden;transition:opacity var(--d-state) ease,visibility 0s linear var(--d-state)}
+.pq-stop.is-on .pq-el{opacity:1;visibility:visible;transition:none;animation:pqPop var(--d-enter) var(--ease-out) both}
+.pq-stop.is-on .pq-el::after{content:"";position:absolute;inset:-6px;border-radius:calc(var(--z) * .26);box-shadow:0 0 0 2px rgba(var(--sky-rgb),.55);pointer-events:none;animation:pqRing var(--d-scene) var(--ease-out) both}
+@keyframes pqPop{0%{opacity:0;transform:scale(.6)}55%{opacity:1;transform:scale(1.07)}100%{opacity:1;transform:none}}
+@keyframes pqRing{from{opacity:1;transform:scale(.92)}to{opacity:0;transform:scale(1.55)}}
+/* (180 px at the least: at 768 and 1024 wider cards went past the gutter and two of them met) */
+.pq-card{position:absolute;left:50%;display:grid;gap:6px;width:clamp(180px,19vw,300px);padding:12px 16px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px rgba(var(--deep-rgb),.1),0 22px 40px -26px rgba(var(--deep-rgb),.35)}
+.pq-stop.is-on .pq-card{opacity:1;visibility:visible;transition:opacity var(--d-move) ease 160ms,transform var(--d-move) var(--ease-out) 160ms}
+/* where the card stands: above or below its station, or beside it on a phone; it slides the last few pixels in as it appears
+   (all of it in transform: the build would drop a translate next to a transform) */
+.pq-stop[data-side="up"] .pq-card{bottom:calc(100% + 12px);transform:translate3d(-50%,8px,0)}
+.pq-stop[data-side="down"] .pq-card{top:calc(100% + 12px);transform:translate3d(-50%,-8px,0)}
+.pq-stop[data-side="right"] .pq-card{left:calc(100% + 14px);top:50%;width:var(--cw,220px);transform:translate3d(-8px,-50%,0)}
+.pq-stop.is-on[data-side="up"] .pq-card,.pq-stop.is-on[data-side="down"] .pq-card{transform:translate3d(-50%,0,0)}
+.pq-stop.is-on[data-side="right"] .pq-card{transform:translate3d(0,-50%,0)}
+.pq-card h3{font:600 clamp(19px,1.9vw,28px)/1.1 var(--head);letter-spacing:-.02em}
+.pq-card p{font-size:clamp(14px,1.15vw,17px);line-height:1.42;color:#4a5878}
+/* Tu marca, riding the line */
+.pq-me{position:absolute;left:0;top:0;z-index:3;--z:clamp(42px,3.8vw,56px)}
+@media (max-width:760px){
+  .pq-map{margin-top:12px}
+  .pq-el{--z:56px}
+  .pq-card{padding:10px 12px}
+  .pq-card h3{font-size:18px}
+  .pq-card p{font-size:13.5px}
+  .pq-me{--z:40px}
+}
+/* with reduced motion the route is drawn and every station is there, still */
+@media (prefers-reduced-motion:reduce){.pq-stop.is-on .pq-el{animation:none}.pq-stop.is-on .pq-el::after{display:none}.pq-stop.is-on .pq-card{transition:none}}
+.pq.is-still .pq-map{min-height:70vh}
+</style>
+
+<template id="tpl-pq"><section class="moment pq" id="proceso" aria-labelledby="pq-h" style="--mh:300vh"><div class="moment__stick pq-stick is-flow">
+  <h2 class="h2" id="pq-h">Así trabajamos contigo</h2>
+  <ol class="pq-map"></ol>
+</div></section></template>
+
+<script is:inline>
+const STEPS = [
+  { s: 'Cn', t: 'Conversamos', c: 'Tu negocio y tus clientes', d: 'Entendemos tu negocio, tus clientes y qué debe lograr la web.' },
+  { s: 'Di', t: 'Diseñamos', c: 'Estilo y estructura', d: 'Proponemos el estilo y la estructura antes de programar.' },
+  { s: 'Cs', t: 'Construimos', c: 'Rápido y adaptado a celulares', d: 'Desarrollamos un sitio rápido y adaptado a celulares.' },
+  { s: 'La', t: 'Lanzamos', c: 'Seguimos contigo', d: 'Publicamos, te enseñamos a usarlo y seguimos contigo.' }
+];
+
+/* the route: where on the line each station stands (fractions of its length), and the scroll that takes Tu marca along it, resting
+   at each station and gliding to the next near the end of its stretch */
+addSection('tabla', 'tpl-pq', 3, (root) => {
+  const sec = root.querySelector('.pq'), map = sec.querySelector('.pq-map'), N = STEPS.length, AT = [.1, .38, .65, .94], offs = [];
+  const no = (i) => String(i + 1).padStart(2, '0');
+  const on = (el, ev, fn, opt) => { el.addEventListener(ev, fn, opt); offs.push(() => el.removeEventListener(ev, fn, opt)); };
+  map.innerHTML = '<li aria-hidden="true" style="display:contents"><svg class="pq-svg"><defs><linearGradient id="pq-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8fb0ff"/><stop offset=".5" stop-color="#3d8bff"/><stop offset="1" stop-color="#1e55e0"/></linearGradient></defs><path class="pq-base"/><path class="pq-line" stroke="url(#pq-g)"/></svg><span class="pq-me pq-el"><i>119</i><b>Tú</b></span></li>'
+    + STEPS.map((s, i) => `<li class="pq-stop"><span class="pq-el" aria-hidden="true"><i>${no(i)}</i><b>${s.s}</b></span><div class="pq-card"><h3>${s.t}</h3><p>${s.d}</p></div></li>`).join('');
+  const svg = map.querySelector('.pq-svg'), base = svg.querySelector('.pq-base'), line = svg.querySelector('.pq-line'), grad = svg.querySelector('linearGradient');
+  const stops = [...map.querySelectorAll('.pq-stop')], me = map.querySelector('.pq-me');
+  let L = 0, last = 0;
+  /* the line is drawn in the map's own pixels: a wave across it, or on a phone a line down its left side with the cards beside it */
+  const layout = () => {
+    const tall = innerWidth < 760, W = map.clientWidth, H = map.clientHeight;
+    if (!W || !H) return;
+    const d = tall
+      ? `M 30 0 C 30 ${H * .1}, 84 ${H * .12}, 84 ${H * .24} S 26 ${H * .4}, 34 ${H * .5} S 88 ${H * .64}, 80 ${H * .75} S 30 ${H * .9}, 44 ${H}`
+      : `M ${W * .03} ${H * .83} C ${W * .17} ${H * .85}, ${W * .19} ${H * .33}, ${W * .32} ${H * .29} S ${W * .48} ${H * .79}, ${W * .63} ${H * .77} S ${W * .78} ${H * .23}, ${W * .97} ${H * .21}`;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`); base.setAttribute('d', d); line.setAttribute('d', d);
+    grad.setAttribute('x2', tall ? '0' : '1'); grad.setAttribute('y2', tall ? '1' : '0');
+    L = line.getTotalLength(); line.style.strokeDasharray = `${L} ${L}`;
+    stops.forEach((s, i) => {
+      const pt = line.getPointAtLength(L * AT[i]);
+      s.style.left = `${pt.x.toFixed(1)}px`; s.style.top = `${pt.y.toFixed(1)}px`;
+      s.dataset.side = tall ? 'right' : (pt.y > H / 2 ? 'up' : 'down');
+      if (tall) s.style.setProperty('--cw', `${Math.max(160, W - pt.x - 52)}px`);
+    });
+    render(last);
+  };
+  const render = (p) => {
+    last = p; if (!L) return;
+    const s = range(p, .03, .96) * N, k = Math.min(N - 1, Math.floor(s)), f = s - k;
+    const t = k === 0 && f < .35 ? AT[0] * easeOut(f / .35) : k < N - 1 ? lerp(AT[k], AT[k + 1], easeIO(range(f, .6, 1))) : AT[N - 1];
+    line.style.strokeDashoffset = (L * (1 - t)).toFixed(1);
+    /* Tu marca goes into each station as it arrives: it shrinks into it while the station appears */
+    const pt = line.getPointAtLength(L * t), m = clamp01(Math.min(...AT.map((x) => Math.abs(t - x))) / .035);
+    me.style.transform = `translate3d(${pt.x.toFixed(1)}px,${pt.y.toFixed(1)}px,0) translate(-50%,-50%) scale(${(.55 + .45 * m).toFixed(3)})`;
+    me.style.opacity = m.toFixed(3);
+    stops.forEach((st, i) => st.classList.toggle('is-on', t >= AT[i] - .006));
+  };
+  layout(); on(window, 'resize', layout);
+  if (document.fonts) document.fonts.ready.then(() => { if (map.isConnected) layout(); });
+  if (RM) { sec.classList.add('is-still'); layout(); render(1); return () => offs.forEach((f) => f()); }
+  const stop = moment(sec, render);
+  return () => { stop(); offs.forEach((f) => f()); };
+});
+</script>

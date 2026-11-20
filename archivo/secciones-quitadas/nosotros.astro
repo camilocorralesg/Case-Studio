@@ -1,0 +1,104 @@
+<style is:global>
+/* ===== Nosotros: the three people of the studio, in their own words.
+   A tour of the periodic table that stops at Ca, at Se and at the element that completes them ===== */
+.ab{background:var(--ab-bg);color:var(--ab-fg)}
+.ab-stick{display:grid;grid-template-columns:minmax(0,1fr);align-content:center;row-gap:clamp(22px,4.4vh,48px);padding:clamp(76px,11vh,112px) var(--gutter) clamp(26px,5vh,54px)}
+.ab-stick::before{content:"";position:absolute;inset:0;background:var(--ab-glow,none);pointer-events:none;-webkit-mask-image:var(--fade);mask-image:var(--fade)}
+.ab-head{position:relative;z-index:2;display:grid;gap:12px;max-width:min(100%,46rem)}
+.ab-head .lead{color:var(--ab-body);max-width:32em}
+.ab-stage{position:relative}
+.ab-tx{display:grid;gap:8px;align-content:start}
+.ab-p h3{font-family:var(--head);font-weight:var(--head-w);font-size:clamp(20px,1.9vw,28px);line-height:1.08;letter-spacing:-.02em}
+.ab-role{font:400 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ab-dim)}
+.ab-d{font-family:var(--body);font-size:clamp(14px,1.1vw,16px);line-height:1.45;color:var(--ab-body)}
+.ab-sym{display:block;font-family:var(--sym);font-weight:600;letter-spacing:-.04em;line-height:.82}
+.ab--tab{--ab-bg:#02040a;--ab-fg:#fff;--ab-body:#b3bfd3;--ab-dim:#8fa3cc;--ab-glow:radial-gradient(60% 50% at 50% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+
+/* the camera travels over the table and stops at each of the three */
+.ab-m-map .ab-stick{align-content:start}
+.ab-m-map .ab-head{transition:opacity 300ms ease}
+.ab-m-map .ab-stage{position:absolute;inset:0}
+.ab-map{--c:min(4.6vw,7.4vh);position:absolute;left:0;top:0;display:grid;grid-template-columns:repeat(18,var(--c));grid-auto-rows:var(--c);gap:calc(var(--c) * .08);transform-origin:0 0}
+.ab-map i{display:grid;place-items:center;border-radius:12%;box-shadow:inset 0 0 0 1px rgba(118,166,255,.22);font:600 calc(var(--c) * .34)/1 var(--sym);font-style:normal;letter-spacing:-.03em;color:rgba(143,176,255,.34)}
+.ab-map i.hot{position:relative;background:linear-gradient(#3d8bff,#1e55e0);box-shadow:none;color:#fff;font-size:calc(var(--c) * .46);transition:background-color 300ms ease,color 300ms ease}
+.ab-map i.hot small{position:absolute;left:12%;top:11%;font:400 calc(var(--c) * .16)/1 var(--mono);letter-spacing:0;opacity:.85}
+.ab-map i.hot.on{background:#fff;color:var(--deep)}
+.ab-info{position:absolute;z-index:2;right:var(--gutter);top:50%;display:grid;width:min(38vw,440px);transform:translateY(-50%)}
+.ab-m-map .ab-sym{display:none}
+.ab-m-map .ab-p{grid-area:1/1;padding:clamp(18px,1.8vw,26px);border-radius:16px;background:rgba(10,22,56,.9);box-shadow:inset 0 0 0 1.5px rgba(118,166,255,.55);opacity:0;transform:translateY(14px);transition:opacity 320ms ease,transform 460ms var(--ease-out);pointer-events:none}
+.ab-m-map .ab-p.on{opacity:1;transform:none}
+
+@media (max-width:860px){
+  /* on a phone the three become one row that the scroll moves, one person at a time */
+  .ab-map{--c:min(5.1vw,4.6vh)}
+  .ab-info{left:var(--gutter);right:var(--gutter);top:auto;bottom:5vh;width:auto;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .ab-m-map .ab-stage{position:relative;inset:auto;display:grid;gap:22px}
+  .ab-map{position:relative;margin-inline:auto}
+  .ab-info{position:static;width:auto;transform:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .ab-m-map .ab-p{grid-area:auto;opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:860px){
+  .ab-info{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:1fr;transform:none}
+}
+</style>
+<template id="tpl-ab"><section class="moment ab" id="nosotros" aria-labelledby="ab-h" style="--mh:320vh"><div class="moment__stick ab-stick is-flow">
+  <div class="ab-head"><h2 class="h2" id="ab-h">Dos amigos desde la guardería, un mismo equipo.</h2><p class="lead">Así nació CaSe Studio y así trabajamos con cada cliente.</p></div>
+  <div class="ab-stage"></div>
+</div></section></template>
+<script is:inline>
+/* their own words, from their portfolio */
+window.TEAM = [
+  { n: 'Camilo Corrales', r: 'Diseño y desarrollo', s: 'Ca', z: '20', d: 'Programación, diseño visual y construcción de cada sitio, desde la primera pantalla hasta el último detalle.' },
+  { n: 'Sebastián Vanegas', r: 'Ventas y relaciones comerciales', s: 'Se', z: '34', d: 'Entiende el negocio de cada cliente, define qué debe lograr la web y acompaña el proyecto de principio a fin.' },
+  { n: 'Catalina Vanegas', r: 'Redes sociales y contenido', s: 'Cv', z: '03', d: 'Comunicadora social. Planea el contenido de cada marca, maneja su comunidad y cuida que cada publicación conecte con su público.' }
+];
+function initAbout(theme, mode) {
+  const person = (t, i, art = '') => `<article class="ab-p" style="--j:${i}">${art || `<span class="ab-sym" aria-hidden="true">${t.s}</span>`}<div class="ab-tx"><h3>${t.n}</h3><p class="ab-role">${t.r}</p><p class="ab-d">${t.d}</p></div></article>`;
+  return (root) => {
+    const sec = root.querySelector('.ab'), stick = sec.querySelector('.ab-stick'), stage = sec.querySelector('.ab-stage'), head = sec.querySelector('.ab-head');
+    sec.classList.add('ab--' + theme, 'ab-m-' + mode);
+    let orbs = [], map = null, hot = [], cam = null;
+    {
+      const g = (a, n, b) => [...a, ...Array(n).fill(''), ...b];
+      const ROWS = [g(['H'], 16, ['He']), g(['Li', 'Be'], 10, ['B', 'C', 'N', 'O', 'F', 'Ne']), g(['Na', 'Mg'], 10, ['Al', 'Si', 'P', 'S', 'Cl', 'Ar']),
+        ['K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr'], ['Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe']];
+      const cell = (s, r, c) => { const j = s === 'Ca' ? 0 : s === 'Se' ? 1 : -1; return s ? `<i ${j >= 0 ? `class="hot" data-j="${j}"` : ''} style="grid-area:${r}/${c}">${j >= 0 ? `<small>${TEAM[j].z}</small>` : ''}${s}</i>` : ''; };
+      stage.innerHTML = `<div class="ab-map" aria-hidden="true">${ROWS.map((row, r) => row.map((s, c) => cell(s, r + 1, c + 1)).join('')).join('')}<i class="hot" data-j="2" style="grid-area:7/9"><small>${TEAM[2].z}</small>Cv</i></div><div class="ab-info">${TEAM.map((t, i) => person(t, i)).join('')}</div>`;
+      map = stage.querySelector('.ab-map'); hot = [0, 1, 2].map((j) => map.querySelector(`[data-j="${j}"]`));
+    }
+    const ps = [...stage.querySelectorAll('.ab-p')];
+    let act = -2;
+    const setAct = (i) => {
+      if (i === act) return; act = i;
+      ps.forEach((el, j) => el.classList.toggle('on', j === i)); orbs.forEach((el, j) => el.classList.toggle('on', j === i)); hot.forEach((el, j) => el.classList.toggle('on', j === i));
+      sec.style.setProperty('--act', Math.max(0, i));
+    };
+    /* where the camera is for the overview and for each of the three stops */
+    const shots = () => {
+      const W = stick.clientWidth, H = stick.clientHeight, mw = map.offsetWidth, mh = map.offsetHeight, c = hot[0].offsetWidth, ph = W <= 860;
+      const over = { x: (W - mw) / 2, y: ph ? H * .34 : Math.max(head.offsetTop + head.offsetHeight + 28, (H - mh) / 2 + 30), s: 1 };
+      const S = Math.min(H * .3, W * .2) / c, ax = ph ? W * .5 : W * .29, ay = ph ? H * .36 : H * .52;
+      cam = [over, ...hot.map((el) => ({ x: ax - S * (el.offsetLeft + c / 2), y: ay - S * (el.offsetTop + c / 2), s: S }))];
+    };
+    const place = (a, b, t) => { map.style.transform = `translate(${lerp(a.x, b.x, t).toFixed(1)}px,${lerp(a.y, b.y, t).toFixed(1)}px) scale(${lerp(a.s, b.s, t).toFixed(4)})`; };
+    if (RM) { setAct(-1); ps.forEach((el) => el.classList.add('on')); orbs.forEach((el) => el.classList.add('on')); ps.forEach((el) => el.style.setProperty('--k', 1)); sec.style.setProperty('--k', 1); return () => {}; }
+    let onResize = null;
+    shots(); onResize = () => { shots(); }; addEventListener('resize', onResize);
+    const stop = moment(sec, (p) => {
+      {
+        /* overview, then Ca, Se and Cv, then the overview again with the three lit */
+        const K = [[0, 0], [.1, 0], [.24, 1], [.38, 1], [.5, 2], [.62, 2], [.74, 3], [.86, 3], [.96, 0], [1, 0]];
+        let n = 0; while (n < K.length - 2 && p > K[n + 1][0]) n++;
+        place(cam[K[n][1]], cam[K[n + 1][1]], easeIO(range(p, K[n][0], K[n + 1][0])));
+        setAct(p > .17 && p < .44 ? 0 : p >= .44 && p < .68 ? 1 : p >= .68 && p < .91 ? 2 : -1);
+        head.style.opacity = (1 - range(p, .08, .16) + range(p, .91, .98)).toFixed(3);
+      }
+    });
+    return () => { stop(); if (onResize) removeEventListener('resize', onResize); };
+  };
+}
+
+addSection('tabla', 'tpl-ab', 4.5, initAbout('tab', 'map'));
+</script>

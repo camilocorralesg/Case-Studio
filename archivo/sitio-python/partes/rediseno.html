@@ -1,0 +1,96 @@
+<style>
+.plus{display:inline-block;margin-left:8px;padding:4px 8px;white-space:nowrap;border-radius:999px;background:var(--blue);color:#fff;font:500 11px/1 var(--mono);font-style:normal;letter-spacing:0;vertical-align:middle}
+
+/* ===== Redesign: a site full of the usual AI look becomes a clear one, strip by strip ===== */
+.rd{background:var(--rd-bg);color:var(--rd-fg)}
+.rd-stick{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:0 var(--gutter)}
+.rd-stick::before{content:"";position:absolute;inset:0;background:var(--rd-glow,none);pointer-events:none}
+.rd-left{grid-column:1/5;position:relative;display:grid;gap:18px;justify-items:start}
+.rd-left .lead{color:var(--rd-body)}
+.rd-tags{display:flex;gap:8px;margin-top:6px}
+.rd-tag{padding:9px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--rd-line);color:var(--rd-dim);font-size:14px;transition:background-color 260ms ease,color 260ms ease}
+.rd-tag.on{background:var(--rd-fg);color:var(--rd-bg);box-shadow:none}
+.rd-stage{grid-column:5/13;position:relative;aspect-ratio:16/10;max-height:76vh;justify-self:end;width:100%;perspective:1700px;border-radius:var(--rd-r,18px)}
+.rd-stage>.rd-site,.rd-face{position:absolute;inset:0;overflow:hidden;border-radius:var(--rd-r,18px)}
+.rd-stage>.rd-slop{box-shadow:0 50px 100px -40px var(--rd-shadow,rgba(0,0,0,.7))}
+.rd-face>.rd-site{position:absolute;inset:0}
+.rd-site{container-type:inline-size;display:flex;flex-direction:column}
+.rd-nav{display:flex;align-items:center;gap:3cqw;padding:2.6cqw 4cqw;font-size:1.7cqw}
+.rd-nav b{margin-right:auto;font-size:2.2cqw}
+.rd-site em{font-style:normal;white-space:nowrap}
+.rd-hero{display:grid;gap:2cqw}
+.rd-hero>div{display:flex;gap:1.6cqw}
+/* before: the look every generated site has */
+.rd-slop{background:linear-gradient(135deg,#4c1d95,#7c3aed 45%,#db2777);color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center}
+.rd-slop .rd-nav em,.rd-slop .rd-hero em{padding:1.3cqw 2.6cqw;border-radius:99px;background:linear-gradient(90deg,#f59e0b,#ec4899);font-weight:700;font-size:1.7cqw;box-shadow:0 0 3cqw rgba(236,72,153,.8)}
+.rd-slop .rd-hero em.g{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 .2cqw rgba(255,255,255,.4)}
+.rd-slop .rd-hero{justify-items:center;padding:1cqw 8cqw 3cqw}
+.rd-badge{padding:.9cqw 2cqw;border-radius:99px;background:rgba(255,255,255,.16);font-size:1.5cqw}
+.rd-slop h4{font-size:6.2cqw;line-height:1.02;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,#fff,#fde68a,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rd-slop .rd-hero p{font-size:1.9cqw;line-height:1.4;opacity:.9;max-width:34em}
+/* after: one clear message */
+.rd-clean{background:var(--rc-bg);color:var(--rc-fg);font-family:var(--font)}
+.rd-clean .rd-nav em,.rd-clean .rd-hero em{padding:1.3cqw 2.6cqw;border-radius:var(--rc-br,99px);background:var(--rc-ac);color:var(--rc-on,#fff);font-weight:500;font-size:1.7cqw}
+.rd-clean .rd-nav span{opacity:.72}
+.rd-main{flex:1;min-height:0;display:grid;grid-template-columns:1.1fr .9fr;gap:4cqw;align-items:center;padding:1cqw 4cqw 4cqw}
+.rd-clean h4{font-family:var(--rc-hf,var(--head));font-weight:var(--rc-hw,500);font-size:calc(5.4cqw * var(--rc-hs,1) * var(--hs,1));line-height:1.02;letter-spacing:-.03em}
+.rd-clean .rd-hero p{font-size:2cqw;line-height:1.4;opacity:.78}
+.rd-menu{display:flex;gap:1.2cqw;margin-top:1.4cqw;font-size:1.5cqw}
+.rd-menu li{padding:.9cqw 1.8cqw;border-radius:var(--rc-br,99px);box-shadow:inset 0 0 0 .14cqw var(--rc-hair,rgba(255,255,255,.26));white-space:nowrap}
+.rd-pic{position:relative;align-self:stretch;overflow:hidden;border-radius:var(--rc-pr,2.4cqw);background:var(--rc-pic)}
+.rd-pic svg{position:absolute;left:-9%;bottom:0;width:118%;height:100%}
+.rd-pic .s{fill:var(--rc-sun);will-change:transform}.rd-pic .g{fill:var(--rc-gr,rgba(0,0,0,.18))}
+.rd-pic .l{fill:none;stroke:var(--rc-loaf);stroke-width:54;stroke-linecap:round}
+.rd-pic .c{fill:none;stroke:var(--rc-cut);stroke-width:5;stroke-linecap:round}
+.rd-time{position:absolute;left:2.4cqw;top:2cqw;font:500 1.7cqw/1 var(--mono);color:var(--rc-tm,inherit);opacity:.9}
+.rd-slop::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 24%,rgba(250,204,21,.5),rgba(250,204,21,0) 30%),radial-gradient(circle at 94% 80%,rgba(34,211,238,.55),rgba(34,211,238,0) 34%)}
+.rd-slop>*{position:relative}
+.rd-m-still .rd-stage>.rd-slop{inset:0 auto auto 0;width:46%;height:46%}
+.rd-m-still .rd-stage>.rd-clean{inset:auto 0 0 auto;width:72%;height:72%;box-shadow:0 0 0 6px var(--rd-bg),0 50px 100px -40px var(--rd-shadow,rgba(0,0,0,.7))}
+.rd--tab{--rd-bg:#02040a;--rd-fg:#fff;--rd-body:#b3bfd3;--rd-dim:#7f8ba3;--rd-line:rgba(118,166,255,.4);--rd-r:14px;--rd-shadow:rgba(30,107,255,.5);--rc-bg:#0a1638;--rc-fg:#fff;--rc-ac:#fff;--rc-on:#0a1f5c;--rc-br:.8cqw;--rc-pr:1.2cqw;--rc-pic:linear-gradient(#3d8bff,#1e55e0);--rc-sun:rgba(255,255,255,.24);--rc-loaf:#fff;--rc-cut:#1e55e0;--rc-gr:rgba(4,12,48,.3);--rc-hair:rgba(118,166,255,.5);--rd-glow:radial-gradient(50% 60% at 70% 100%,rgba(30,107,255,.3),rgba(30,107,255,0) 72%)}
+/* mechanics */
+.rd-face{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.rd-back{transform:rotateY(180deg)}
+.rd-strip{position:absolute;top:0;bottom:0;left:calc(var(--i) * 12.5%);width:12.55%;transform-style:preserve-3d;will-change:transform}
+.rd-strip .rd-face{border-radius:0}
+.rd-strip .rd-face>.rd-site{left:calc(var(--i) * -100%);width:800%;right:auto}
+@media (max-width:860px){
+  .rd-stick{align-content:center;row-gap:18px}
+  .rd-left,.rd-stage{grid-column:1/-1}
+  .rd-left .lead{display:none}
+}
+</style>
+
+<template id="tpl-rd"><section class="moment rd" id="rediseno" aria-labelledby="rd-h" style="--mh:320vh"><div class="moment__stick rd-stick">
+  <div class="rd-left"><h2 class="h2" id="rd-h">¿Ya tienes un sitio? Lo llevamos al siguiente nivel.</h2><p class="lead">Conservamos lo que funciona y rediseñamos el resto.</p><p class="rd-tags" aria-hidden="true"><span class="rd-tag on">Antes</span><span class="rd-tag">Después</span></p></div>
+  <div class="rd-stage" role="img" aria-label="Ejemplo: un sitio genérico rediseñado como un sitio claro"></div>
+</div></section></template>
+
+<script>
+const RD_SLOP = '<div class="rd-site rd-slop"><div class="rd-nav"><b>✨ BrandAI</b><span>Inicio</span><span>Soluciones</span><span>Blog</span><em>Empezar 🚀</em></div><div class="rd-hero"><p class="rd-badge">🔥 Nuevo · Potenciado con IA</p><h4>Desbloquea el poder de tu negocio</h4><p>Soluciones innovadoras, robustas y de vanguardia para potenciar tu transformación digital.</p><div><em>Empezar ahora</em><em class="g">Saber más</em></div></div><div class="rd-cards"><div><i>⚡</i>Innovador</div><div><i>🎯</i>Robusto</div><div><i>💎</i>Potente</div></div></div>';
+const RD_ART = '<svg viewBox="0 0 240 250" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><circle class="s" cx="120" cy="146" r="96"/><ellipse class="g" cx="124" cy="236" rx="96" ry="7"/><path class="l" d="M56 204 184 108"/><path class="c" d="M70 183l26 6M94 165l26 6M118 147l26 6M142 129l26 6"/></svg>';
+const RD_CLEAN = '<div class="rd-site rd-clean"><div class="rd-nav"><b>Tu marca</b><span>Menú</span><span>Ubicación</span><em>Pedir</em></div><div class="rd-main"><div class="rd-hero"><h4>Pan recién horneado, todos los días a las 7.</h4><p>Pídelo por WhatsApp y recógelo en la tienda.</p><div><em>Hacer un pedido</em></div><ul class="rd-menu"><li>Masa madre</li><li>Croissant</li><li>Pan de queso</li></ul></div><div class="rd-pic"><span class="rd-time">07:00</span>' + RD_ART + '</div></div></div>';
+function initRedo(theme, mode) {
+  return (root) => {
+    const sec = root.querySelector('.rd'); sec.classList.add('rd--' + theme, 'rd-m-' + (RM ? 'still' : mode));
+    const stage = sec.querySelector('.rd-stage'), tags = [...sec.querySelectorAll('.rd-tag')];
+    if (RM) { stage.innerHTML = RD_SLOP + RD_CLEAN; tags.forEach((t) => t.classList.add('on')); return; }
+    const faces = `<div class="rd-face">${RD_SLOP}</div><div class="rd-face rd-back">${RD_CLEAN}</div>`;
+    stage.innerHTML = (Array.from({ length: 8 }, (_, i) => `<div class="rd-strip" style="--i:${i}">${faces}</div>`).join(''));
+    const strips = [...stage.querySelectorAll('.rd-strip')];
+    const suns = [...stage.querySelectorAll('.rd-clean .s')], clocks = [...stage.querySelectorAll('.rd-time')];
+    let state = -1, min = -1;
+    const off = moment(sec, (p) => {
+      const k = easeIO(range(p, .16, .82));
+      strips.forEach((s, i) => { const f = easeIO(range(p, .14 + i * .055, .46 + i * .055)); s.style.transform = `rotateY(${(f * 180).toFixed(2)}deg) translateZ(${(Math.sin(Math.PI * f) * 60).toFixed(1)}px)`; });
+      const st = k > .5 ? 1 : 0;
+      if (st !== state) { state = st; tags.forEach((t, i) => t.classList.toggle('on', i === st)); }
+      const up = easeOut(range(p, .5, .94)), m = Math.round(48 + up * 12);
+      suns.forEach((c) => { c.style.transform = `translateY(${((1 - up) * 96).toFixed(1)}px)`; });
+      if (m !== min) { min = m; const t = m >= 60 ? '07:00' : '06:' + m; clocks.forEach((c) => { c.textContent = t; }); }
+    });
+    return () => { if (typeof off === 'function') off(); };
+  };
+}
+addSection('tabla', 'tpl-rd', 1.5, initRedo('tab', 'strips'));
+</script>

@@ -1,0 +1,175 @@
+---
+import Flecha from '../components/Flecha.astro';
+---
+<style is:global>
+/* ===== Preguntas (Chat, chosen on 15 November 2026): the questions on one side, each with the element of the part of the site that
+   answers it, and a chat on the other, in the encuadre. A question touched goes into the chat and CaSe answers in short messages,
+   one after another, at the pace of someone writing ("Escribiendo…" up top meanwhile); a question asked before takes the chat back
+   to its answer. Like Fórmula and Proyectos, it is not pinned to the scroll: the visitor uses it (the user's call). On the phone the
+   questions go inside the chat, as quick replies ===== */
+.fq{position:relative;background:var(--night);color:#fff}
+.fq-in{--pt:clamp(76px,11vh,108px);--pb:clamp(28px,4.4vh,48px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;min-height:100vh;min-height:100svh;padding:var(--pt) var(--gutter) var(--pb)}
+.fq-side{grid-column:1/6;display:grid;gap:18px;align-content:center}
+.fq-lead{max-width:24em;color:#b3bfd3}
+.fq-more{display:grid;justify-items:start;gap:12px;margin-top:8px;color:#b3bfd3}
+
+/* an element as the site draws it; lit once its question is asked */
+.fq-el{--z:40px;display:flex;flex-direction:column;flex:none;width:var(--z);height:var(--z);padding:calc(var(--z) * .1) calc(var(--z) * .11);border-radius:calc(var(--z) * .2);background:var(--cell);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.55);transition:background-color var(--d-fade) ease}
+.fq-el i{font:400 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
+.fq-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
+.fq-el.is-mini{--z:36px}
+.is-asked .fq-el,.is-on .fq-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62)}
+.is-asked .fq-el i,.is-on .fq-el i{color:#dbe7ff}
+
+/* the questions: number, symbol and the question; the one in the chat is marked and points at it */
+.fq-rows{display:grid;gap:2px;margin:6px 0 4px}
+.fq-row{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;padding:5px 14px 5px 5px;border:0;border-radius:14px;background:none;color:#8fa6d6;font:500 clamp(15px,1.15vw,18px)/1.25 var(--font);text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.fq-row .arr{flex:none;width:16px;height:16px;margin-left:auto;opacity:0;transform:translateX(-4px);transition:opacity var(--d-fade) ease,transform var(--d-fade) var(--ease-out)}
+.fq-row.is-asked{color:var(--ice)}
+.fq-row.is-on{background:rgba(var(--glow-rgb),.16);color:#fff}
+.fq-row.is-on .arr{opacity:1;transform:none}
+@media (hover:hover) and (pointer:fine){.fq-row:hover{color:#fff}}
+.fq-row:active{transform:scale(.985)}
+
+/* the chat: in the encuadre; the studio up top (its state says when it is writing), the conversation, and on the phone the questions */
+/* (600 px: what a conversation needs; taller, the first answers sat in an empty frame) */
+.fq-chat{grid-column:6/13;position:relative;isolation:isolate;display:flex;flex-direction:column;height:min(calc(100svh - var(--pt) - var(--pb)),600px);border-radius:28px;overflow:hidden}
+.fq-who{display:flex;align-items:center;gap:12px;padding:18px 22px 22px;background:linear-gradient(rgba(var(--night-rgb),.62),rgba(var(--night-rgb),0))}
+.fq-who b{display:block;font:600 16px/1.25 var(--font);letter-spacing:-.01em}
+.fq-state{display:inline-flex;align-items:center;gap:8px;font:400 13px/1.3 var(--font);color:var(--ice)}
+.fq-state::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--sky);transition:background-color var(--d-fade) ease}
+.fq-chat.is-typing .fq-state::before{background:#fff}
+.fq-av{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:10px;background:var(--cell);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.5)}
+.fq-av svg{width:26px;height:auto;fill:#fff}
+.fq-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:6px 22px 20px;scrollbar-width:thin;scrollbar-color:rgba(143,176,255,.35) transparent}
+.fq-log-in{min-height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+/* a message: ours on the left (the logo by the last one of each answer), the visitor's on the right, white, with its element */
+.fq-msg{display:flex;align-items:flex-end;gap:10px;max-width:86%}
+.fq-us{align-self:flex-start;padding-left:46px}
+.fq-us.is-last{padding-left:0}
+.fq-me{align-self:flex-end;margin:12px 0 6px}
+/* (36em: a line of about 70 characters at most, however wide the chat grows) */
+.fq-b{margin:0;max-width:36em;padding:11px 15px;border-radius:16px;font:400 16px/1.4 var(--font)}
+.fq-us .fq-b{border-bottom-left-radius:6px;background:var(--cell);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.32);color:#eef3ff}
+.fq-me .fq-b{border-bottom-right-radius:6px;background:#fff;color:var(--deep);font-weight:500}
+.fq-tag{display:inline-grid;place-items:center;min-width:26px;height:22px;margin-right:9px;padding:0 5px;border-radius:6px;background:var(--cobalt-deep);color:#fff;font:600 12px/1 var(--sym);letter-spacing:-.03em;vertical-align:1px}
+/* an answer that leads to the part of the site that shows it */
+a.fq-b.fq-go{display:inline-flex;align-items:center;gap:8px;min-height:44px;background:var(--cobalt-deep);box-shadow:none;color:#fff;font-weight:500;text-decoration:none;transition:background-color var(--d-hover) ease,transform var(--d-hover) var(--ease-out)}
+@media (hover:hover) and (pointer:fine){a.fq-b.fq-go:hover{background:var(--cobalt)}}
+a.fq-b.fq-go:active{transform:scale(.98)}
+.fq-msg.is-new{animation:fqUs var(--d-state) var(--ease-out) both}
+.fq-me.is-new{animation-name:fqMe}
+@keyframes fqUs{from{opacity:0;transform:translate3d(-6px,8px,0) scale(.98)}}
+@keyframes fqMe{from{opacity:0;transform:translate3d(8px,8px,0) scale(.98)}}
+.fq-quick{display:none}
+.fq :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* on the phone: the title, then the chat, and the questions inside it as quick replies */
+@media (max-width:860px){
+  .fq-in{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:14px}
+  .fq-side{display:contents}
+  .fq-lead{font-size:16px}
+  .fq-rows,.fq-more{display:none}
+  .fq-chat{flex:none;width:100%;min-width:0;height:max(440px,calc(100svh - var(--pt) - var(--pb) - 120px));border-radius:24px}
+  .fq-who{padding:14px 16px 16px}
+  .fq-log{padding:4px 14px 10px}
+  .fq-b{padding:10px 13px;font-size:15px}
+  .fq-us{padding-left:44px}
+  .fq-us.is-last{padding-left:0}
+  .fq-av{width:34px;height:34px}
+  /* the quick replies fade at the edges instead of being cut by them */
+  .fq-quick{position:relative;display:flex;gap:8px;overflow-x:auto;padding:8px 14px 14px;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding-inline:14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 28px),transparent)}
+  .fq-quick::-webkit-scrollbar{display:none}
+  .fq-chip{flex:none;display:flex;align-items:center;gap:9px;min-height:44px;max-width:230px;padding:4px 14px 4px 4px;border:0;border-radius:12px;background:#050b1f;box-shadow:inset 0 0 0 1px rgba(143,176,255,.45);color:#eef3ff;font:500 14px/1.2 var(--font);text-align:left;cursor:pointer;scroll-snap-align:start;transition:opacity var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+  .fq-chip.is-asked{opacity:.6}
+  .fq-chip.is-on{opacity:1;box-shadow:inset 0 0 0 1.5px #fff}
+  .fq-chip:active{transform:scale(.97)}
+}
+@media (prefers-reduced-motion:reduce){.fq-msg.is-new{animation:none}.fq-row,.fq-chip,.fq-row .arr,a.fq-b.fq-go{transition:none}}
+</style>
+
+<template id="tpl-fq"><section class="fq" id="preguntas" aria-labelledby="fq-h"><div class="fq-in">
+  <div class="fq-side">
+    <h2 class="h2" id="fq-h">Preguntas</h2>
+    <p class="lead fq-lead">Toca una y te respondemos aquí.</p>
+    <ol class="fq-rows"></ol>
+    <div class="fq-more"><p>¿Te quedó otra pregunta?</p><a class="btn btn--white" href="#contacto">Empezar mi proyecto <Flecha /></a></div>
+  </div>
+  <div class="fq-chat">
+    <div class="fq-who"><span class="fq-av" aria-hidden="true"><svg viewBox="0 0 208 100"><use href="#mark-cut" width="208" height="100"></use></svg></span><span><b>CaSe Studio</b><small class="fq-state">Disponibles para nuevos proyectos</small></span></div>
+    <div class="fq-log" role="log" aria-label="Conversación con CaSe Studio"><div class="fq-log-in"></div></div>
+    <div class="fq-quick" role="group" aria-label="Preguntas"></div>
+  </div>
+</div></section></template>
+
+<script is:inline>
+/* the questions: each with its element (the symbol of the part of the site that answers it; the second one is its English symbol)
+   and its answer in short messages, sometimes ending in the way to that part. Nothing here that the site does not already say
+   (docs/contenido.md); prices, times or who owns the site wait for the user's answers */
+const FAQ = [
+  { s: 'Sv', q: '¿Qué hacen exactamente?', a: ['Cuatro cosas', 'Sitios web, tiendas en línea, redes sociales y marca', 'Todo hecho por el mismo equipo'] },
+  { s: 'Fm', q: '¿Puedo empezar con una sola cosa?', a: ['Sí', 'Puedes empezar con uno de los cuatro', 'Y sumar los demás cuando tu negocio los pida', { go: 'Armar mi fórmula', href: '#formula' }] },
+  { s: 'Pc', q: '¿Cómo trabajan?', a: ['En cuatro pasos', 'Conversamos: entendemos tu negocio, tus clientes y qué debe lograr la web', 'Diseñamos: te proponemos el estilo y la estructura antes de programar', 'Construimos un sitio rápido y adaptado a celulares', 'Y lanzamos: lo publicamos, te enseñamos a usarlo y seguimos contigo', { go: 'Ver el proceso', href: '#proceso' }] },
+  { s: 'Rd', q: 'Ya tengo un sitio. ¿Lo pueden mejorar?', a: ['Sí, lo rediseñamos', 'Conservamos lo que funciona y rediseñamos el resto', 'Para que diga qué vendes y cómo pedirlo', { go: 'Ver el rediseño', href: '#rediseno' }] },
+  { s: 'Rs', q: '¿Qué incluye el manejo de redes?', a: ['La estrategia y el calendario del mes', 'Fotos, videos y piezas gráficas', 'Motion graphics y contenido con IA, que son nuestro plus', 'Y el community management: publicamos y respondemos comentarios, mensajes y reseñas'] },
+  { s: 'La', q: '¿Puedo manejar el sitio yo después?', a: ['Sí', 'Cuando lo publicamos, te enseñamos a usarlo', 'Y seguimos contigo'] },
+  { s: 'Py', sEn: 'Pj', q: '¿Con qué marcas han trabajado?', a: ['Hicimos los sitios de Los Duches, NeuralNet, NeuralBI, AKUA, Weed Honey y Mimarte', "Y manejamos las redes de Weed Honey, Agilcash, La Miguería, Speedo Colombia, O'Neill Colombia y Graduados EAFIT", { go: 'Ver proyectos', href: '#proyectos' }] }
+];
+/* how the chat opens, and what its state says while it writes */
+const FAQ_SAY = ['Hola', '¿Qué quieres saber?', 'Escribiendo…', 'Disponibles para nuevos proyectos'];
+
+addSection('tabla', 'tpl-fq', 4.5, (root) => {
+  const sec = root.querySelector('.fq'), chat = sec.querySelector('.fq-chat'), log = sec.querySelector('.fq-log'), inner = sec.querySelector('.fq-log-in');
+  const rows = sec.querySelector('.fq-rows'), quick = sec.querySelector('.fq-quick'), state = sec.querySelector('.fq-state'), offs = [];
+  const on = (n, ev, fn, o) => { n.addEventListener(ev, fn, o); offs.push(() => n.removeEventListener(ev, fn, o)); };
+  const en = !!(window.LANG && LANG.cur === 'en'), no = (i) => String(i + 1).padStart(2, '0'), sym = (f) => (en && f.sEn ? f.sEn : f.s);
+  const ARR = '<svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const AV = '<span class="fq-av" aria-hidden="true"><svg viewBox="0 0 208 100"><use href="#mark-cut" width="208" height="100"></use></svg></span>';
+  const el = (i, cls) => `<span class="fq-el${cls ? ' ' + cls : ''}" aria-hidden="true"><i>${zOf(FAQ[i].s)}</i><b>${sym(FAQ[i])}</b></span>`;
+  offs.push(Encuadre.put(chat, 'x'));
+  rows.innerHTML = FAQ.map((f, i) => `<li><button type="button" class="fq-row" data-i="${i}">${el(i)}<span>${f.q}</span>${ARR}</button></li>`).join('');
+  quick.innerHTML = FAQ.map((f, i) => `<button type="button" class="fq-chip" data-i="${i}">${el(i, 'is-mini')}<span>${f.q}</span></button>`).join('');
+  const btns = [...sec.querySelectorAll('[data-i]')], chips = [...quick.children];
+
+  /* a message: ours (the logo by the last one of an answer), or the visitor's question with its element */
+  const us = (t, last) => `<div class="fq-msg fq-us${last ? ' is-last' : ''}">${last ? AV : ''}${typeof t === 'string' ? `<p class="fq-b">${t}</p>` : `<a class="fq-b fq-go" href="${t.href}">${t.go} ${ARR}</a>`}</div>`;
+  const me = (i) => `<div class="fq-msg fq-me" data-q="${i}"><p class="fq-b"><span class="fq-tag" aria-hidden="true">${sym(FAQ[i])}</span>${FAQ[i].q}</p></div>`;
+  const add = (html, anim) => { inner.insertAdjacentHTML('beforeend', html); const m = inner.lastElementChild; if (anim && !RM) m.classList.add('is-new'); return m; };
+  const down = () => log.scrollTo({ top: log.scrollHeight, behavior: RM ? 'auto' : 'smooth' });
+  const typing = (v) => { chat.classList.toggle('is-typing', v); state.textContent = FAQ_SAY[v ? 2 : 3]; };
+
+  /* an answer comes in short messages, each after a pause as long as it would take to write it; meanwhile the state says so */
+  let timers = [], queue = [];
+  const pause = (t) => (typeof t === 'string' ? Math.min(1150, 380 + t.length * 13) : 420);
+  const flush = () => { timers.forEach(clearTimeout); timers = []; queue.forEach((h) => add(h, false)); queue = []; typing(false); down(); };
+  const answer = (lines) => {
+    queue = lines.map((t, k) => us(t, k === lines.length - 1));
+    if (RM) { flush(); return; }
+    typing(true);
+    let t = 0;
+    lines.forEach((line, k) => {
+      t += k ? pause(line) : 560;
+      timers.push(setTimeout(() => { add(queue.shift(), true); down(); if (!queue.length) typing(false); }, t));
+    });
+  };
+  const mark = (i) => btns.forEach((b) => { const j = +b.dataset.i; b.classList.toggle('is-on', j === i); if (j === i) b.classList.add('is-asked'); });
+  /* on the phone, the quick replies move on to the first question not yet asked */
+  const nextChip = () => { const c = chips.find((x) => !x.classList.contains('is-asked')); if (c) quick.scrollTo({ left: c.offsetLeft - 14, behavior: RM ? 'auto' : 'smooth' }); };
+  const ask = (i) => {
+    flush(); mark(i);
+    /* asked before: the chat goes back to that answer and points at it */
+    const before = inner.querySelector(`.fq-me[data-q="${i}"]`);
+    if (before) {
+      log.scrollTo({ top: before.getBoundingClientRect().top - log.getBoundingClientRect().top + log.scrollTop - 12, behavior: RM ? 'auto' : 'smooth' });
+      if (!RM) before.firstElementChild.animate([{ boxShadow: '0 0 0 0 rgba(143,176,255,0)' }, { boxShadow: '0 0 0 5px rgba(143,176,255,.55)' }, { boxShadow: '0 0 0 0 rgba(143,176,255,0)' }], { duration: MOTION.d('scene'), easing: MOTION.ease('out') });
+      return;
+    }
+    add(me(i), true); down(); answer(FAQ[i].a); nextChip();
+  };
+  btns.forEach((b) => on(b, 'click', () => ask(+b.dataset.i)));
+  /* the greeting, the first time the chat is seen */
+  const io = new IntersectionObserver((es) => { if (!es.some((e) => e.isIntersecting)) return; io.disconnect(); if (!inner.children.length) answer(FAQ_SAY.slice(0, 2)); }, { threshold: .4 });
+  io.observe(chat);
+  return () => { io.disconnect(); timers.forEach(clearTimeout); offs.forEach((f) => { if (typeof f === 'function') f(); }); };
+});
+</script>

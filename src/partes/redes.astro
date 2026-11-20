@@ -1,0 +1,267 @@
+<style is:global>
+/* ===== Social media: the six parts of the service as six stories, on the cube the scroll turns (the way stories pass from one to
+   the next). The story stands in the encuadre; the bars on top fill as the page scrolls, and each story starts its drawing when
+   it arrives in front. Beside it, the six as a list that goes to any of them ===== */
+.sm{background:var(--night);color:#fff}
+.sm-stick{--pt:clamp(76px,11vh,108px);--pb:clamp(28px,4.4vh,48px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:var(--pt) var(--gutter) var(--pb)}
+.sm-side{grid-column:1/5;display:grid;gap:18px;align-content:center}
+.sm-lead{max-width:24em;color:#b3bfd3}
+/* an element as the site draws it; lit, as the hero lights them */
+.sm-el{--z:40px;position:relative;display:flex;flex-direction:column;flex:none;width:var(--z);height:var(--z);padding:calc(var(--z) * .1) calc(var(--z) * .11);border-radius:calc(var(--z) * .2);background:var(--cell);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.55)}
+.sm-el i{font:400 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
+.sm-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
+.sm-el.is-lit,.sm-row.is-on .sm-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62),inset 0 1px 0 rgba(232,240,255,.4)}
+.sm-el.is-lit i,.sm-row.is-on .sm-el i{color:#dbe7ff}
+/* the six: where the scroll is, and a way to go to any of them */
+.sm-rows{display:grid;gap:2px}
+.sm-row{display:flex;align-items:center;gap:14px;min-height:48px;padding:4px 12px 4px 4px;border:0;border-radius:14px;background:none;color:#8fa6d6;font:500 clamp(15px,1.1vw,18px)/1.2 var(--body);text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.sm-row .plus{margin-left:2px}
+.sm-row.is-done{color:var(--ice)}
+.sm-row.is-on{background:rgba(var(--glow-rgb),.16);color:#fff}
+@media (hover:hover) and (pointer:fine){.sm-row:hover{color:#fff}}
+.sm-row:active{transform:scale(.98)}
+.sm-row:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+/* the stage: the encuadre, the cube in perspective, and the arrows beside the story */
+/* the frame fills its columns, to the right gutter as the frames of Servicios, Rediseño and Preguntas do; the story stays in its
+   middle (capped by the height, 9:16), with room around it for the cube to turn (17 November 2026: it used to be capped and centred,
+   and on wide, low screens it floated with a gap on each side) */
+.sm-stage{grid-column:5/13;justify-self:stretch;position:relative;isolation:isolate;--fx:clamp(26px,3.6vw,60px);--fh:min(calc(100svh - var(--pt) - var(--pb) - 2 * var(--fx)),760px);--fw:calc(var(--fh) * 9 / 16);width:100%;height:calc(var(--fh) + 2 * var(--fx));display:grid;place-items:center}
+.sm-wrap{position:relative;width:var(--fw);height:var(--fh);perspective:1500px}
+.sm-wrap::before{content:"";position:absolute;inset:8% 6% -2%;z-index:-1;border-radius:40px;background:rgba(0,3,14,.7);filter:blur(28px)}
+.sm-cube{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.sm-tap{position:absolute;top:calc(var(--fx) + 64px);bottom:var(--fx);z-index:2;cursor:pointer}
+.sm-tap--prev{left:calc(50% - var(--fw) / 2);width:calc(var(--fw) * .3)}
+.sm-tap--next{right:calc(50% - var(--fw) / 2);width:calc(var(--fw) * .7)}
+.sm-arrow{position:absolute;top:50%;z-index:3;display:grid;place-items:center;width:44px;height:44px;margin-top:-22px;border:0;border-radius:50%;background:rgba(238,243,255,.12);color:#fff;box-shadow:inset 0 0 0 1px rgba(var(--ice-rgb),.32);cursor:pointer;transition:background-color var(--d-fade) ease,opacity var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
+.sm-arrow--prev{left:calc(50% - var(--fw) / 2 - 96px)}
+.sm-arrow--next{right:calc(50% - var(--fw) / 2 - 96px)}
+.sm-arrow .arr{width:18px;height:18px}
+.sm-arrow--prev .arr{transform:scaleX(-1)}
+.sm-arrow:disabled{opacity:.28;cursor:default}
+@media (hover:hover) and (pointer:fine){.sm-arrow:not(:disabled):hover{background:rgba(238,243,255,.22)}}
+.sm-arrow:not(:disabled):active{transform:scale(.94)}
+.sm-arrow:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+/* a story: the face in front, or the one waiting on the side of the cube; the one turning away darkens */
+.sm-f{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;padding:12px 16px 20px;border-radius:22px;overflow:hidden;color:#fff;backface-visibility:hidden;
+  background:radial-gradient(90% 50% at var(--hx,50%) 0%,rgba(var(--cobalt-rgb),.42),rgba(var(--cobalt-rgb),0) 72%),radial-gradient(80% 40% at calc(100% - var(--hx,50%)) 104%,rgba(var(--cobalt-rgb),.3),rgba(var(--cobalt-rgb),0)),#040a1d;box-shadow:inset 0 0 0 1px rgba(160,196,255,.2)}
+.sm-f.is-front{transform:translateZ(var(--hz,0px))}
+.sm-f.is-side{transform:rotateY(90deg) translateZ(var(--hz,0px))}
+.sm-f::after{content:"";position:absolute;inset:0;border-radius:inherit;background:#000;opacity:var(--sh,0);pointer-events:none}
+.sm-bars{display:flex;gap:4px}
+.sm-bars span{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.26);overflow:hidden}
+.sm-bars i{display:block;height:100%;background:#fff;transform-origin:0 50%}
+.sm-who{display:flex;align-items:center;gap:8px;font:600 13px/1 var(--body)}
+.sm-av{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#eef3ff;color:var(--deep);font:600 12px/1 var(--sym)}
+.sm-art{position:relative;flex:1;min-height:0;display:grid;place-items:center}
+.sm-txt{display:grid;justify-items:start;gap:10px}
+.sm-txt .sm-el{--z:44px}
+.sm-txt h3{font:600 clamp(21px,calc(var(--fw) * .07),30px)/1.06 var(--head);letter-spacing:-.03em}
+.sm-txt p{font-size:clamp(14px,calc(var(--fw) * .041),17px);line-height:1.42;color:#c7d5f5}
+/* in a story, "Nuestro plus" is a small line of its own under the title */
+.sm-f .plus{display:block;margin:8px 0 0;font-size:.48em;line-height:1.2}
+.sm-f .plus::before{content:none}
+/* what each story draws. It waits as it was before the story arrives, and plays once it is in front (.is-cur) */
+.sm-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;width:min(84%,300px)}
+.sm-cal i{position:relative;aspect-ratio:1;border-radius:22%;background:rgba(143,176,255,.1);box-shadow:inset 0 0 0 1px rgba(143,176,255,.18)}
+.sm-cal i.on::before{content:attr(data-s);position:absolute;inset:0;display:grid;place-items:center;border-radius:inherit;font:600 calc(var(--fw) * .034)/1 var(--sym);letter-spacing:-.03em;background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.6);opacity:0;transform:scale(.4)}
+.sm-f.is-cur .sm-cal i.on::before{opacity:1;transform:none;animation:smPop var(--d-enter) var(--ease-out) calc(160ms + var(--j) * 40ms) both}
+@keyframes smPop{from{opacity:0;transform:scale(.4)}}
+.sm-cam{position:relative;height:84%;aspect-ratio:4/5}
+.sm-shot{position:absolute;inset:0;border-radius:10px;background:50% 30%/cover no-repeat;opacity:0}
+.sm-cam>i{position:absolute;width:16%;aspect-ratio:1;border:2px solid #eef3ff}
+.sm-cam>i:nth-of-type(1){left:-8%;top:-6%;border-right:0;border-bottom:0;border-radius:9px 0 0 0}
+.sm-cam>i:nth-of-type(2){right:-8%;top:-6%;border-left:0;border-bottom:0;border-radius:0 9px 0 0}
+.sm-cam>i:nth-of-type(3){left:-8%;bottom:-6%;border-right:0;border-top:0;border-radius:0 0 0 9px}
+.sm-cam>i:nth-of-type(4){right:-8%;bottom:-6%;border-left:0;border-top:0;border-radius:0 0 9px 0}
+.sm-focus{position:absolute;left:50%;top:42%;width:24%;aspect-ratio:1;border:1.5px solid rgba(238,243,255,.9);border-radius:6px;opacity:0;transform:translate(-50%,-50%) scale(1.7)}
+.sm-f.is-cur .sm-shot{opacity:1;animation:smDev var(--d-scene) var(--ease-out) 260ms both}
+@keyframes smDev{0%{opacity:0}30%{opacity:1;filter:brightness(2.4)}100%{opacity:1;filter:none}}
+.sm-f.is-cur .sm-focus{opacity:1;transform:translate(-50%,-50%);animation:smFocus var(--d-enter) var(--ease-out) both}
+@keyframes smFocus{from{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
+.sm-mg{display:grid;gap:14px;width:88%}
+.sm-run{position:relative;height:clamp(110px,calc(var(--fh) * .2),150px)}
+.sm-arc{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sm-arc path{fill:none;stroke:rgba(143,176,255,.4);stroke-width:1.5;stroke-dasharray:2 5;vector-effect:non-scaling-stroke}
+/* the element runs its arc and the playhead its timeline as the page scrolls: the scroll plays the animation (--mt, 0..1) */
+.sm-mx{position:absolute;left:0;bottom:4%;width:100%;height:0;transform:translate3d(calc(6% + var(--mt,0) * 88%),0,0)}
+.sm-my{position:absolute;left:0;bottom:0;transform:translate3d(0,calc(var(--fh) * -.13 * var(--my,0)),0) rotate(calc((var(--mt,0) - .5) * 12deg))}
+.sm-my .sm-el{--z:46px;transform:translate(-50%,0)}
+.sm-tl{position:relative;display:grid;gap:6px;padding:10px 0}
+.sm-tr{position:relative;height:16px;border-radius:5px;background:rgba(143,176,255,.12)}
+.sm-tr i{position:absolute;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:2px;background:var(--ice);transform:rotate(45deg)}
+.sm-ph{position:absolute;top:0;bottom:0;left:calc(6% + var(--mt,0) * 88%);width:2px;margin-left:-1px;border-radius:1px;background:var(--sky)}
+.sm-ai{position:relative;height:62%;aspect-ratio:4/5}
+.sm-ai>span{position:absolute;inset:0;border-radius:10px;box-shadow:0 14px 30px -14px rgba(0,3,14,.9),inset 0 0 0 1px rgba(var(--ice-rgb),.25)}
+/* the pieces are drawn, in a brand's style: a disc, its mark and two lines of copy, laid out another way in each one. No client's
+   real post is shown as made with AI (the user's call, 16 November 2026) */
+.sm-pc{overflow:hidden;container-type:inline-size;background:var(--bg);color:var(--pk,#fff)}
+.sm-pc-o{position:absolute;left:var(--ox);top:var(--oy);width:var(--os);aspect-ratio:1;border-radius:50%;background:var(--o);transform:translateX(-50%)}
+.sm-pc-m{position:absolute;left:9%;top:7%;display:grid;place-items:end start;width:24%;aspect-ratio:1;padding:4% 5%;border-radius:18%;box-shadow:inset 0 0 0 1px currentColor;font:600 8.5cqw/.8 var(--sym);letter-spacing:-.045em}
+.sm-pc-l{position:absolute;left:9%;bottom:16%;width:62%;height:4.6%;border-radius:99px;background:currentColor}
+.sm-pc-l.is-s{bottom:8.5%;width:36%;opacity:.55}
+.sm-v{opacity:0}
+.sm-v em{position:absolute;right:8px;top:8px;padding:3px 6px;border-radius:6px;background:#eef3ff;color:var(--deep);font:600 10px/1 var(--font);font-style:normal}
+.sm-f.is-cur .sm-v{opacity:1;transform:translate3d(calc((var(--j) - 1) * 70%),calc((1 - var(--j)) * (1 - var(--j)) * 10% - 12%),0) rotate(calc((var(--j) - 1) * 11deg)) scale(.84);animation:smFan var(--d-scene) var(--ease-out) calc(220ms + var(--j) * 90ms) both}
+@keyframes smFan{from{opacity:0;transform:none}}
+.sm-cm{display:grid;gap:10px;width:86%}
+.sm-cm p{display:grid;gap:6px;width:72%;padding:12px 14px;border-radius:16px 16px 16px 4px;background:rgba(143,176,255,.14);opacity:0}
+.sm-cm p.out{justify-self:end;border-radius:16px 16px 4px 16px;background:var(--cobalt)}
+.sm-cm p i{display:block;height:7px;border-radius:4px;background:rgba(238,243,255,.55)}
+.sm-cm p.out i{background:rgba(255,255,255,.85)}
+.sm-f.is-cur .sm-cm p{opacity:1;animation:smUp var(--d-move) var(--ease-out) calc(200ms + var(--j) * 260ms) both}
+@keyframes smUp{from{opacity:0;transform:translate3d(0,12px,0)}}
+.sm-pu{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:min(86%,calc(var(--fh) * .4))}
+.sm-pu span{aspect-ratio:4/5;background:50% 30%/cover no-repeat}
+.sm-pu span:first-child{border-radius:8px 0 0 0}.sm-pu span:nth-child(3){border-radius:0 8px 0 0}
+.sm-pu span:nth-child(7){border-radius:0 0 0 8px}.sm-pu span:nth-child(9){border-radius:0 0 8px 0}
+.sm-pu .sm-new{position:relative;z-index:1;box-shadow:0 0 0 2px #eef3ff;opacity:0;transform:translate3d(0,-40%,0) scale(1.5)}
+.sm-f.is-cur .sm-pu .sm-new{opacity:1;transform:none;animation:smLand var(--d-scene) var(--ease-out) 260ms both}
+@keyframes smLand{from{opacity:0;transform:translate3d(0,-40%,0) scale(1.5)}}
+@media (max-width:860px){
+  /* stretch: the title and the row of elements start at the gutter, as every other section does (align-items:center from the
+     grid above would centre them across) */
+  .sm-stick{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:14px}
+  .sm-side{gap:10px}
+  .sm-lead{display:none}
+  .sm-rows{display:flex;gap:6px}
+  .sm-row{min-height:0;padding:0;border-radius:10px}
+  .sm-row>span:not(.sm-el){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .sm-row .plus{display:none}
+  .sm-row .sm-el{--z:44px}
+  .sm-row.is-on{background:none}
+  .sm-stage{--fx:14px;--fh:min(calc(100svh - var(--pt) - var(--pb) - 150px - 2 * var(--fx)),calc((100vw - 2 * var(--gutter) - 2 * var(--fx)) * 16 / 9));width:100%}
+  .sm-tap{top:calc(var(--fx) + 54px)}
+  .sm-arrow{display:none}
+  .sm-f{padding:10px 13px 16px;gap:10px}
+  .sm-txt{gap:7px}
+  .sm-txt .sm-el{--z:38px}
+}
+/* with reduced motion the six stories are all there, still and finished, and the list beside them tells each one */
+.sm-all{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.sm-all .sm-f{position:relative;inset:auto;aspect-ratio:9/16;--fw:285px;--fh:507px;--mt:.5;--my:1}
+.sm-all .sm-art{overflow:hidden}
+.sm-all .sm-txt p{display:none}
+.sm-say{margin:0;padding:0;list-style:none}
+.sm.is-still .sm-say{display:grid;gap:26px}
+.sm-say li{display:grid;justify-items:start;gap:10px}
+.sm-say h3{font:600 clamp(24px,2.2vw,34px)/1.05 var(--head);letter-spacing:-.03em}
+.sm-say p{max-width:24em;font-size:clamp(16px,1.2vw,19px);line-height:1.45;color:#c7d5f5}
+.sm.is-still .sm-stage{width:100%;height:auto;padding:var(--fx)}
+.sm.is-still .sm-wrap{width:100%;height:auto;perspective:none}
+.sm.is-still .sm-rows,.sm.is-still .sm-tap,.sm.is-still .sm-arrow{display:none}
+@media (max-width:860px){.sm-all{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.sm-all .sm-f{--fw:170px;--fh:302px}.sm-all .sm-run{height:64px}.sm-all .sm-tl{padding:4px 0}}
+@media (prefers-reduced-motion:reduce){.sm-f *,.sm-f *::before{animation:none!important}}
+</style>
+
+<template id="tpl-sm"><section class="moment sm" id="redes" aria-labelledby="sm-h" style="--mh:300vh"><div class="moment__stick sm-stick">
+  <div class="sm-side"><h2 class="h2" id="sm-h">Manejo de redes sociales</h2><p class="lead sm-lead">Lo que hacemos en tus redes, en seis historias.</p><div class="sm-rows"></div><ol class="sm-say sr-only"></ol></div>
+  <div class="sm-stage"><div class="sm-wrap" aria-hidden="true"><div class="sm-cube"></div></div>
+    <span class="sm-tap sm-tap--prev" aria-hidden="true"></span><span class="sm-tap sm-tap--next" aria-hidden="true"></span>
+    <button type="button" class="sm-arrow sm-arrow--prev" aria-label="Historia anterior"><svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="sm-arrow sm-arrow--next" aria-label="Historia siguiente"><svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</div></section></template>
+
+<script is:inline>
+/* what the social media service covers; a third item marks the ones that are our edge */
+const SOCIAL = [
+  ['Estrategia y calendario', 'Definimos contigo los temas, los formatos y las fechas del mes.'],
+  ['Fotos y videos', 'Producimos el contenido: sesiones de fotos, reels y piezas gráficas.'],
+  ['Motion graphics', 'Animamos tus ideas en reels y piezas con movimiento, hechas por nosotros.', 1],
+  ['Contenido con IA', 'Usamos inteligencia artificial para producir más piezas en el estilo de tu marca.', 1],
+  ['Community management', 'Publicamos, respondemos comentarios, mensajes y reseñas, y cuidamos el tono de tu marca.'],
+  ['Publicación', 'Programamos cada pieza con su fecha y la publicamos en tus redes.']
+];
+const PLUS = ' <em class="plus">Nuestro plus</em>';
+
+/* six stories on a cube the scroll turns. Each story rests while its bar fills and then the cube turns to the next; the story
+   that arrives starts its drawing once it is in front. The posts are real ones from the brands in Marcas, in cobalt
+   (herramientas/publicaciones.py) */
+addSection('tabla', 'tpl-sm', 4, (root) => {
+  const sec = root.querySelector('.sm'), stick = sec.querySelector('.sm-stick'), stage = sec.querySelector('.sm-stage'), cube = sec.querySelector('.sm-cube');
+  const N = SOCIAL.length, SYM = ['Ec', 'Fv', 'Mg', 'Ai', 'Cm', 'Pu'], HX = [24, 76, 50, 30, 70, 50], AI = LANG.cur === 'en' ? 'AI' : 'IA', offs = [];
+  const no = (i) => String(i + 1).padStart(2, '0'), post = (k) => `assets/redes/${k}.webp`;
+  const on = (n, ev, fn, o) => { n.addEventListener(ev, fn, o); offs.push(() => n.removeEventListener(ev, fn, o)); };
+  const el = (i, cls) => `<span class="sm-el ${cls || ''}" aria-hidden="true"><i>${no(i)}</i><b>${SYM[i]}</b></span>`;
+  const lines = (...w) => w.map((x) => `<i style="width:${x}%"></i>`).join('');
+  const DAYS = [[1, 'Rl'], [3, 'Ft'], [6, 'Pz'], [9, 'Ft'], [12, 'Rl'], [15, 'Pz'], [17, 'Ft'], [20, 'Rl'], [23, 'Ft'], [26, 'Pz']];
+  /* the pieces of the AI story, drawn: three made in the style of the last one (the one behind), each with its colours and its disc
+     in another place */
+  const PIECE = ['--bg:var(--deep);--o:var(--sky);--ox:50%;--oy:-16%;--os:98%', '--bg:var(--ice);--o:var(--cobalt);--ox:68%;--oy:26%;--os:58%;--pk:var(--deep)',
+    '--bg:var(--cobalt-deep);--o:rgba(var(--ice-rgb),.32);--ox:24%;--oy:34%;--os:118%', '--bg:var(--cobalt);--o:rgba(var(--ice-rgb),.92);--ox:62%;--oy:14%;--os:70%'];
+  const FEED = ['oneillcolombia-1', 'speedocolombia-1', 'weedhoney-3', 'graduadoseafit-1', 'lamigueria-2', 'oneillcolombia-8', 'agilcash-3', 'speedocolombia-8', 'oneillcolombia-4'];
+  /* the drawing of each story: the month and its planned days, a frame in the viewfinder, an element moving over its timeline,
+     more pieces in the same style fanning out from one (drawn), the conversation where every message gets its answer, and the new post going in first in the profile */
+  const ART = [
+    () => `<div class="sm-cal">${Array.from({ length: 28 }, (_, d) => { const x = DAYS.find((y) => y[0] === d); return x ? `<i class="on" data-s="${x[1]}" style="--j:${DAYS.indexOf(x)}"></i>` : '<i></i>'; }).join('')}</div>`,
+    () => `<div class="sm-cam"><span class="sm-shot" style="background-image:url(${post('oneillcolombia-1')})"></span><i></i><i></i><i></i><i></i><span class="sm-focus"></span></div>`,
+    () => `<div class="sm-mg"><div class="sm-run"><svg class="sm-arc" viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M6 34 Q50 -10 94 34"/></svg><span class="sm-mx"><span class="sm-my"><span class="sm-el is-lit"><i>119</i><b>Tú</b></span></span></span></div><div class="sm-tl">${[[6, 50, 94], [6, 30, 72], [20, 60, 94]].map((r) => `<div class="sm-tr">${r.map((x) => `<i style="left:${x}%"></i>`).join('')}</div>`).join('')}<span class="sm-ph"></span></div></div>`,
+    () => `<div class="sm-ai">${PIECE.map((st, j) => `<span class="sm-pc${j < 3 ? ' sm-v' : ''}" style="--j:${j};${st}"><i class="sm-pc-o"></i><b class="sm-pc-m">Tú</b><i class="sm-pc-l"></i><i class="sm-pc-l is-s"></i>${j < 3 ? `<em>${AI}</em>` : ''}</span>`).join('')}</div>`,
+    () => `<div class="sm-cm"><p style="--j:0">${lines(80, 52)}</p><p class="out" style="--j:1">${lines(86, 60)}</p><p style="--j:2">${lines(64)}</p><p class="out" style="--j:3">${lines(70)}</p></div>`,
+    () => `<div class="sm-pu">${FEED.map((k, j) => `<span${j ? '' : ' class="sm-new"'} style="background-image:url(${post(k)})"></span>`).join('')}</div>`
+  ];
+  const face = (i) => `<div class="sm-f" style="--hx:${HX[i]}%">
+      <div class="sm-bars">${SYM.map((s, j) => `<span><i style="transform:scaleX(${j < i ? 1 : 0})"></i></span>`).join('')}</div>
+      <div class="sm-who"><span class="sm-av">Rs</span><b>CaSe Studio</b></div>
+      <div class="sm-art">${ART[i]()}</div>
+      <div class="sm-txt">${el(i, 'is-lit')}<h3>${SOCIAL[i][0]}${SOCIAL[i][2] ? PLUS : ''}</h3><p>${SOCIAL[i][1]}</p></div>
+    </div>`;
+  sec.querySelector('.sm-rows').innerHTML = SOCIAL.map(([t, , pl], i) => `<button type="button" class="sm-row">${el(i)}<span>${t}</span>${pl ? PLUS : ''}</button>`).join('');
+  const say = sec.querySelector('.sm-say');
+  say.innerHTML = SOCIAL.map(([t, d, pl], i) => `<li>${el(i, 'is-lit')}<h3>${t}${pl ? PLUS : ''}</h3><p>${d}</p></li>`).join('');
+  const rows = [...sec.querySelectorAll('.sm-row')], prev = sec.querySelector('.sm-arrow--prev'), next = sec.querySelector('.sm-arrow--next');
+
+  /* with reduced motion: the six stories side by side, finished, and the six told in the list */
+  if (RM) {
+    sec.classList.add('is-still'); stick.classList.add('is-flow'); say.classList.remove('sr-only');
+    sec.querySelector('.sm-wrap').innerHTML = `<div class="sm-all">${SOCIAL.map((_, i) => face(i)).join('')}</div>`;
+    sec.querySelectorAll('.sm-f').forEach((f) => f.classList.add('is-cur'));
+    return () => {};
+  }
+
+  FEED.forEach((k) => { const im = new Image(); im.src = post(k); });
+  const off = Encuadre.put(stage, 'xy');
+  /* the two faces of the cube that show: the story in front and the next one, waiting on the side. A new face waits as its
+     drawing was before it started, and starts it when it comes to the front; a face that was already seen keeps its element
+     and what it drew (going back, the story that turns away stays finished) */
+  const faces = new Map();
+  let k0 = -1, kk = 0, hz = 0, last = 0, live = false, front = null, side = null;
+  const get = (i) => { if (!faces.has(i)) { cube.insertAdjacentHTML('beforeend', face(i)); faces.set(i, cube.lastElementChild); } return faces.get(i); };
+  const place = (k) => {
+    front = get(k); side = k < N - 1 ? get(k + 1) : null;
+    faces.forEach((f, i) => { if (f !== front && f !== side) { f.remove(); faces.delete(i); } });
+    front.classList.add('is-front'); front.classList.remove('is-side');
+    if (side) { side.classList.add('is-side'); side.classList.remove('is-front'); }
+    if (live) front.classList.add('is-cur');
+  };
+  const render = (p) => {
+    last = p;
+    const t = range(p, .03, .97) * N, k = Math.min(N - 1, Math.floor(t)), f = t - k;
+    if (k !== k0) {
+      k0 = k; place(k);
+      rows.forEach((r, i) => { r.classList.toggle('is-on', i === k); r.classList.toggle('is-done', i < k); });
+      prev.disabled = k === 0; next.disabled = k === N - 1;
+    }
+    const turn = k < N - 1 ? easeIO(range(f, .7, 1)) : 0;
+    cube.style.transform = `translateZ(${(-hz).toFixed(1)}px) rotateY(${(-90 * turn).toFixed(2)}deg)`;
+    front.style.setProperty('--sh', (turn * .6).toFixed(3));
+    if (side) side.style.setProperty('--sh', ((1 - turn) * .6).toFixed(3));
+    const play = range(f, 0, k < N - 1 ? .7 : .6), bar = front.querySelectorAll('.sm-bars i')[k];
+    if (bar) bar.style.transform = `scaleX(${play.toFixed(3)})`;
+    if (k === 2) { front.style.setProperty('--mt', play.toFixed(4)); front.style.setProperty('--my', Math.sin(Math.PI * play).toFixed(4)); }
+    kk = k;
+  };
+  const layout = () => { hz = (front ? front.offsetWidth : 0) / 2; cube.style.setProperty('--hz', `${hz.toFixed(1)}px`); render(last); };
+  /* go to a story: the point of the scroll where it rests in front */
+  const go = (i) => { const j = Math.max(0, Math.min(N - 1, i)); scrollTo({ top: sec.getBoundingClientRect().top + scrollY + (.03 + (j + .3) / N * .94) * (sec.offsetHeight - innerHeight), behavior: 'smooth' }); };
+  rows.forEach((r, i) => on(r, 'click', () => go(i)));
+  on(prev, 'click', () => go(kk - 1)); on(next, 'click', () => go(kk + 1));
+  on(sec.querySelector('.sm-tap--prev'), 'click', () => go(kk - 1)); on(sec.querySelector('.sm-tap--next'), 'click', () => go(kk + 1));
+  on(window, 'resize', layout);
+  /* the first story starts its drawing when the section comes into view, not before */
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting && !live) { live = true; if (front) front.classList.add('is-cur'); } }, { threshold: .35 });
+  io.observe(stage);
+  const stop = moment(sec, render); layout();
+  return () => { stop(); off(); io.disconnect(); offs.forEach((fn) => fn()); };
+});
+</script>
