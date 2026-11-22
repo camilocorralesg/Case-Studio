@@ -1,0 +1,6 @@
+# Lo que Vercel no necesita para armar el sitio. astro build usa src/, public/ y la configuración de la raíz.
+# herramientas/ son los scripts locales de revisión y capturas (Python + Playwright): no es un servicio y no se publica.
+herramientas/
+archivo/
+marca/
+docs/

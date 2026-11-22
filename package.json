@@ -2,6 +2,9 @@
   "name": "case-studio",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

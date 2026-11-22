@@ -816,7 +816,19 @@ El usuario eligió Acercamiento para el Cierre y pidió otro análisis del sitio
 - **Preguntas en el celular**: las siete van en una tira horizontal; el revisor propone una lista vertical.
 - Siguen pendientes de antes: el reflejo de la rueda, las casillas de Antes/Después de Rediseño, y precio y tiempos en Preguntas.
 
+### Publicación en Vercel y revisión de seguridad (22 de noviembre de 2026)
+
+El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`, `.vercelignore`, Node 24 en `package.json`). Antes de publicar se revisó que nada quedara expuesto:
+
+- **Llaves y secretos**: ninguno, ni en los archivos, ni en el historial de git, ni dentro de los dos zip. El sitio no llama a ningún servidor ni guarda nada en el navegador. `npm audit` no encuentra vulnerabilidades.
+- **Datos personales**: los correos son de muestra y los commits usan la dirección `noreply` de GitHub. Las imágenes del sitio no traen metadatos. La captura de Weed Honey no muestra de quién es la cuenta que la tomó.
+- **Lo que se publica**: `dist/` tiene la página, su hoja de estilos y las imágenes de `public/assets/`; sin mapas de código ni archivos de trabajo. El visor abre los sitios de los clientes en un marco aislado, y los enlaces que abren pestaña llevan `noopener`.
+- **Arreglos**: salió de git `archivo/sitio-python/.impeccable/hook.cache.json` (una caché con una ruta del computador; sigue en el historial); `.gitignore` cubre esas cachés en cualquier carpeta, `.env` y `.vercel/`; y `vercel.json` manda cabeceras de seguridad (ver `docs/arquitectura.md`, "Publicación").
+- **Queda con el usuario**: el repositorio de GitHub es público, así que cualquiera ve `CLAUDE.md`, `docs/`, `archivo/` y `marca/`, con los nombres del equipo que se quitaron del sitio. Y el código de la página nombra claude.ai en un comentario y en la condición `LIVE` de `visor.astro`.
+
 ## Pendiente del usuario
+
+- Decidir si el repositorio de GitHub sigue público o pasa a privado (Vercel publica igual desde uno privado).
 
 - Si se quieren preguntas de precios, tiempos, propiedad del sitio o rondas de cambios en Preguntas, dar sus respuestas.
 
@@ -838,7 +850,7 @@ Siguientes pasos del stack, en orden:
 3. **Una URL por idioma** (`/` y `/en/`) con el i18n de Astro, con título y descripción en inglés, en vez de traducir la página en el navegador.
 4. **Código en módulos TypeScript.** Las funciones compartidas (`moment`, `drive`, `pointer`) y el lienzo del hero como módulos, en vez de scripts globales.
 5. **Fuentes servidas desde el sitio** (Fontsource o la API de fuentes de Astro) en vez de Google Fonts, cuando se confirme la combinación.
-6. **Envío del formulario** (un endpoint o un servicio de formularios) y **dominio y hospedaje** (Netlify, Cloudflare Pages o Vercel sirven `dist/` tal cual). El visor ya está listo para abrir los sitios reales en su dominio (`LIVE` en `visor.astro`).
+6. **Envío del formulario** (un endpoint o un servicio de formularios) y **dominio**. El hospedaje es Vercel (22 de noviembre de 2026); cuando el formulario tenga a dónde enviar, se escribe la política de contenido completa en `vercel.json` con ese destino. El visor ya está listo para abrir los sitios reales en su dominio (`LIVE` en `visor.astro`).
 
 ## Siguiente
 

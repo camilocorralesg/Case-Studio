@@ -117,6 +117,24 @@ Lo que el lienzo del hero dibuja no pasa por el diccionario: los símbolos son i
 
 Para agregar un texto: escribirlo en español en la parte y agregar el par en `en.json`. Si una sección dibuja desde una lista nueva, sumarla a `sources()` en `idioma.astro`. `herramientas/idioma.py` avisa si algo se quedó en español.
 
+## Publicación
+
+El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`): arma con `npm run build` y sirve `dist/`, nada más. `.vercelignore` deja por fuera lo que no hace falta para armar (`herramientas/`, `archivo/`, `marca/`, `docs/`) y `engines` en `package.json` fija Node 24.
+
+`vercel.json` también manda estas cabeceras con cada respuesta:
+
+| Cabecera | Para qué |
+|---|---|
+| `X-Content-Type-Options: nosniff` | El navegador no adivina el tipo de un archivo. |
+| `X-Frame-Options: SAMEORIGIN` y `frame-ancestors 'self'` | Ninguna otra página puede mostrar el sitio dentro de un marco. Si algún día hace falta (un generador de maquetas, por ejemplo), se cambia aquí. |
+| `Referrer-Policy: strict-origin-when-cross-origin` | A otros sitios solo se les dice el dominio, nunca la dirección completa. |
+| `Permissions-Policy` | El sitio no usa cámara, micrófono, ubicación ni pagos, y los sitios que abre el visor tampoco pueden pedirlos. |
+| `base-uri 'self'; object-src 'none'` | No se cargan complementos ni se cambia la base de los enlaces. |
+
+Todavía no hay una política de contenido completa (`script-src`, `connect-src`): los scripts van escritos en la página y el formulario no envía. Se escribe cuando el formulario tenga a dónde enviar y el dominio sea el definitivo.
+
+El visor abre los sitios de los clientes en un marco aislado (`sandbox`, sin `allow-top-navigation`): corren, pero no pueden sacar al visitante de la página. El sitio no guarda nada en el navegador ni llama a un servidor, así que no usa llaves; si llega a usarlas van en las variables de entorno de Vercel, nunca en git (`.env` y `.vercel/` están en `.gitignore`).
+
 ## Ayudas de trabajo que no son parte del sitio
 
 Hoy no hay ninguna. Si se vuelve a poner una (un selector para comparar opciones en pantalla), lleva la clase `proto-picker`: el inglés no la traduce y las herramientas la esconden al capturar.

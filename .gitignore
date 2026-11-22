@@ -4,12 +4,18 @@ dist/
 herramientas/salida/
 __pycache__/
 
+# llaves y enlaces de despliegue: nunca van a git (hoy no hay ninguno)
+.env
+.env.*
+!.env.example
+.vercel/
+
 # Claude Code: los ajustes de esta máquina y los skills de terceros, que se reinstalan
 # (npx impeccable install; el skill prototype queda en skills-lock.json)
 .claude/settings.local.json
 .claude/skills/
 .claude/agents/
 
-# cachés de Impeccable
-.impeccable/hook.cache.json
-.impeccable/live/
+# cachés de Impeccable, en cualquier carpeta: guardan rutas de la máquina donde se corrió
+**/.impeccable/hook.cache.json
+**/.impeccable/live/
