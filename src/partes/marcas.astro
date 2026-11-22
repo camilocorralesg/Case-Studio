@@ -19,8 +19,11 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
 /* the six: element, name, account; the one on the phone is lit */
 .mr-list{display:grid;gap:clamp(2px,.5vh,6px)}
 .mr-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(12px,1.4vw,16px);width:100%;padding:clamp(5px,.8vh,8px) 16px clamp(5px,.8vh,8px) clamp(5px,.8vh,8px);border:0;border-radius:16px;background:transparent;color:#fff;font:inherit;text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,box-shadow var(--d-fade) ease}
-.mr-el{--z:clamp(38px,5.6vh,50px);display:flex;flex-direction:column;flex:none;width:var(--z);height:var(--z);padding:calc(var(--z) * .09) calc(var(--z) * .1);border-radius:calc(var(--z) * .2);background:var(--bg);color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);opacity:.55;transition:opacity var(--d-fade) ease}
-.mr-el i{font:500 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;opacity:.82}
+/* an element of the site, in the site's blues: navy at rest and lit when its brand is on the phone (22 November 2026: they wore
+   each client's colours, the one thing on the page that was not white, black or blue, with gold on beige at 2.6:1; Weed Honey was
+   blue in Proyectos and beige here). Inside the phone a brand keeps its own colours: that is its profile */
+.mr-el{--z:clamp(38px,5.6vh,50px);display:flex;flex-direction:column;flex:none;width:var(--z);height:var(--z);padding:calc(var(--z) * .09) calc(var(--z) * .1);border-radius:calc(var(--z) * .2);background:var(--cell);color:#fff;box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.55);transition:background-color var(--d-fade) ease,box-shadow var(--d-fade) ease}
+.mr-el i{font:500 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
 .mr-el b{margin-top:auto;font:600 calc(var(--z) * .42)/.8 var(--sym);letter-spacing:-.045em}
 .mr-who{display:grid;gap:2px;min-width:0}
 .mr-who b{font-size:clamp(16px,2.1vh,18px);font-weight:600;letter-spacing:-.015em}
@@ -34,8 +37,11 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
 @media (prefers-reduced-motion:reduce){.mr-fold{transition:none}}
 .mr-nets{font-size:13px;color:#8ea6d6}
 .mr-row.is-on{background:linear-gradient(180deg,rgba(160,196,255,.09),rgba(0,4,16,.16)),#0a1433;box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.22)}
-.mr-row.is-on .mr-el{opacity:1}
-@media (hover:hover) and (pointer:fine){button.mr-row:not(.is-on):hover{background:rgba(255,255,255,.04)}button.mr-row:hover .mr-el{opacity:1}}
+.mr-row.is-on .mr-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.9)}
+.mr-row.is-on .mr-el i{color:#fff}
+@media (hover:hover) and (pointer:fine){button.mr-row:not(.is-on):hover{background:rgba(255,255,255,.04)}}
+/* on a phone the six are only their elements: the brand on the phone says its name and its line under the frame (.mr-cap) */
+.mr-cap{display:none}
 /* the frame and the phone in the middle of it */
 /* the frame fills its column, to the right gutter as the frames of Servicios, Rediseño, Redes and Preguntas do, as tall as there
    is room for, with the phone at 86% of that height in its middle (17 November 2026: it hugged the phone in the middle of its
@@ -55,7 +61,8 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
 .mr-drawn{display:flex;flex-direction:column;gap:12px;padding:46px 16px 16px;color:#0a1020}
 .mr-top{display:flex;justify-content:center;font-size:14px;font-weight:600}
 .mr-id{display:flex;align-items:center;gap:14px}
-.mr-id .mr-el{--z:78px;opacity:1;border-radius:22px}
+.mr-id .mr-el{--z:78px;border-radius:22px;background:var(--bg);color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.mr-id .mr-el i{color:inherit;opacity:.82}
 .mr-id>span{display:grid;gap:3px;min-width:0}
 .mr-id>span b{font-size:17px;letter-spacing:-.01em}
 .mr-id>span span{font-size:12.5px;color:#5a6785}
@@ -73,22 +80,25 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
   .mr-head .lead{display:none}
   .mr-stage{grid-row:2;width:100%;height:auto;padding:18px 0;border-radius:22px}
   .mr-stage>.enc{border-radius:22px}
-  .mr-phone{--ph:min(calc(100svh - 360px),560px);padding:8px}
+  .mr-phone{--ph:min(calc(100svh - 428px),560px);padding:8px}
+  .mr-cap{grid-row:3;display:grid;gap:3px;min-height:58px;margin:0;align-content:start}
+  .mr-cap b{font-size:16px;font-weight:600;letter-spacing:-.015em}
+  .mr-cap span{font-size:13.5px;line-height:1.4;color:#c9d3ea}
   .mr-screen::before{top:7px;height:17px}
   .mr-prof{padding-top:28px}
-  .mr-list{grid-row:3;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+  .mr-list{grid-row:4;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
   .mr-row{display:grid;place-items:center;padding:0;border-radius:12px}
   .mr-row .mr-el{--z:min(13.6vw,56px)}
   .mr-who,.mr-nets{display:none}
   .mr-row.is-on{background:none;box-shadow:none}
-  .mr-row.is-on .mr-el{box-shadow:0 0 0 2px #fff}
+  .mr-row.is-on .mr-el{box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.9),0 0 0 2px #fff}
 }
 /* quiet: no phone; every brand says its line beside its element */
 .mr.is-still .mr-stick{display:block}
 .mr.is-still .mr-stage{display:none}
 .mr.is-still .mr-list{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:28px}
 .mr.is-still .mr-row{grid-template-columns:auto minmax(0,1fr);align-items:start;padding:12px;background:#0a1433;cursor:default}
-.mr.is-still .mr-el{opacity:1}
+.mr.is-still .mr-cap{display:none}
 .mr.is-still .mr-fold{grid-template-rows:1fr}
 .mr.is-still .mr-nets{display:none}
 </style>
@@ -96,6 +106,7 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
 <template id="tpl-br"><section class="moment mr" id="marcas" aria-labelledby="mr-h" style="--mh:300vh"><div class="moment__stick mr-stick is-flow">
   <div class="mr-side">
     <div class="mr-head"><h2 class="h2" id="mr-h">Marcas con las que hemos trabajado en redes</h2><p class="lead">Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.</p></div>
+    <p class="mr-cap" aria-hidden="true"><b></b><span></span></p>
     <ol class="mr-list"></ol>
   </div>
   <div class="mr-stage"><div class="mr-phone" aria-hidden="true"><div class="mr-screen"><div class="mr-feed"></div></div></div></div>
@@ -124,10 +135,10 @@ addSection('tabla', 'tpl-br', 2.5, (root) => {
     <span class="mr-bio">${b.tag}</span><span class="mr-btns"><span>Seguir</span><span>Mensaje</span></span>
     <span class="mr-grid">${FEED.map((k) => post(b, k)).join('')}</span></span>`;
   /* a row brings its brand's profile to the phone; with reduced motion there is no phone, and the rows are just the list */
-  const row = (b, i) => `${el(b, i)}<span class="mr-who"><b>${b.name}</b><span>${[...new Set(b.nets.map((n) => n[1]))].join(' · ')}</span><span class="mr-fold"><em>${b.tag}</em></span></span><span class="mr-nets">${b.nets.map((n) => n[0]).join(' + ')}</span>`;
-  list.innerHTML = B.map((b, i) => `<li>${RM ? `<div class="mr-row">${row(b, i)}</div>` : `<button class="mr-row" type="button" aria-label="Ver el perfil de ${b.name}">${row(b, i)}</button>`}</li>`).join('');
+  const row = (b, i) => `${el(b, i)}<span class="mr-who"><b>${b.name}</b><span>${[...new Set(b.nets.map((n) => n[1]))].join(' · ')}</span><span class="mr-fold"><em id="mr-tag-${i}">${b.tag}</em></span></span><span class="mr-nets">${b.nets.map((n) => n[0]).join(' + ')}</span>`;
+  list.innerHTML = B.map((b, i) => `<li>${RM ? `<div class="mr-row">${row(b, i)}</div>` : `<button class="mr-row" type="button" aria-label="Ver el perfil de ${b.name}" aria-describedby="mr-tag-${i}">${row(b, i)}</button>`}</li>`).join('');
   feed.innerHTML = B.map((b, i) => (shot(b) ? `<span class="mr-prof" style="display:block"><img src="${shot(b)}" srcset="${shot(b).replace('.webp', '-480.webp')} 480w, ${shot(b)} 780w" sizes="(max-width:860px) 240px, 320px" width="780" height="1584" alt="" loading="lazy" decoding="async"></span>` : drawn(b, i))).join('');
-  const rows = [...list.querySelectorAll('.mr-row')];
+  const rows = [...list.querySelectorAll('.mr-row')], cap = sec.querySelector('.mr-cap');
   if (RM) { sec.classList.add('is-still'); return () => {}; }
   /* where in the scroll each profile rests on the phone, and the way there */
   const at = (j) => .05 + Math.min(N - 1, j + .05) / (N - 1) * .9;
@@ -136,7 +147,8 @@ addSection('tabla', 'tpl-br', 2.5, (root) => {
   const offEnc = Encuadre.put(sec.querySelector('.mr-stage'), 'y');
   /* the scroll holds on each profile and glides to the next, as if the phone were scrolled from one account to the other */
   let H = 0, last = 0;
-  const mark = (j) => { if (j === k && rows[j].classList.contains('is-on')) return; k = j; rows.forEach((r, n) => r.classList.toggle('is-on', n === k)); };
+  /* (on a phone the name and the line of the brand on the phone go under the frame: there the rows are only elements) */
+  const mark = (j) => { if (j === k && rows[j].classList.contains('is-on')) return; k = j; rows.forEach((r, n) => r.classList.toggle('is-on', n === k)); cap.firstElementChild.textContent = B[k].name; cap.lastElementChild.textContent = B[k].tag; };
   const render = (p) => {
     last = p;
     const s = range(p, .05, .95) * (N - 1), i = Math.min(N - 2, Math.floor(s)), at = i + easeIO(range(s - i, .3, .8));

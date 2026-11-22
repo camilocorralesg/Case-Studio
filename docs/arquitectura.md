@@ -39,14 +39,14 @@ El orden de las secciones lo da el número de `addSection`:
 |---|---|---|---|
 | (hero) | Hero | `hero.astro` | `.hx`, `.b-` |
 | 1 | Servicios | `servicios.astro` (sus animaciones en `escenas.astro`, `window.SCN`) | `.f2` |
-| 1.2 | Fórmula | `formula.astro` | `.fx` |
+| 1.2 | Fórmula | `formula.astro` | `.fx` (la fila: `.fx-t`, los elementos, y `.fx-home`, sus lugares; la fórmula: `.fx-tray`, la bandeja, y `.fx-you`, el Tú; lo que trae: `.fx-gets`) |
 | 1.5 | Rediseño | `rediseno.astro` | `.rd` |
 | 2 | Proyectos | `proyectos.astro` (el detalle en `visor.astro`; las tiras, de `herramientas/recorridos.py`: `public/assets/tour-<id>.webp` y `-1600.webp` del computador, y `tour-<id>-cel-390.webp`, `-cel.webp` y `-cel-780.webp` del celular) | `.ru` (en el celular las pantallas son verticales y pasan la tira de celular; `.is-wide` es un sitio sin ella) |
 | 2.5 | Marcas | `marcas.astro` (las capturas de los perfiles en `public/assets/ig`, con `herramientas/perfiles.py`) | `.mr` |
-| 3 | Proceso | `proceso.astro` | `.pq` (la ruta: `.pq-map`, `.pq-stop`, `.pq-me`) |
+| 3 | Proceso | `proceso.astro` | `.pq` (la ruta: `.pq-map`, `.pq-stop`, `.pq-me`; en cada estación, `.pq-slot`, su lugar punteado, y `.pq-say`, su paso sobre el papel) |
 | 4 | Redes | `redes.astro` (las publicaciones en cobalto en `public/assets/redes`, con `herramientas/publicaciones.py`; la historia "Contenido con IA" dibuja sus piezas con `PIECE`, sin publicaciones reales) | `.sm` (el cubo: `.sm-cube`; cada historia `.sm-f`, `.is-front` o `.is-side`, y `.is-cur` cuando empieza su dibujo) |
 | 4.5 | Preguntas | `preguntas.astro` (las preguntas en `FAQ`, el saludo y el estado en `FAQ_SAY`) | `.fq` (la lista: `.fq-rows`, `.fq-row`, `.fq-el`; el chat: `.fq-chat`, `.fq-who`, `.fq-state`, `.fq-log`, mensajes `.fq-msg` `.fq-us` y `.fq-me`, enlaces `.fq-go`; en el celular, `.fq-quick` con `.fq-chip`) |
-| 5 | Cierre | `cierre.astro` | `.zb` (la tabla: `.zb-cam`, `.zb-grid`, `.zb-c`, `.zb-slot`; el logo y el Tú: `.zb-ca`, `.zb-se`, `.zb-you`, `.zb-gap`, `.zb-call`), `.zz-copy` |
+| 5 | Cierre | `cierre.astro` | `.zb` (la tabla: `.zb-view`, la ventana que la desvanece arriba y abajo cuando la cámara entra, `.zb-cam`, `.zb-grid`, `.zb-c`, `.zb-slot`; el logo y el Tú: `.zb-ca`, `.zb-se`, `.zb-you`, `.zb-gap`), `.zz-copy` (la frase y el botón, que el código pone al lado del Tú) |
 | (fijo) | Contacto | `arranque.astro` + `contacto.astro` | `.contact` (una pantalla, el formulario en el centro), `.ck-` (los servicios: `.ck-need`, `.ck-c`; la barra: `.ck-bar`, `.ck-in`; la respuesta: `.ck-ok`) |
 | (FINALE) | Pie | `pie.astro` | `.ft` (la tabla, que es el menú: `.ft-stage`, `.ft-plane`, `.ft-table`, `.ft-c`; las casillas del estudio: `.ft-l` con `.ft-nav`, `.ft-svc`, `.ft-ca`, `.ft-se`, `.ft-top`; el hueco: `.ft-gap`, `.ft-key`; el logo: `.ft-logo`, `.ft-mark`). En el celular la tabla se esconde y va `.ft-mob`: el mapa `.ft-map` (casillas `.ft-m`, encendidas con `.is-lit`, la que se toca con `.hot`), las listas `.ft-lists` (`.ft-row`, `.ft-el`), el contacto `.ft-mme` y `.ft-back` |
 

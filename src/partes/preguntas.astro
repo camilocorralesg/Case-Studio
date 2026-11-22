@@ -19,7 +19,7 @@ import Flecha from '../components/Flecha.astro';
 .fq-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
 .fq-el.is-mini{--z:36px}
 .is-asked .fq-el,.is-on .fq-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62)}
-.is-asked .fq-el i,.is-on .fq-el i{color:#dbe7ff}
+.is-asked .fq-el i,.is-on .fq-el i{color:#fff}
 
 /* the questions: number, symbol and the question; the one in the chat is marked and points at it */
 .fq-rows{display:grid;gap:2px;margin:6px 0 4px}
@@ -140,7 +140,8 @@ addSection('tabla', 'tpl-fq', 4.5, (root) => {
 
   /* an answer comes in short messages, each after a pause as long as it would take to write it; meanwhile the state says so */
   let timers = [], queue = [];
-  const pause = (t) => (typeof t === 'string' ? Math.min(1150, 380 + t.length * 13) : 420);
+  /* (22 November 2026: about half of what it was. An answer of five messages took 5.2 s to say what the page had already said) */
+  const pause = (t) => (typeof t === 'string' ? Math.min(600, 220 + t.length * 6) : 260);
   const flush = () => { timers.forEach(clearTimeout); timers = []; queue.forEach((h) => add(h, false)); queue = []; typing(false); down(); };
   const answer = (lines) => {
     queue = lines.map((t, k) => us(t, k === lines.length - 1));
@@ -148,7 +149,7 @@ addSection('tabla', 'tpl-fq', 4.5, (root) => {
     typing(true);
     let t = 0;
     lines.forEach((line, k) => {
-      t += k ? pause(line) : 560;
+      t += k ? pause(line) : 300;
       timers.push(setTimeout(() => { add(queue.shift(), true); down(); if (!queue.length) typing(false); }, t));
     });
   };
@@ -167,9 +168,11 @@ addSection('tabla', 'tpl-fq', 4.5, (root) => {
     add(me(i), true); down(); answer(FAQ[i].a); nextChip();
   };
   btns.forEach((b) => on(b, 'click', () => ask(+b.dataset.i)));
-  /* the greeting, the first time the chat is seen */
-  const io = new IntersectionObserver((es) => { if (!es.some((e) => e.isIntersecting)) return; io.disconnect(); if (!inner.children.length) answer(FAQ_SAY.slice(0, 2)); }, { threshold: .4 });
-  io.observe(chat);
-  return () => { io.disconnect(); timers.forEach(clearTimeout); offs.forEach((f) => { if (typeof f === 'function') f(); }); };
+  /* the chat arrives with the greeting and the first question already answered, still: the frame is not an empty room, and it
+     shows what a touch on a question does (22 November 2026: it arrived with two bubbles in a frame of 600 px) */
+  FAQ_SAY.slice(0, 2).forEach((t, k) => add(us(t, k === 1), false));
+  add(me(0), false); FAQ[0].a.forEach((t, k) => add(us(t, k === FAQ[0].a.length - 1), false)); mark(0);
+  requestAnimationFrame(() => { log.scrollTop = log.scrollHeight; });
+  return () => { timers.forEach(clearTimeout); offs.forEach((f) => { if (typeof f === 'function') f(); }); };
 });
 </script>

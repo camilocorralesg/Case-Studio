@@ -25,7 +25,7 @@ import Pausa from '../components/Pausa.astro';
 .ru-stage.is-drag{cursor:grabbing;scale:.985}
 @media (prefers-reduced-motion:reduce){.ru-stage.is-drag{scale:none}}
 .ru-stage:focus-visible{outline-offset:6px}
-.ru-stage::before{content:"";position:absolute;left:50%;top:44%;width:min(80vw,1120px);height:84%;translate:-50% -50%;background:radial-gradient(closest-side,rgba(48,118,255,.32),rgba(var(--cobalt-rgb),.1) 60%,rgba(var(--cobalt-rgb),0));pointer-events:none}
+.ru-stage::before{content:"";position:absolute;left:50%;top:44%;width:min(80vw,1120px);height:84%;translate:-50% -50%;background:radial-gradient(closest-side,rgba(var(--glow-rgb),.32),rgba(var(--cobalt-rgb),.1) 60%,rgba(var(--cobalt-rgb),0));pointer-events:none}
 /* the sites are clean screens: rounded, an edge of light, the sheen of the hero's elements on top and a soft reflection on the floor */
 .ru-card{--cw:min(56vw,780px,calc((100svh - 480px) * 1.932));position:absolute;left:50%;top:44%;width:var(--cw);padding:0;border:0;border-radius:16px;background:none;color:#fff;font:inherit;cursor:pointer;translate:-50% -50%;will-change:transform}
 /* the long shadow lives on its own, under the screen: the tour moves inside the screen, and a shadow drawn with it would be painted again on every frame */
@@ -51,7 +51,7 @@ import Pausa from '../components/Pausa.astro';
 .ru-dot i{font:500 10px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
 .ru-dot b{font:600 17px/.8 var(--sym);letter-spacing:-.04em}
 .ru-dot[aria-current="true"]{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62)}
-.ru-dot[aria-current="true"] i{color:var(--ice)}
+.ru-dot[aria-current="true"] i{color:#fff}
 .ru-dot:active{transform:scale(.94)}
 @media (hover:hover) and (pointer:fine){
   .ru-card.is-on .ru-screen{transition:box-shadow var(--d-fade) ease}

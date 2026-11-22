@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Última actualización: 17 de noviembre de 2026.
+Última actualización: 22 de noviembre de 2026.
 
 ## Lo que hay
 
@@ -10,14 +10,14 @@ Una página con once secciones, en español e inglés, toda con el concepto de l
 |---|---|---|---|
 | 1 | Hero | La tabla periódica como un piso de casillas que se arma al entrar; en reposo se encienden elementos al azar. Al bajar, la cámara sube, la tabla se hunde y Ca y Se se juntan como el logo | `hero.astro` |
 | 2 | Servicios | Sobre papel claro, que se arma casilla a casilla al salir del hero. La lista de los cuatro a un lado; al otro, un cuadro grande con la animación del servicio que está al frente, que cuenta su frase en pasos | `servicios.astro`, `escenas.astro` |
-| 2b | Fórmula | Justo después, sobre el mismo papel: se tocan o arrastran los elementos al centro, se unen en la fórmula y "Armar mi fórmula" lleva a Contacto con esas opciones marcadas | `formula.astro` |
+| 2b | Fórmula | Justo después, sobre el mismo papel (Con tu marca): la fórmula empieza siempre por Tú (119); los cuatro elementos esperan en una fila, cada uno con su lugar punteado, y al tocarlos o arrastrarlos caen a una bandeja y se funden con él, más grandes; debajo, lo que trae cada uno, con su frase de Servicios; "Pedir esta fórmula" lleva a Contacto con esas opciones marcadas | `formula.astro` |
 | 3 | Rediseño | El mismo negocio, una panadería, antes y después: se marcan los problemas del sitio genérico y cada uno se corrige con casillas azules que lo deshacen; el resto se va en una ola y queda el sitio rediseñado | `rediseno.astro` |
 | 4 | Proyectos | La Rueda: los seis sitios en una rueda en 3D sobre el piso de noche del hero, que se arrastra, se lanza y se mueve con sus elementos. "Ver proyecto" hace crecer la pantalla del frente hasta el detalle, donde el sitio real se abre en vivo con su historia al lado | `proyectos.astro`, `visor.astro` |
 | 5 | Marcas | Un teléfono, dentro de un encuadre con la luz del hero, muestra el perfil real de Instagram de cada marca y el scroll pasa de una a otra; al lado, las seis, con la del teléfono encendida; tocar una lleva el teléfono a su perfil. Las marcas no abren detalle | `marcas.astro` |
-| 6 | Proceso | La Ruta, sobre papel claro: una línea que el scroll dibuja lleva el elemento de "Tu marca" por cuatro estaciones; cada una aparece, encendida y con su tarjeta, solo cuando él llega | `proceso.astro` |
+| 6 | Proceso | La Ruta, sobre papel claro (Lugares): una línea que el scroll dibuja lleva el elemento de "Tu marca" por cuatro estaciones; la ruta y el lugar punteado de cada una están desde el comienzo, y cada paso aparece, con su elemento encendido y su texto sobre el papel, solo cuando él llega; al final el Tú sale por el extremo de la línea | `proceso.astro` |
 | 7 | Redes | Historias: las seis partes del servicio como seis historias en un cubo que el scroll gira, dentro de un encuadre; cada una empieza su dibujo al quedar de frente; al lado, las seis, que llevan a cada historia | `redes.astro` |
 | 8 | Preguntas | Chat: las siete preguntas a un lado, cada una con el elemento de la parte del sitio que la responde, y un chat en un encuadre al otro. La pregunta que se toca entra al chat y CaSe responde en mensajes cortos, al ritmo de quien escribe; en el celular las preguntas van dentro del chat, como respuestas rápidas | `preguntas.astro` |
-| 9 | Cierre | Regreso, sobre azul: el logo se arma (Ca y Se, y Tú cae entre ellos) y vuelve a la tabla periódica, cada uno a su lugar real: Ca al 20, Se al 34 y Tú al 119, en un período 8 que se abre; después, "El elemento que falta es tu marca." y "Empezar mi proyecto": el último llamado antes del formulario | `cierre.astro` |
+| 9 | Cierre | Regreso, sobre azul: el logo se arma (Ca y Se, y Tú cae entre ellos) y vuelve a la tabla periódica, cada uno a su lugar real: Ca al 20, Se al 34 y Tú al 119, en un período 8 que se abre; después la cámara entra a ese período (Acercamiento): el Tú queda grande, con las casillas vecinas de fondo, y a su lado, en el período nuevo, "El elemento que falta es tu marca." y "Empezar mi proyecto": el último llamado antes del formulario | `cierre.astro` |
 | 10 | Contacto | Una línea, en una pantalla: los cuatro servicios como elementos para marcar y una sola barra con nombre, correo o WhatsApp y "Enviar solicitud". Lo que el visitante une en la Fórmula llega marcado | `contacto.astro` |
 | | Pie | Frente: la tabla periódica es el menú (las secciones y los servicios en sus casillas, Ca y Se en su lugar), con el contacto y la leyenda en su hueco; al llegar, la cámara la levanta de frente, y debajo el logo | `pie.astro` |
 
@@ -209,6 +209,34 @@ Segunda ronda (14 de noviembre de 2026): https://claude.ai/artifact/HHTEZQuBR1NC
   - la sección mide 260vh (340vh hasta el 16 de noviembre de 2026) y termina con una pausa para leer. Su botón salió ese día: antes
     del formulario va uno solo, el de la frase final. Con movimiento reducido es una pantalla quieta con todo en su lugar.
   Se quitaron de `color.astro` las reglas del cierre anterior (`.zb-slot`, `.zb-you`), que habrían pisado a las nuevas. Los prototipos de las dos rondas siguen en sus artefactos.
+
+### Ronda de prototipos del 19 de noviembre de 2026: el 119 en grande
+
+**Elegida el 21 de noviembre de 2026: A · Acercamiento.** Ya está en `cierre.astro`. Al llevarla al sitio cambió en tres cosas frente al prototipo:
+- **Las casillas grandes se desvanecen hacia arriba y hacia abajo** a medida que la cámara entra (`.zb-view`, `--mk`). En el prototipo el borde de la sección las cortaba, y eso choca con la regla 6 cuando llega Contacto.
+- **Hay una sola luz.** La que estaba en el centro de la tabla viaja con la cámara hasta el Tú (`--gx`, `--gy`, `--ga`); el prototipo sumaba un segundo halo detrás del Tú. El botón la hace más fuerte (`--hot`) y enciende un anillo de hielo alrededor de la casilla.
+- **La etiqueta "119 Tu marca" junto a la casilla se quitó**, porque el Tú grande ya lo dice.
+
+El Cierre mide ahora 300vh (antes 260vh). Con movimiento reducido es su último cuadro: la cámara ya en el período nuevo.
+
+Prototipo: https://claude.ai/artifact/TNs29Hgb4MynvEJMKoGNfQ. Las fuentes están en la carpeta `cierre/` del scratchpad de esa sesión:
+- `variantes.js` y `variantes.css`: las variantes;
+- `armar.py`: las monta sobre `dist/` y saca la página del artefacto;
+- `verificar.py`: recorre cada variante a 1440, 390 y 1880, quieta y en inglés.
+
+Nada de esto está en `src/` hasta que el usuario elija. Es el sitio completo con un selector abajo a la derecha (en el celular, una píldora con las letras) y abre en el comienzo del Cierre. El enlace elige la variante: `#cierre-a`, `#cierre-b`, `#cierre-c` o `#cierre-actual`.
+
+Hoy el Tú termina como la casilla más pequeña de la pantalla. Las tres repiten el Cierre de hoy hasta que el Tú cae en el 119 y la tabla se enciende desde él. Después cada una tiene su final, y "El elemento que falta es tu marca." con "Empezar mi proyecto" llega al lado del Tú (debajo en el celular, y en C encima):
+- **A · Acercamiento**: la cámara entra al período 8. El Tú queda del tamaño de las casillas vecinas, que quedan de fondo, apagadas y enormes (Fr, Ra, Ac arriba, los lantánidos abajo). La frase ocupa el período nuevo, a su derecha, que estaba vacío.
+- **B · Ficha**: la tabla sube y se aleja. El Tú sale de su casilla hacia el visitante y crece hasta ser la ficha grande, y su lugar en la tabla queda vacío, punteado y con luz.
+- **C · Piso**: la tabla se acuesta como el piso del hero, girando sobre el 119. El Tú se levanta sobre su casilla, con un charco de luz a sus pies, y Ca y Se quedan en el piso, en blanco. Las filas lejanas se apagan. El sitio termina como empezó.
+- **Actual**, para comparar.
+
+En las tres:
+- el Tú lleva el 119 desde que aparece;
+- el botón enciende la casilla (un anillo de hielo y más luz detrás);
+- con movimiento reducido cada una es su último cuadro, quieto;
+- el Cierre pasa de 260vh a 300vh para que el final tenga su tramo.
 
 ## Contacto (decidido el 14 de noviembre de 2026: Una línea)
 
@@ -734,6 +762,59 @@ El usuario pidió un barrido con Impeccable y Taste, quitar la Frase final, revi
 - **Las fichas de Marcas en los colores de cada cliente** (Weed Honey es 05 en azul noche en Proyectos y 05 beige en Marcas).
 - **Mensaje**: Rediseño se burla del estilo de IA y en Redes "Contenido con IA" es "Nuestro plus". Es tensión de mensaje: decide el usuario.
 - **El largo**: 29,9 pantallas a 1440. Se puede recortar un 15–25 % del alto en Proceso, Marcas y el final del Cierre.
+
+### Análisis del 21 de noviembre de 2026, arreglos y prototipos
+
+El usuario eligió Acercamiento para el Cierre y pidió otro análisis del sitio, prototipos de mejoras y quitar los patrones de IA que quedaran. El análisis siguió el método de crítica de Impeccable: dos revisores aislados sobre una copia congelada del sitio, uno de diseño (sin ver detectores ni críticas anteriores) y otro de evidencia medida. Sus archivos están en el scratchpad de la sesión (`analisis/A` y `analisis/B`).
+
+**Veredicto del revisor de diseño**: donde la tabla hace trabajo (hero, Cierre y pie) el sitio es de autor; en el medio, cinco secciones repiten "lista de casillas + marco oscuro" y el concepto baja a viñeta. Heurísticas de Nielsen: 23 de 36 (la 7 no aplica). Lo más bajo: reconocer antes que recordar (1), porque el menú habla en símbolos; lo más alto: recuperarse de errores (4), por el formulario.
+
+**Evidencia medida**:
+- **Detector estático de Impeccable**: los 10 de siempre (7 falsos positivos de relleno, 2 de la parodia de Rediseño y la luz del encuadre).
+- **Detector dentro del navegador, a 1440**: 52 hallazgos.
+  - De la parodia de Rediseño o de sus maquetas en miniatura: los 5 resplandores, el texto degradado y 8 textos pequeños.
+  - Números de elemento a 10 px (18): cumplen la regla 8 del proyecto, que permite hasta 9,5 px.
+  - Luces del encuadre (4): decididas.
+  - **Reales**: 10 textos con poco contraste (los números sobre casillas encendidas, a 3,3–3,9:1, y las casillas de Marcas en colores de cliente, hasta 2,6:1) y un azul escrito a mano en la luz de Proyectos.
+- **Taste copy-lint**: 0 FAIL; los 2 avisos son los números atómicos, que son el concepto.
+- **Azules escritos a mano**: 148 usos de 52 colores fuera de `:root`. La regla 5 pide variables. Los más repetidos: `#eef3ff` (13), `rgba(160,196,255,…)` (12), `rgba(170,204,255,…)` (9), `#8fb0ff`, que ya es `--frost` (8), y `#b3bfd3` (8). **Pendiente**: una pasada que los vuelva variables, verificada con capturas idénticas antes y después.
+
+**Arreglos aplicados el 22 de noviembre de 2026**:
+- **Marcas**:
+  - las casillas van en los azules del sitio (marino en reposo, encendida la del teléfono). Llevaban los colores de cada cliente: era lo único de la página fuera del blanco, negro y azul, con contraste de hasta 2,6:1, y Weed Honey era azul en Proyectos y beige aquí. Dentro del teléfono cada marca conserva sus colores;
+  - en el celular, bajo el encuadre, van el nombre y la línea de la marca que está en el teléfono (`.mr-cap`). Antes solo se veían seis símbolos;
+  - para un lector de pantalla, cada fila describe su marca con su línea (`aria-describedby`).
+- **Menú fijo**: espera a que la última frase del hero salga de la pantalla. Entraba encima de ella durante unos 160 px de scroll (regla 7).
+- **Cierre**: la frase y el botón ya no se sacan de la página con `visibility`: el lector de pantalla los lee siempre y el teclado llega al botón en cualquier punto; al recibir el foco, el Cierre va a su final. Mientras no se ven, el puntero no los puede tocar.
+- **Proceso**: las tarjetas de los pasos solo se ocultan a la vista (opacidad), así el lector de pantalla lee los cuatro.
+- **Números sobre casillas encendidas**: blancos, y `--lit` un poco más hondo arriba, para pasar de 4,5:1.
+- **Preguntas**:
+  - llega con el saludo y la primera pregunta ya respondida, quietos (llegaba con dos burbujas en un marco de 600 px);
+  - responde en la mitad del tiempo (una respuesta de cinco mensajes tardaba 5,2 s).
+- **Fórmula**: "Ejemplo" y "tu fórmula" dejan el mono, y "Ejemplo" deja de ser una píldora.
+- **Proyectos**: la luz del escenario usa `--glow-rgb`.
+- **Tarjeta del enlace**: se agregaron las etiquetas `og:` y `twitter:card` (sin imagen todavía).
+- **Observadores**: los tres que despiertan animaciones (`onVisible`, Fórmula y Redes) leen el último aviso del lote. Si llegaban dos juntos, por un salto justo después de armar la página, se quedaban con el viejo: en la Fórmula las casillas no salían de la esquina.
+
+**Elegidas el 22 de noviembre de 2026: Fórmula B · Con tu marca y Proceso A · Lugares.** Ya están en `formula.astro` y `proceso.astro`. Frente a los prototipos:
+- **Fórmula**: la cara del Tú es una variable, `--you-face`, que comparten el Cierre y la Fórmula. Los textos nuevos están en `en.json` ("Toca los elementos que tu marca necesita o arrástralos a la fórmula." y "Esto es un ejemplo: toca un elemento y la fórmula es tuya."); salieron "tu fórmula", "Ejemplo" y "Todos los elementos de tu marca en internet.", que ya no se usan. El primer toque sigue conservando el ejemplo.
+- **Proceso**: los pasos se ocultan solo a la vista (opacidad), para que el lector de pantalla lea los cuatro en cualquier punto del scroll; el prototipo usaba `visibility`.
+
+**Prototipos** (las fuentes están en la carpeta `proto/` del scratchpad de la sesión; las fuentes están en la carpeta `proto/` del scratchpad de la sesión, con `armar.py`, que las monta sobre `dist/`):
+- **Fórmula**: https://claude.ai/artifact/3Vwbx6rDCvjjYQu9BpsEHH. Los elementos esperan en una fila, cada uno con su lugar punteado, y caen a una bandeja donde se funden, más grandes, como las dos casillas del logo. Debajo, lo que trae cada uno: su frase de Servicios. El título va centrado y el ejemplo se ve en contorno hasta el primer toque.
+  - **A · Caída**: la fórmula son los elementos elegidos.
+  - **B · Con tu marca**: la fórmula empieza siempre por Tú (119) y lo elegido se une a él.
+- **Proceso**: https://claude.ai/artifact/6uYZA3HeUjb27W6dG4mfRf. La Ruta se queda. El Tú sale grande, cada estación tiene su lugar punteado desde el comienzo, los pasos van sobre el papel sin tarjeta, y al final el Tú sale lanzado por el extremo de la línea. Pasa de 300vh a 240vh.
+  - **A · Lugares**: cada paso aparece cuando el Tú llega, como hoy.
+  - **B · Una a la vez**: la estación que el Tú alcanza se abre en grande con su frase, y las que ya pasó quedan como casillas pequeñas con su nombre (la dirección que propuso el revisor).
+
+**Decisiones que quedan con el usuario**:
+- **El primer toque en la Fórmula.** Hoy conserva el ejemplo (decisión del 16 de noviembre): quien toca solo Tiendas termina con Sitios web, Redes y Tiendas marcados en Contacto. El revisor lo marcó como riesgo. La alternativa: que el primer toque reemplace el ejemplo.
+- **Contacto como fórmula** (propuesta del revisor): en lugar de cuatro tarjetas iguales, el Tú del Cierre unido en grande a lo elegido, con la misma bandeja de la Fórmula, y la barra debajo.
+- **El menú con nombres**: hoy son ocho símbolos y solo se nombra la sección actual; el revisor propone el nombre bajo cada casilla, como en el pie.
+- **Los marcos medio vacíos**: Redes muestra una historia de 370 px en un marco de 907, y Marcas a 1880 un teléfono de 337 en 1.168. El revisor propone alternar el lado del marco y que el contenido lo llene.
+- **Preguntas en el celular**: las siete van en una tira horizontal; el revisor propone una lista vertical.
+- Siguen pendientes de antes: el reflejo de la rueda, las casillas de Antes/Después de Rediseño, y precio y tiempos en Preguntas.
 
 ## Pendiente del usuario
 

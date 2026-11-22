@@ -172,7 +172,7 @@ html.mn-lock{overflow:hidden}
     const links = [...nav.querySelectorAll('.mn-list a')], secs = ITEMS.map(([k]) => root.querySelector('#' + k));
     const row = nav.querySelector('.mn-list'), now = nav.querySelector('.mn-now');
     const fit = () => nav.style.setProperty('--rw', row.offsetWidth + 'px');
-    const all = [...root.children].filter((n) => n.matches('section')), hero = all[0], foot = root.querySelector('.ft');
+    const all = [...root.children].filter((n) => n.matches('section')), hero = all[0], foot = root.querySelector('.ft'), heroSay = hero.querySelector('.hx__say');
     const tones = all.map(light), owner = all.map((s) => secs.indexOf(s));
     /* the closing section belongs to Contacto (it is the call to it); anything before the first item belongs to none */
     for (let i = 0, last = -1; i < owner.length; i++) { if (owner[i] >= 0) last = owner[i]; else owner[i] = last; }
@@ -185,11 +185,12 @@ html.mn-lock{overflow:hidden}
       /* the name as its link says it, already in the page's language */
       now.textContent = links[i].querySelector('.mn-t').textContent;
     };
-    /* the menu shows once the hero is behind and hides before the footer; the section in the middle of the screen is the one marked */
+    /* the menu shows once the hero is behind and hides before the footer; the section in the middle of the screen is the one marked.
+       It waits for the hero's last line to leave the top of the screen: it used to come in over it for some 160 px of scroll (rule 7) */
     const frame = () => {
       raf = 0; const vh = innerHeight, mid = vh * .5;
       let k = 0; all.forEach((s, i) => { if (s.getBoundingClientRect().top <= mid) k = i; });
-      const on = hero.getBoundingClientRect().bottom < vh * .45 && (!foot || foot.getBoundingClientRect().top > vh * .8);
+      const on = hero.getBoundingClientRect().bottom < vh * .45 && (!heroSay || heroSay.getBoundingClientRect().bottom < 8) && (!foot || foot.getBoundingClientRect().top > vh * .8);
       if (on !== shown) { shown = on; nav.classList.toggle('is-in', on); }
       setAct(Math.max(0, owner[k])); nav.classList.toggle('on-light', tones[k]); nav.classList.toggle('cta-off', !!all[k] && (all[k].id === 'contacto' || all[k].matches('.zb')));
     };

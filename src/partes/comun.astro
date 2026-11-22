@@ -42,7 +42,9 @@
 <script is:inline>
 /* runs a looping animation only while it is on screen, the tab is visible and nobody pressed pause */
 function onVisible(el, cb) {
-  const io = new IntersectionObserver(([e]) => cb(e.isIntersecting), { threshold: 0 });
+  /* the last notice of the batch is the state now: two can arrive together (a jump right after the page is mounted), and the first
+     one is already old (21 November 2026: reading only the first left what it woke asleep) */
+  const io = new IntersectionObserver((es) => cb(es[es.length - 1].isIntersecting), { threshold: 0 });
   io.observe(el);
   return () => io.disconnect();
 }

@@ -4,46 +4,71 @@ import Flecha from '../components/Flecha.astro';
 const SERV = [['Sw', '21', 'Sitios web'], ['Ti', '22', 'Tiendas en línea'], ['Rs', '23', 'Redes sociales'], ['Ma', '24', 'Marca']];
 ---
 <style is:global>
-/* The formula, right after the services, on the same lab paper: the visitor taps the elements or drags them to the middle,
-   and they bond into a compound. What they choose goes with them to the contact form. It is the one section that is not a
-   moment: it is there to add something if the visitor wants to, so the scroll goes past it like any page (user's call) */
+/* The formula, right after the services, on the same lab paper. It always opens with Tú (119), the visitor's own element, and
+   the four elements wait in a row above. A touch or a drag drops one into the tray, where it bonds to Tú, larger, as the two
+   tiles of the logo are; under it, what the formula brings: one line per element, its sentence in Servicios. What they choose
+   goes with them to the contact form. It is the one section that is not a moment: it is there to add something if the visitor
+   wants to, so the scroll goes past it like any page (user's call).
+   "Con tu marca", chosen on 22 November 2026. Before, the tiles stood around a small zone, bonding them only wrote "Sw + Rs" and
+   their names again, and the example wore a badge */
 .v-tab .fx{background-color:var(--lab);color:#0a1020}
 .v-tab .fx-in{display:flex;flex-direction:column;gap:clamp(10px,2vh,22px);min-height:100vh;min-height:100svh;padding:clamp(76px,11vh,108px) var(--gutter) clamp(36px,6vh,64px)}
-/* the hint under the title, as in Servicios */
-.v-tab .fx-head{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-.v-tab .fx-head .lead{max-width:24em;color:#4a5878}
-.v-tab .fx-field{position:relative;flex:1;min-height:clamp(460px,60vh,660px)}
-.v-tab .fx-zone{position:absolute;left:0;top:0;border-radius:26px;background:rgba(var(--sky-rgb),.07);box-shadow:inset 0 0 0 1.5px rgba(var(--cobalt-rgb),.2);transition:background-color var(--d-fade) ease,box-shadow var(--d-fade) ease}
-.v-tab .fx-zone.hot{background:rgba(var(--sky-rgb),.13);box-shadow:inset 0 0 0 1.5px rgba(var(--cobalt-rgb),.45)}
-.v-tab .fx-zone span{position:absolute;left:16px;top:-26px;font-size:13px;color:#5a6785}
-/* the elements: navy at rest, brand blue once bonded; bonded ones share their inner corners */
+/* everything stands on one axis, in the middle: the title, the row, the tray and what it brings */
+.v-tab .fx-head{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.v-tab .fx-head .lead{max-width:30em;color:#4a5878}
+.v-tab .fx-field{position:relative;flex:1;min-height:clamp(380px,48vh,520px)}
+/* the place of each element in the row: dashed, in sight when its element has gone down to the formula */
+.v-tab .fx-home{position:absolute;left:0;top:0;width:var(--th,110px);height:var(--th,110px);border-radius:12px;border:1.5px dashed rgba(var(--cobalt-rgb),.28)}
+/* the tray: it hugs the formula and leaves room for one more element. When one bonds, it takes the hit: a ring that opens and
+   goes out */
+.v-tab .fx-tray{position:absolute;left:0;top:0;border-radius:30px;border:1.5px dashed rgba(var(--cobalt-rgb),.42);background:rgba(var(--sky-rgb),.06);transition:width var(--d-move) var(--ease-out),transform var(--d-move) var(--ease-out),background-color var(--d-fade) ease,border-color var(--d-fade) ease}
+.v-tab .fx-tray.hot{background:rgba(var(--sky-rgb),.15);border-color:rgba(var(--cobalt-rgb),.85)}
+@keyframes fxHit{from{box-shadow:0 0 0 0 rgba(var(--cobalt-rgb),.4)}to{box-shadow:0 0 0 20px rgba(var(--cobalt-rgb),0)}}
+.v-tab .fx-tray.is-hit{animation:fxHit var(--d-enter) var(--ease-out)}
+/* the elements: navy at rest, brand blue once bonded; bonded ones share their inner corners. They are drawn at the size they
+   have in the formula (--ts) and the code makes them smaller in the row, so the formula is sharp; their number and their name
+   are written for that size and never go under 9.5 and 11 px in the row */
 .v-tab .fx-t{position:absolute;left:0;top:0;display:flex;flex-direction:column;justify-content:space-between;width:var(--ts);height:var(--ts);padding:calc(var(--ts) * .1) calc(var(--ts) * .11);border:0;border-radius:16px;background:var(--cell);color:#fff;font:inherit;text-align:left;
-  box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.55),0 24px 44px -24px rgba(var(--deep-rgb),.65);z-index:2;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;will-change:transform;transition:border-radius var(--d-fade) var(--ease-out),background-color var(--d-fade) ease}
+  box-shadow:inset 0 0 0 1.5px rgba(var(--edge-rgb),.55),0 24px 44px -24px rgba(var(--deep-rgb),.65);z-index:2;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;transition:border-radius var(--d-fade) var(--ease-out),background-color var(--d-fade) ease,color var(--d-fade) ease}
 @media (hover:hover) and (pointer:fine){.v-tab .fx-t:hover{translate:0 -2px;box-shadow:inset 0 0 0 1.5px rgba(160,196,255,.85),0 30px 50px -26px rgba(var(--deep-rgb),.7)}}
 .v-tab .fx-t:active{cursor:grabbing}
 .v-tab .fx-t:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
-.v-tab .fx-t i{font:400 12px/1 var(--mono);font-style:normal;color:var(--frost)}
+.v-tab .fx-t i{font:400 max(9.5px,calc(var(--ts) * .085))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;color:var(--frost)}
 .v-tab .fx-t b{font:600 calc(var(--ts) * .4)/.84 var(--sym);letter-spacing:-.045em}
-.v-tab .fx-t span{font-size:13px;line-height:1.15;color:#c7d5f5}
+.v-tab .fx-t span{font-size:max(11px,calc(var(--ts) * .1));line-height:1.15;color:#c7d5f5}
 .v-tab .fx-t[aria-pressed="true"]{background:var(--cobalt);box-shadow:inset 0 0 0 1.5px rgba(var(--ice-rgb),.55),0 24px 44px -24px rgba(var(--deep-rgb),.65)}
 .v-tab .fx-t[aria-pressed="true"] i{color:var(--ice)}
 .v-tab .fx-t[aria-pressed="true"] span{color:#e8f0ff}
-.v-tab .fx-t[data-join="first"]{border-radius:16px 4px 4px 16px}
 .v-tab .fx-t[data-join="mid"]{border-radius:4px}
 .v-tab .fx-t[data-join="last"]{border-radius:4px 16px 16px 4px}
-/* what the formula says, and the way to the contact form */
-.v-tab .fx-out{position:absolute;left:0;right:0;top:0;display:grid;justify-items:center;gap:10px;text-align:center;pointer-events:none}
-.v-tab .fx-out .btn{pointer-events:auto;margin-top:6px}
-.v-tab .fx-f{font:600 clamp(28px,3vw,46px)/1.05 var(--sym);letter-spacing:-.035em}
-.v-tab .fx-f.empty{color:#5a6785;font-family:var(--head);font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em}
-.v-tab .fx-names{max-width:31em;color:#4a5878;font-size:clamp(15px,1.15vw,17px)}
-.v-tab .fx-ex{padding:5px 11px;border-radius:999px;background:rgba(var(--sky-rgb),.1);font-size:12px;color:var(--cobalt)}
+/* the example: in outline, until the visitor touches something and the formula is theirs */
+.v-tab .fx-t.is-ghost{background:rgba(var(--sky-rgb),.1);color:var(--deep);box-shadow:inset 0 0 0 1.5px rgba(var(--cobalt-rgb),.5)}
+.v-tab .fx-t.is-ghost i{color:var(--cobalt)}
+.v-tab .fx-t.is-ghost span{color:#4a5878}
+/* Tu marca, the first tile of the formula: the face it has in the closing (--you-face) */
+.v-tab .fx-you{position:absolute;left:0;top:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;width:var(--ts);height:var(--ts);padding:calc(var(--ts) * .1) calc(var(--ts) * .11);border-radius:16px;color:#fff;background:var(--you-face);box-shadow:inset 0 0 0 1.5px rgba(160,196,255,.5);transition:transform var(--d-move) var(--ease-out),border-radius var(--d-fade) var(--ease-out)}
+.v-tab .fx-you i{font:400 max(9.5px,calc(var(--ts) * .085))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;color:var(--ice)}
+.v-tab .fx-you b{font:600 calc(var(--ts) * .4)/.84 var(--sym);letter-spacing:-.045em}
+.v-tab .fx-you span{font-size:max(11px,calc(var(--ts) * .1));line-height:1.15;color:#e8f0ff}
+.v-tab .fx-you[data-join="first"]{border-radius:16px 4px 4px 16px}
+/* what the formula brings, and the way to the contact form. The list is as wide as its longest sentence, so it stands in the
+   middle under the formula */
+.v-tab .fx-out{position:absolute;left:0;right:0;top:0;display:grid;justify-items:center;gap:16px}
+.v-tab .fx-gets{display:grid;gap:9px;width:fit-content;max-width:min(100%,47em);margin:0;padding:0;list-style:none}
+.v-tab .fx-gets li{display:grid;grid-template-columns:2.5em minmax(0,1fr);gap:14px;align-items:baseline;font-size:clamp(15px,1.15vw,17.5px);line-height:1.45}
+.v-tab .fx-gets b{font:600 1.2em/1 var(--sym);letter-spacing:-.03em;color:var(--cobalt)}
+.v-tab .fx-gets li.is-ex,.v-tab .fx-gets li.is-ex b{color:#5a6785}
+@keyframes fxLine{from{opacity:0;transform:translate3d(0,8px,0)}}
+.v-tab .fx-gets li.is-new{animation:fxLine var(--d-move) var(--ease-out) both}
+.v-tab .fx-note{margin:0;font-size:14.5px;color:#5a6785;text-align:center}
+.v-tab .fx-out .btn{margin-top:4px}
 @media (max-width:700px){
   .v-tab .fx-head .lead{font-size:15px}
-  .v-tab .fx-t span,.v-tab .fx-t i{font-size:11px}
+  .v-tab .fx-gets li{grid-template-columns:2.2em minmax(0,1fr);gap:10px}
 }
 @media (prefers-reduced-motion:reduce){
-  .v-tab .fx-t,.v-tab .fx-zone{transition:none}
+  .v-tab .fx-t,.v-tab .fx-tray,.v-tab .fx-you{transition:none}
+  .v-tab .fx-tray.is-hit,.v-tab .fx-gets li.is-new{animation:none}
 }
 </style>
 
@@ -52,15 +77,16 @@ const SERV = [['Sw', '21', 'Sitios web'], ['Ti', '22', 'Tiendas en línea'], ['R
   <div class="fx-in">
     <div class="fx-head">
       <h2 class="h2" id="fx-h">Arma tu fórmula.</h2>
-      <p class="lead">Toca los elementos o arrástralos al centro.</p>
+      <p class="lead">Toca los elementos que tu marca necesita o arrástralos a la fórmula.</p>
     </div>
     <div class="fx-field">
-      <div class="fx-zone"><span class="mono">tu fórmula</span></div>
+      <div class="fx-tray"></div>
+      <span class="fx-you" aria-hidden="true"><i>119</i><b>Tú</b><span>Tu marca</span></span>
+      {SERV.map(() => <i class="fx-home" aria-hidden="true"></i>)}
       {SERV.map(([s, z, name]) => <button class="fx-t" type="button" aria-pressed="false" data-s={s}><i aria-hidden="true">{z}</i><b aria-hidden="true">{s}</b><span>{name}</span></button>)}
       <div class="fx-out" aria-live="polite">
-        <p class="fx-f"></p>
-        <p class="fx-names"></p>
-        <span class="fx-ex mono">Ejemplo</span>
+        <ul class="fx-gets"></ul>
+        <p class="fx-note"></p>
         <a class="btn btn--ink" href="#contacto">Pedir esta fórmula <Flecha /></a>
       </div>
     </div>
@@ -69,17 +95,24 @@ const SERV = [['Sw', '21', 'Sitios web'], ['Ti', '22', 'Tiendas en línea'], ['R
 </template>
 
 <script is:inline>
-/* The formula. It opens with an example (Sitios web + Redes sociales), marked as one; the first touch makes it the visitor's: it
-   adds or takes away on top of the example (the user's call, 16 November 2026), and "Pedir esta fórmula" asks for what is shown. What the visitor bonds lives in window.FORMULA (it survives the language switch) and is copied
-   into the contact form, where the same four services are to tick: each element checks its own by symbol. window.FORMULA_SET
-   keeps what this section checked, so a choice made in the form itself is never undone. */
+/* The formula. It opens with an example (Tú + Sitios web + Redes sociales), drawn in outline; the first touch makes it the
+   visitor's: it adds or takes away on top of the example (the user's call, 16 November 2026), and "Pedir esta fórmula" asks for
+   what is shown. What the visitor bonds lives in window.FORMULA (it survives the language switch) and is copied into the contact
+   form, where the same four services are to tick: each element checks its own by symbol. window.FORMULA_SET keeps what this
+   section checked, so a choice made in the form itself is never undone. */
 addSection('tabla', 'tpl-fx', 1.2, (root) => {
-  const sec = root.querySelector('.fx'), field = sec.querySelector('.fx-field'), zone = sec.querySelector('.fx-zone'), out = sec.querySelector('.fx-out');
-  const fEl = sec.querySelector('.fx-f'), names = sec.querySelector('.fx-names'), ex = sec.querySelector('.fx-ex');
-  const tiles = [...sec.querySelectorAll('.fx-t')].map((el, i) => ({ el, i, s: el.dataset.s, name: () => el.querySelector('span').textContent.trim(), x: 0, y: 0, vx: 0, vy: 0, hx: 0, hy: 0 }));
+  const sec = root.querySelector('.fx'), field = sec.querySelector('.fx-field'), tray = sec.querySelector('.fx-tray'), out = sec.querySelector('.fx-out');
+  const gets = sec.querySelector('.fx-gets'), note = sec.querySelector('.fx-note'), you = sec.querySelector('.fx-you'), homes = [...sec.querySelectorAll('.fx-home')];
+  const tiles = [...sec.querySelectorAll('.fx-t')].map((el, i) => ({ el, i, s: el.dataset.s, x: 0, y: 0, vx: 0, vy: 0, hx: 0, hy: 0, k: 1 }));
   const F = window.FORMULA = window.FORMULA || new Set(), SET = window.FORMULA_SET = window.FORMULA_SET || new Set();
   const say = (t) => (window.LANG && LANG.cur === 'en' && window.I18N && I18N.tr(t)) || t;
-  let example = !F.size, bonded = example ? ['Sw', 'Rs'] : [...F], drag = null, ts = 120, W = 0, H = 0, Z = { x: 0, y: 0, w: 0, h: 0 }, raf = 0, last = 0;
+  /* what each element brings: its sentence in Servicios, read from the page. It is written once, there, and it comes in the
+     page's language */
+  const BRING = {};
+  root.querySelectorAll('#servicios .f2-row').forEach((r) => { const b = r.querySelector('.f2-el b'), p = r.querySelector('.f2-fold p'); if (b && p) BRING[b.textContent.trim()] = p.textContent.replace(/\s+/g, ' ').trim(); });
+  /* ts: an element in the row; tb: in the formula (sc times larger; on a phone it does not grow: five would not fit) */
+  let example = !F.size, bonded = example ? ['Sw', 'Rs'] : [...F], drag = null, ts = 110, sc = 1.36, tb = 150, W = 0, raf = 0, last = 0;
+  const Z = { x: 0, y: 0, w: 0, h: 0 }, rows = new Map();
 
   /* ---- into the contact form: its four services are these four elements ---- */
   const carry = (k) => {
@@ -97,50 +130,68 @@ addSection('tabla', 'tpl-fx', 1.2, (root) => {
     [...before].filter((k) => !F.has(k)).concat(bonded.filter((k) => !before.has(k))).forEach(carry);
   };
 
-  /* ---- the field ---- */
-  const layout = () => {
-    /* the spread layout needs about 780px of field for the four tiles around the middle; below that they sit in a row on top */
-    W = field.clientWidth; H = field.clientHeight; const narrow = W < 820;
-    ts = narrow ? Math.max(72, Math.min(84, (W - 48) / 4.4)) : Math.max(96, Math.min(146, W * .095));
-    sec.style.setProperty('--ts', ts + 'px');
-    const zw = 4 * ts + (narrow ? 20 : 40), zh = ts + (narrow ? 20 : 40);
-    if (narrow) {
-      const top = 20 + ts / 2;
-      tiles.forEach((t, i) => { t.hx = W / 2 + (i - 1.5) * (ts + 10); t.hy = top; });
-      Z = { x: W / 2, y: top + ts / 2 + 44 + zh / 2, w: Math.min(zw, W), h: zh };
-    } else {
-      const cy = Math.min(H * .34, 40 + ts * 1.6);
-      Z = { x: W / 2, y: cy, w: zw, h: zh };
-      const dx = zw / 2 + ts * 1.3;
-      tiles.forEach((t, i) => { t.hx = W / 2 + (i % 2 ? dx : -dx); t.hy = cy + (i < 2 ? -ts * .62 : ts * .62); });
-    }
-    zone.style.width = Z.w + 'px'; zone.style.height = Z.h + 'px';
-    zone.style.transform = `translate3d(${(Z.x - Z.w / 2).toFixed(1)}px,${(Z.y - Z.h / 2).toFixed(1)}px,0)`;
-    out.style.top = (Z.y + Z.h / 2 + (narrow ? 22 : 34)) + 'px';
-    tiles.forEach((t) => { if (!t.x && !t.y) { const [gx, gy] = target(t, 0); t.x = gx; t.y = gy; } });
+  /* ---- the field: the row of elements above, the tray under it and, under the tray, what the formula brings ---- */
+  /* the tray hugs Tú and what is bonded to it, with room for one more; the field grows with the lines under it */
+  const place = () => {
+    const n = bonded.length + 1, w = Math.max(n, 2.4) * tb + 28, h = tb + 28;
+    Z.w = w; Z.h = h;
+    tray.style.width = `${w.toFixed(1)}px`; tray.style.height = `${h.toFixed(1)}px`;
+    tray.style.transform = `translate3d(${(Z.x - w / 2).toFixed(1)}px,${(Z.y - h / 2).toFixed(1)}px,0)`;
+    you.style.transform = `translate3d(${(Z.x - (n - 1) / 2 * tb - tb / 2).toFixed(1)}px,${(Z.y - tb / 2).toFixed(1)}px,0)`;
+    out.style.top = `${(Z.y + h / 2 + 24).toFixed(1)}px`;
+    field.style.minHeight = `${Math.ceil(Z.y + h / 2 + 24 + out.offsetHeight + 8)}px`;
   };
+  /* where an element goes: in the formula after Tú, in the order it was bonded, or at its place in the row, floating a little */
   const target = (t, now) => {
     if (drag && drag.t === t && drag.moved) return [drag.x, drag.y];
     const k = bonded.indexOf(t.s);
-    if (k >= 0) return [Z.x + (k - (bonded.length - 1) / 2) * ts, Z.y];
-    return [t.hx, t.hy + (RM ? 0 : Math.sin(now * .55 + t.i * 1.9) * 3)];
+    if (k >= 0) return [Z.x + (k + 1 - bonded.length / 2) * tb, Z.y];
+    return [t.hx, t.hy + (RM ? 0 : Math.sin(now * .55 + t.i * 1.9) * 2.5)];
   };
-  const render = () => {
+  const layout = () => {
+    W = field.clientWidth; const narrow = W < 700;
+    ts = narrow ? Math.max(58, Math.min(84, (W - 36) / 5)) : Math.max(100, Math.min(132, W * .085));
+    sc = narrow ? 1 : 1.36; tb = ts * sc;
+    sec.style.setProperty('--ts', `${tb.toFixed(1)}px`); sec.style.setProperty('--th', `${ts.toFixed(1)}px`);
+    const gs = narrow ? 8 : 18, top = ts / 2 + 6;
+    tiles.forEach((t, i) => { t.hx = W / 2 + (i - 1.5) * (ts + gs); t.hy = top; });
+    homes.forEach((h, i) => { h.style.transform = `translate3d(${(tiles[i].hx - ts / 2).toFixed(1)}px,${(top - ts / 2).toFixed(1)}px,0)`; });
+    Z.x = W / 2; Z.y = top + ts / 2 + (narrow ? 34 : 50) + (tb + 28) / 2;
+    place();
+    tiles.forEach((t) => { if (!t.x && !t.y) { const [gx, gy] = target(t, 0); t.x = gx; t.y = gy; t.k = bonded.includes(t.s) ? 1 : 1 / sc; } });
+  };
+  const hit = () => { if (RM) return; tray.classList.remove('is-hit'); void tray.offsetWidth; tray.classList.add('is-hit'); };
+  /* added: an element has just bonded (its line comes in and the tray takes the hit) */
+  const render = (added) => {
+    const n = bonded.length;
     tiles.forEach((t) => {
-      const k = bonded.indexOf(t.s), n = bonded.length;
+      const k = bonded.indexOf(t.s);
       t.el.setAttribute('aria-pressed', k >= 0 && !example ? 'true' : 'false');
-      if (k < 0 || n === 1) t.el.removeAttribute('data-join');
-      else t.el.dataset.join = k === 0 ? 'first' : k === n - 1 ? 'last' : 'mid';
+      t.el.classList.toggle('is-ghost', k >= 0 && example);
+      if (k < 0) t.el.removeAttribute('data-join'); else t.el.dataset.join = k === n - 1 ? 'last' : 'mid';
     });
-    ex.hidden = !example;
-    if (!bonded.length) { fEl.textContent = say('Toca un elemento para empezar.'); fEl.classList.add('empty'); names.textContent = ''; return; }
-    fEl.classList.remove('empty'); fEl.textContent = bonded.join(' + ');
-    names.textContent = bonded.length === 4 ? say('Todos los elementos de tu marca en internet.') : bonded.map((s) => tiles.find((t) => t.s === s).name()).join(' + ');
+    if (n) you.dataset.join = 'first'; else you.removeAttribute('data-join');
+    /* one line per element, in its order: the new one comes in, the others stay */
+    [...rows.keys()].forEach((s) => { if (!bonded.includes(s)) { rows.get(s).remove(); rows.delete(s); } });
+    bonded.forEach((s) => {
+      let li = rows.get(s);
+      if (!li) {
+        li = document.createElement('li'); const b = document.createElement('b'), sp = document.createElement('span');
+        b.textContent = s; b.setAttribute('aria-hidden', 'true'); sp.textContent = BRING[s] || ''; li.append(b, sp); rows.set(s, li);
+        if (added && !RM) { li.classList.add('is-new'); li.addEventListener('animationend', () => li.classList.remove('is-new'), { once: true }); }
+      }
+      li.classList.toggle('is-ex', example); gets.appendChild(li);
+    });
+    const msg = !n ? 'Toca un elemento para empezar.' : example ? 'Esto es un ejemplo: toca un elemento y la fórmula es tuya.' : '';
+    note.textContent = msg ? say(msg) : ''; note.hidden = !msg;
+    place();
+    if (added) hit();
   };
   /* the first touch keeps the example and makes it the visitor's: what they touch is added to it or taken from it */
   const own = () => { if (example) example = false; };
-  const toggle = (s) => { own(); const k = bonded.indexOf(s); if (k >= 0) bonded.splice(k, 1); else bonded.push(s); render(); commit(); };
-  const inZone = (x, y) => Math.abs(x - Z.x) < Z.w / 2 + 24 && Math.abs(y - Z.y) < Z.h / 2 + 24;
+  const toggle = (s) => { own(); const k = bonded.indexOf(s), add = k < 0; if (add) bonded.push(s); else bonded.splice(k, 1); render(add); commit(); };
+  /* the tray pulls from some 40 px around it */
+  const inZone = (x, y) => Math.abs(x - Z.x) < Z.w / 2 + 40 && Math.abs(y - Z.y) < Z.h / 2 + 40;
   const offs = [];
   const on = (el, ev, fn) => { el.addEventListener(ev, fn); offs.push(() => el.removeEventListener(ev, fn)); };
   tiles.forEach((t) => {
@@ -156,28 +207,29 @@ addSection('tabla', 'tpl-fx', 1.2, (root) => {
       if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 6) return;
       const r = field.getBoundingClientRect();
       drag.moved = true; drag.x = e.clientX - r.left - drag.ox; drag.y = e.clientY - r.top - drag.oy;
-      zone.classList.toggle('hot', inZone(drag.x, drag.y)); t.el.style.zIndex = '5';
+      tray.classList.toggle('hot', inZone(drag.x, drag.y)); t.el.style.zIndex = '5';
     });
     const finish = (e) => {
       if (!drag || drag.t !== t || e.pointerId !== drag.id) return;
       if (drag.moved) {
         own();
-        const k = bonded.indexOf(t.s); if (k >= 0) bonded.splice(k, 1);
-        if (inZone(drag.x, drag.y)) {
-          /* the place in the compound follows where it was dropped */
+        const was = bonded.indexOf(t.s); if (was >= 0) bonded.splice(was, 1);
+        const inside = inZone(drag.x, drag.y);
+        if (inside) {
+          /* the place in the formula follows where it was dropped */
           let at = bonded.length;
-          for (let j = 0; j < bonded.length; j++) if (drag.x < Z.x + (j - bonded.length / 2) * ts) { at = j; break; }
+          for (let j = 0; j < bonded.length; j++) if (drag.x < Z.x + (j + 1 - bonded.length / 2) * tb) { at = j; break; }
           bonded.splice(at, 0, t.s);
         }
-        t.skip = true; render(); commit();
+        t.skip = true; render(inside && was < 0); commit();
       }
-      zone.classList.remove('hot'); t.el.style.zIndex = ''; drag = null;
+      tray.classList.remove('hot'); t.el.style.zIndex = ''; drag = null;
     };
     on(t.el, 'pointerup', finish); on(t.el, 'pointercancel', finish);
     on(t.el, 'click', () => { if (t.skip) { t.skip = false; return; } toggle(t.s); });
   });
   /* "Pedir esta fórmula" with the example still on: the visitor asks for the formula they see, so it becomes theirs and goes to Contacto */
-  on(out.querySelector('a[href="#contacto"]'), 'click', () => { if (example) { example = false; render(); commit(); } });
+  on(out.querySelector('a[href="#contacto"]'), 'click', () => { if (example) { example = false; render(false); commit(); } });
   /* calm springs while the section is on screen; with reduced motion the tiles just sit where they belong. Off screen the loop
      sleeps (an observer wakes it), instead of asking for every frame of the visit */
   const step = (now) => {
@@ -187,17 +239,25 @@ addSection('tabla', 'tpl-fx', 1.2, (root) => {
       const [gx, gy] = target(t, tt);
       if (RM || (drag && drag.t === t && drag.moved)) { t.x = gx; t.y = gy; t.vx = t.vy = 0; }
       else { const kk = 190, cc = 2 * Math.sqrt(kk) * .92; t.vx += ((gx - t.x) * kk - t.vx * cc) * dt; t.vy += ((gy - t.y) * kk - t.vy * cc) * dt; t.x += t.vx * dt; t.y += t.vy * dt; }
-      t.el.style.transform = `translate3d(${(t.x - ts / 2).toFixed(1)}px,${(t.y - ts / 2).toFixed(1)}px,0)`;
+      /* in the row an element is smaller: it shrinks in the same transform, around its centre (the CSS scale property would scale
+         the move too) */
+      const goal = bonded.includes(t.s) && !(drag && drag.t === t && drag.moved) ? 1 : 1 / sc;
+      t.k = RM ? goal : t.k + (goal - t.k) * (1 - Math.exp(-dt * 13));
+      t.el.style.transform = `translate3d(${(t.x - tb / 2).toFixed(1)}px,${(t.y - tb / 2).toFixed(1)}px,0) scale(${t.k.toFixed(4)})`;
     });
   };
-  layout(); render();
+  layout(); render(false);
   let awake = false;
-  const io = new IntersectionObserver(([e]) => {
+  /* (the last notice of the batch: two can arrive together after a jump, and with only the first the tiles never left the corner) */
+  const io = new IntersectionObserver((es) => {
+    const e = es[es.length - 1];
     if (e.isIntersecting && !awake) { awake = true; last = 0; raf = requestAnimationFrame(step); }
     else if (!e.isIntersecting && awake) { awake = false; cancelAnimationFrame(raf); raf = 0; }
   }, { rootMargin: '60px 0px' });
   io.observe(sec);
   addEventListener('resize', layout);
+  /* the lines wrap differently once the fonts arrive: the field takes their height again */
+  if (document.fonts) document.fonts.ready.then(() => { if (field.isConnected) place(); });
   /* the contact form is built after the sections start: carry what was already chosen once it exists */
   SET.clear();
   const later = requestAnimationFrame(() => F.forEach(carry));

@@ -11,7 +11,7 @@
 .sm-el i{font:400 max(9.5px,calc(var(--z) * .17))/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--frost)}
 .sm-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
 .sm-el.is-lit,.sm-row.is-on .sm-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62),inset 0 1px 0 rgba(232,240,255,.4)}
-.sm-el.is-lit i,.sm-row.is-on .sm-el i{color:#dbe7ff}
+.sm-el.is-lit i,.sm-row.is-on .sm-el i{color:#fff}
 /* the six: where the scroll is, and a way to go to any of them */
 .sm-rows{display:grid;gap:2px}
 .sm-row{display:flex;align-items:center;gap:14px;min-height:48px;padding:4px 12px 4px 4px;border:0;border-radius:14px;background:none;color:#8fa6d6;font:500 clamp(15px,1.1vw,18px)/1.2 var(--body);text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
@@ -259,7 +259,7 @@ addSection('tabla', 'tpl-sm', 4, (root) => {
   on(sec.querySelector('.sm-tap--prev'), 'click', () => go(kk - 1)); on(sec.querySelector('.sm-tap--next'), 'click', () => go(kk + 1));
   on(window, 'resize', layout);
   /* the first story starts its drawing when the section comes into view, not before */
-  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting && !live) { live = true; if (front) front.classList.add('is-cur'); } }, { threshold: .35 });
+  const io = new IntersectionObserver((es) => { const e = es[es.length - 1]; if (e.isIntersecting && !live) { live = true; if (front) front.classList.add('is-cur'); } }, { threshold: .35 });
   io.observe(stage);
   const stop = moment(sec, render); layout();
   return () => { stop(); off(); io.disconnect(); offs.forEach((fn) => fn()); };
