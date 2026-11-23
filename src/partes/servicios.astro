@@ -1,4 +1,5 @@
 ---
+import Pausa from '../components/Pausa.astro';
 /* The four services. The sentence of each one is real copy (docs/contenido.md), split where its animation (escenas.astro)
    changes step: while the picture tells a step, that stretch of the sentence lights up. The sentence is the script. */
 const SERV = [
@@ -10,7 +11,9 @@ const SERV = [
 ---
 <style is:global>
 /* Services on lab paper (leaving the hero, the paper is laid tile by tile: color.astro). The list on one side; on the other, one
-   large picture that tells the service in front, step by step, while the scroll moves it. Nothing is written under the picture:
+   large picture that tells the service in front, step by step. The page scrolls past it like past any other section (22 November
+   2026: it was a moment fixed on screen that the scroll moved); the picture tells the four by itself, with its pause, and a row
+   that is touched brings its service to the front. Nothing is written under the picture:
    the service's own sentence, in the list, lights up stretch by stretch with it. Choosing comes right after, in the formula
    (formula.astro) */
 .v-tab .f2{background-color:var(--lab);color:#0a1020}
@@ -41,6 +44,11 @@ const SERV = [
 .v-tab .f2-bit.on,.v-tab .f2-bit.done{color:#0a1020}
 .v-tab .f2-row.on .f2-fold{grid-template-rows:1fr}
 .v-tab .f2-still{display:none}
+/* a row is a way to its service: the whole row is touched, and its name is the name of the button */
+.v-tab .f2-row{position:relative}
+.v-tab .f2-go{position:absolute;inset:0;z-index:1;padding:0;border:0;border-radius:inherit;background:none;cursor:pointer}
+@media (hover:hover) and (pointer:fine){.v-tab .f2-row:not(.on):hover{background:rgba(255,255,255,.55)}}
+.v-tab .f2-pause{position:absolute;z-index:3;right:clamp(12px,1.6vw,22px);bottom:clamp(12px,1.6vw,22px)}
 
 /* the stage: the picture alone, with no board. Its cards float in a frame that opens onto the hero's light (encuadre.astro), which
    moves with the scroll. Its shadow is short and dies out inside the section: a longer one would be cut at the section's edge
@@ -52,6 +60,7 @@ const SERV = [
   .v-tab .f2-head .lead{display:none}
   .v-tab .f2-body{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:12px}
   .v-tab .f2-stage{order:-1;padding:10px;border-radius:22px}
+  .v-tab .f2-pause{right:6px;bottom:6px}
   .v-tab .f2-stage>.enc{border-radius:22px}
   .v-tab .f2-list{gap:2px}
   .v-tab .f2-row{gap:12px;padding:7px 10px}
@@ -61,6 +70,7 @@ const SERV = [
 }
 /* with reduced motion there is no stage: every row says its sentence beside its picture, complete and still */
 @media (prefers-reduced-motion:reduce){
+  .v-tab .f2-go{display:none}
   .v-tab .f2-stage{display:none}
   .v-tab .f2-body{grid-template-columns:1fr}
   .v-tab .f2-list{gap:12px}
@@ -76,7 +86,7 @@ const SERV = [
 </style>
 
 <template id="tpl2-tabla">
-<section class="moment f2" id="servicios" aria-labelledby="f2-h" style="--mh:340vh">
+<section class="f2" id="servicios" aria-labelledby="f2-h">
   <div class="moment__stick f2-stick is-flow">
     <div class="f2-head">
       <h2 class="h2" id="f2-h">Cuatro elementos. Tú eliges la fórmula.</h2>
@@ -87,24 +97,26 @@ const SERV = [
         {SERV.map((s, i) => (
           <li class={i ? 'f2-row' : 'f2-row on'}>
             <span class="f2-el" aria-hidden="true"><i>{s.z}</i><b>{s.k}</b></span>
-            <div class="f2-txt"><h3>{s.name}</h3><div class="f2-fold"><p>{s.bits.map((b, j) => <><span class="f2-bit">{b}</span>{j < s.bits.length - 1 ? ' ' : ''}</>)}</p></div></div>
+            <div class="f2-txt"><h3 id={`f2-n-${i}`}>{s.name}</h3><div class="f2-fold"><p>{s.bits.map((b, j) => <><span class="f2-bit">{b}</span>{j < s.bits.length - 1 ? ' ' : ''}</>)}</p></div></div>
             <canvas class="f2-still" role="img" aria-label={s.desc}></canvas>
+            <button class="f2-go" type="button" aria-labelledby={`f2-n-${i}`} aria-current={i ? 'false' : 'true'}></button>
           </li>
         ))}
       </ol>
-      <figure class="f2-stage"><canvas role="img" aria-label={SERV[0].desc}></canvas></figure>
+      <figure class="f2-stage"><canvas role="img" aria-label={SERV[0].desc}></canvas><Pausa clase="f2-pause pause--dark" /></figure>
     </div>
   </div>
 </section>
 </template>
 
 <script is:inline>
-/* Services: the scroll gives each service a stretch of the section. In its stretch the service is lit in the list and its
-   picture tells its sentence in steps (window.SCN, escenas.astro); the stretch of the sentence being told lights up, with a
-   marker that runs under it as the step goes on.
+/* Services: the telling gives each service a stretch of its time (showtime, comun.astro). In its stretch the service is lit in the
+   list and its picture tells its sentence in steps (window.SCN, escenas.astro); the stretch of the sentence being told lights up,
+   with a marker that runs under it as the step goes on. A row that is touched starts its service.
    With reduced motion each row draws its own picture, complete. */
 addSection('tabla', 'tpl2-tabla', 1, (root) => {
   const sec = root.querySelector('.f2'), rows = [...sec.querySelectorAll('.f2-row')], cv = sec.querySelector('.f2-stage canvas');
+  const gos = rows.map((r) => r.querySelector('.f2-go'));
   const offEnc = RM ? null : Encuadre.put(sec.querySelector('.f2-stage'));
   const bits = rows.map((r) => [...r.querySelectorAll('.f2-bit')]);
   const lines = rows.map((r) => r.querySelector('.f2-fold p').textContent.trim());
@@ -115,22 +127,21 @@ addSection('tabla', 'tpl2-tabla', 1, (root) => {
     return () => removeEventListener('resize', draw);
   }
   const A0 = .05, SL = .225;
-  let P = 0, cur = -1, drawn = -1;
-  /* the stage is drawn from the scroll alone: only when the scroll has moved it and while it is on screen (the pictures do not
-     depend on time, so there is nothing to draw between two scrolls) */
+  let P = 0, cur = -1, was = -1, drawn = -1;
+  /* the stage is drawn from the point of the telling alone, and only while it is on screen */
   const frame = () => {
     const b = sec.getBoundingClientRect(); if (b.bottom < -40 || b.top > innerHeight + 40 || P === drawn) return;
     drawn = P;
     /* the first service arrives as a page that is loading (its window, its address bar and the shape of its parts), so the stage
-       is never an empty frame, and the first bit of scroll loads it: "Cargan rápido" is seen, not said (17 November 2026) */
+       is never an empty frame, and the first moments load it: "Cargan rápido" is seen, not said (17 November 2026) */
     const f = (P - A0) / SL, i = Math.max(0, Math.min(3, Math.floor(f))), u = clamp01(f - i), t0 = clamp01(u * 1.2), t = i === 0 ? .04 + .96 * t0 : t0;
     if (i !== cur) {
-      cur = i;
-      rows.forEach((r, j) => r.classList.toggle('on', j === i));
+      was = cur; cur = i;
+      rows.forEach((r, j) => { r.classList.toggle('on', j === i); gos[j].setAttribute('aria-current', j === i ? 'true' : 'false'); });
       cv.setAttribute('aria-label', lines[i]);
     }
-    /* the picture before fades while the next one starts to build */
-    const layers = []; if (i > 0 && u < .1) layers.push([i - 1, 1, 1 - easeOut(u / .1)]);
+    /* the picture that was in front (the one before, or the one a row was left for) fades while the next one starts to build */
+    const layers = []; if (was >= 0 && was !== i && u < .1) layers.push([was, 1, 1 - easeOut(u / .1)]);
     layers.push([i, t, 1]);
     window.SCN.paint(cv, layers, true);
     const S = window.SCN.STEPS[i]; let on = 0; S.forEach((a, j) => { if (t >= a) on = j; });
@@ -144,7 +155,10 @@ addSection('tabla', 'tpl2-tabla', 1, (root) => {
   const again = () => { drawn = -1; frame(); };
   addEventListener('resize', again);
   if (document.fonts) document.fonts.ready.then(again);
-  const stop = moment(sec, (p) => { P = p; frame(); });
-  return () => { stop(); removeEventListener('resize', again); if (offEnc) offEnc(); };
+  /* 26 seconds for the four: about six for each, with its picture finished for the last one of them */
+  const show = showtime('servicios', sec.querySelector('.f2-stage'), sec.querySelector('.f2-pause'), (p) => { P = p; frame(); }, { dur: 26 });
+  const pick = gos.map((g, j) => () => show.go(A0 + j * SL + .001));
+  gos.forEach((g, j) => g.addEventListener('click', pick[j]));
+  return () => { show.cleanup(); gos.forEach((g, j) => g.removeEventListener('click', pick[j])); removeEventListener('resize', again); if (offEnc) offEnc(); };
 });
 </script>

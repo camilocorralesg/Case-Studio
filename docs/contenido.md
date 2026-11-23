@@ -36,7 +36,7 @@ Ca (20) y Se (34) son los números reales del calcio y el selenio. Cv es el elem
 | Cierre | El elemento que falta es tu marca. | Junto al Tú, en la tabla: "119 · Tu marca" (el 119 es el primer elemento que todavía no existe: la tabla llega hasta el 118). |
 | Contacto | Hablemos de tu proyecto | Marca lo que necesitas y te escribimos con los siguientes pasos. |
 
-Botones: "Empezar mi proyecto" (el principal, lleva a Contacto), "Ver proyectos", "Armar mi fórmula" (lleva a la Fórmula), "Pedir esta fórmula" (el de la Fórmula: lleva a Contacto con lo que muestra), "Enviar solicitud", "Ver proyecto" (abre el detalle del sitio al frente de la rueda), "Visitar sitio", "Ver en Instagram".
+Botones: "Empezar mi proyecto" (el principal, lleva a Contacto), "Ver proyectos", "Armar mi fórmula" (lleva a la Fórmula), "Pedir esta fórmula" (el de la Fórmula: lleva a Contacto con lo que muestra), "Enviar por WhatsApp", "Ver proyecto" (abre el detalle del sitio al frente de la rueda), "Visitar sitio", "Ver en Instagram".
 
 El detalle de un proyecto muestra la primera frase de su texto (recortada, no reescrita), sector, lugar y tipo de sitio, y "Lo que construimos" plegado. El de una marca, la primera frase de su texto, "Community management y contenido" y "Lo que hicimos" plegado.
 
@@ -211,14 +211,14 @@ Precios, tiempos, propiedad del sitio y rondas de cambios no están: esperan las
 
 El visitante marca lo que necesita en vez de describirlo. "¿Qué necesitas?": los cuatro servicios, cada uno con su elemento (Sw Sitios web, Ti Tiendas en línea, Rs Redes sociales, Ma Marca). Lo que unió en la Fórmula llega ya marcado.
 
-Después, en una sola barra: Nombre, Correo o WhatsApp y "Enviar solicitud".
+Después, en una sola barra: Nombre, Correo o WhatsApp y "Enviar por WhatsApp".
 
 Si falta algo, dice lo primero que falta: "Elige al menos una opción de lo que necesitas." · "Escribe tu nombre para saber a quién responder." · "Deja un correo o un WhatsApp para responderte."
 
-**Todavía no envía**: al enviar dice "Listo, [nombre]. Pediste: [servicios]. En este prototipo la solicitud todavía no se envía."
+**Envía al WhatsApp del estudio** (23 de noviembre de 2026): abre WhatsApp con "Hola, CaSe Studio. Soy [nombre] y quiero empezar mi proyecto. Necesito: [servicios]. Pueden responderme a [contacto]." y el visitante lo envía. En la página dice "Listo, [nombre]. Se abrió WhatsApp con tu solicitud: envíala desde allí y te respondemos." con un enlace "Abrir WhatsApp" por si no se abrió.
 
-## Datos de muestra que hay que reemplazar
+## Datos de contacto
 
-- Correo: `hola@casestudio.example`
-- WhatsApp: no hay
+- WhatsApp: +57 310 872 3020 (del usuario, 23 de noviembre de 2026). Ahí llegan las solicitudes del formulario.
+- Correo: falta; el usuario lo va a dar.
 - Redes del estudio: no hay

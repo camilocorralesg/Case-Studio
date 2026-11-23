@@ -1,4 +1,5 @@
 ---
+import Pausa from '../components/Pausa.astro';
 /* which brands have a capture of their real Instagram profile (herramientas/perfiles.py leaves them in public/assets/ig) */
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -7,10 +8,13 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
   .filter((h) => existsSync(join(IG, `${h}.webp`)) && existsSync(join(IG, `${h}-en.webp`)));
 ---
 <style is:global>
-/* ===== Brands whose social media the team has run: the account itself. A phone shows each brand's real Instagram profile and the
-   scroll goes from one to the next; the phone stands in a frame that opens onto the hero's light (encuadre.astro). Beside it, the
-   six, with the one on the phone lit; touching one brings its profile to the phone. There is no detail to open ===== */
-.mr{background-color:var(--night);color:#fff}
+/* ===== Brands whose social media the team has run: the account itself. A phone shows each brand's real Instagram profile and goes
+   from one to the next by itself, as if it were scrolled from one account to the other (22 November 2026: the scroll of the page did
+   it, in a section fixed on screen; now the page scrolls past it). The phone stands in a frame that opens onto the hero's light
+   (encuadre.astro). Beside it, the six, with the one on the phone lit; touching one brings its profile to the phone. There is no
+   detail to open ===== */
+.mr{position:relative;background-color:var(--night);color:#fff}
+.mr-pause{position:absolute;z-index:3;right:20px;bottom:20px}
 .mr :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 .mr-stick{--pt:clamp(76px,11vh,108px);--pb:clamp(24px,4.4vh,48px);--fh:min(calc(100svh - var(--pt) - var(--pb)),800px);display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);align-items:center;gap:clamp(24px,4vw,72px);padding:var(--pt) var(--gutter) var(--pb)}
 .mr-side{display:grid;gap:clamp(16px,3.4vh,36px);min-width:0}
@@ -84,6 +88,7 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
   .mr-cap{grid-row:3;display:grid;gap:3px;min-height:58px;margin:0;align-content:start}
   .mr-cap b{font-size:16px;font-weight:600;letter-spacing:-.015em}
   .mr-cap span{font-size:13.5px;line-height:1.4;color:#c9d3ea}
+  .mr-pause{right:12px;bottom:12px}
   .mr-screen::before{top:7px;height:17px}
   .mr-prof{padding-top:28px}
   .mr-list{grid-row:4;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
@@ -103,13 +108,13 @@ const SHOTS = ['weedhoney.co', 'agilcash.co', 'lamigueria', 'speedocolombia', 'o
 .mr.is-still .mr-nets{display:none}
 </style>
 
-<template id="tpl-br"><section class="moment mr" id="marcas" aria-labelledby="mr-h" style="--mh:300vh"><div class="moment__stick mr-stick is-flow">
+<template id="tpl-br"><section class="mr" id="marcas" aria-labelledby="mr-h"><div class="moment__stick mr-stick is-flow">
   <div class="mr-side">
     <div class="mr-head"><h2 class="h2" id="mr-h">Marcas con las que hemos trabajado en redes</h2><p class="lead">Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.</p></div>
     <p class="mr-cap" aria-hidden="true"><b></b><span></span></p>
     <ol class="mr-list"></ol>
   </div>
-  <div class="mr-stage"><div class="mr-phone" aria-hidden="true"><div class="mr-screen"><div class="mr-feed"></div></div></div></div>
+  <div class="mr-stage"><div class="mr-phone" aria-hidden="true"><div class="mr-screen"><div class="mr-feed"></div></div></div><Pausa clase="mr-pause pause--dark" /></div>
 </div></section></template>
 
 <script is:inline define:vars={{ SHOTS }}>
@@ -140,12 +145,12 @@ addSection('tabla', 'tpl-br', 2.5, (root) => {
   feed.innerHTML = B.map((b, i) => (shot(b) ? `<span class="mr-prof" style="display:block"><img src="${shot(b)}" srcset="${shot(b).replace('.webp', '-480.webp')} 480w, ${shot(b)} 780w" sizes="(max-width:860px) 240px, 320px" width="780" height="1584" alt="" loading="lazy" decoding="async"></span>` : drawn(b, i))).join('');
   const rows = [...list.querySelectorAll('.mr-row')], cap = sec.querySelector('.mr-cap');
   if (RM) { sec.classList.add('is-still'); return () => {}; }
-  /* where in the scroll each profile rests on the phone, and the way there */
+  /* where in the telling each profile rests on the phone; a row glides the phone to its profile */
   const at = (j) => .05 + Math.min(N - 1, j + .05) / (N - 1) * .9;
-  rows.forEach((r, j) => on(r, 'click', () => scrollTo({ top: sec.getBoundingClientRect().top + scrollY + at(j) * (sec.offsetHeight - innerHeight), behavior: 'smooth' })));
+  rows.forEach((r, j) => on(r, 'click', () => show.go(at(j), 900)));
   let k = 0;
   const offEnc = Encuadre.put(sec.querySelector('.mr-stage'), 'y');
-  /* the scroll holds on each profile and glides to the next, as if the phone were scrolled from one account to the other */
+  /* the telling holds on each profile and glides to the next, as if the phone were scrolled from one account to the other */
   let H = 0, last = 0;
   /* (on a phone the name and the line of the brand on the phone go under the frame: there the rows are only elements) */
   const mark = (j) => { if (j === k && rows[j].classList.contains('is-on')) return; k = j; rows.forEach((r, n) => r.classList.toggle('is-on', n === k)); cap.firstElementChild.textContent = B[k].name; cap.lastElementChild.textContent = B[k].tag; };
@@ -157,7 +162,8 @@ addSection('tabla', 'tpl-br', 2.5, (root) => {
   };
   const layout = () => { H = screen.clientHeight; sec.style.setProperty('--sh', `${H}px`); render(last); };
   layout(); on(window, 'resize', layout);
-  const stop = moment(sec, render);
-  return () => { stop(); offEnc(); offs.forEach((f) => f()); };
+  /* 22 seconds for the six, once */
+  const show = showtime('marcas', sec.querySelector('.mr-stage'), sec.querySelector('.mr-pause'), render, { dur: 22 });
+  return () => { show.cleanup(); offEnc(); offs.forEach((f) => f()); };
 });
 </script>

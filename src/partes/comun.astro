@@ -76,6 +76,51 @@ function runner(btn, area, play, stop) {
     }
   };
 }
+/* A section that tells itself in time (22 November 2026). Servicios, Marcas and Redes were moments fixed on screen that the scroll
+   moved; the page now scrolls past them like past any other section, and the same drawing, from 0 to 1, is moved by the clock.
+   It starts when a good part of its area is on screen and rests when the area is gone or the tab is hidden; its button pauses it;
+   go(v) sends it to a point, at once or gliding there in ms, and it plays on from it. o.dur is the seconds from 0 to 1. It is
+   told once: at the end it rests there and its button goes, until a row sends it somewhere again (no carousel that never stops).
+   With reduced motion nobody calls this: those sections are drawn still.
+   window.SHOWS[id].seek(v) leaves it paused at a point: that is how the tools take a picture of a moment of it */
+function showtime(id, area, btn, render, o) {
+  let p = 0, raf = 0, last = 0, way = null, user = false, vis = false;
+  const over = () => p >= 1 && !way;
+  const frame = (now) => {
+    raf = 0;
+    const dt = Math.min(50, now - last) / 1000; last = now;
+    if (way) { const k = clamp01((now - way.t0) / way.ms); p = lerp(way.a, way.b, easeIO(k)); if (k >= 1) way = null; }
+    else p = Math.min(1, p + dt / o.dur);
+    render(p);
+    if (btn) btn.hidden = over();
+    sync();
+  };
+  const sync = () => {
+    const want = !user && vis && !document.hidden && !over();
+    if (want && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+    else if (!want && raf) { cancelAnimationFrame(raf); raf = 0; }
+  };
+  const label = () => { if (!btn) return; btn.dataset.paused = user ? '1' : ''; btn.setAttribute('aria-label', user ? 'Reanudar animación' : 'Pausar animación'); };
+  const toggle = () => { user = !user; label(); sync(); };
+  if (btn) btn.addEventListener('click', toggle);
+  const io = new IntersectionObserver((es) => { const e = es[es.length - 1]; vis = e.isIntersecting && (vis || e.intersectionRatio >= .4); sync(); }, { threshold: [0, .4] });
+  io.observe(area);
+  document.addEventListener('visibilitychange', sync);
+  render(0);
+  const api = {
+    go(v, ms) {
+      v = clamp01(v);
+      if (ms) way = { a: p, b: v, t0: performance.now(), ms }; else { way = null; p = v; render(p); }
+      if (user) { user = false; label(); }
+      if (btn) btn.hidden = false;
+      sync();
+    },
+    seek(v) { user = true; label(); way = null; p = clamp01(v); render(p); sync(); },
+    cleanup() { if (btn) btn.removeEventListener('click', toggle); io.disconnect(); document.removeEventListener('visibilitychange', sync); cancelAnimationFrame(raf); raf = 0; delete window.SHOWS[id]; }
+  };
+  (window.SHOWS = window.SHOWS || {})[id] = api;
+  return api;
+}
 /* jump to a point inside a scroll moment (used by "link to scroll" lists) */
 /* service buttons that pre-fill the contact message */
 

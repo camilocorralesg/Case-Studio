@@ -311,6 +311,8 @@ VARIANTS.push({
       ctx.fillStyle = fg; ctx.fillRect(0, H * .8, W, H * .2);
     };
     const cta = stick.querySelector('.nav__cta');
+    /* it arrives away (Nav.astro), so it does not flash before the headline; with reduced motion the hero does not move and it stays */
+    if (cta && RM) cta.classList.remove('is-away');
     const d = drive({
       area: stick, btn: stick.querySelector('.hx__pause'), sec, frame,
       scroll: (p) => { copyOut(copy, say, p, .64, .86); if (cta && !RM) cta.classList.toggle('is-away', p < .32); }

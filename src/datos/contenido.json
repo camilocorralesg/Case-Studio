@@ -1,0 +1,448 @@
+{
+  "hero": {
+    "titular": "Todos los elementos de tu marca en internet.",
+    "apoyo": "Sitio web, tienda, redes y marca, hechos por el mismo equipo.",
+    "frase": "Juntamos lo que tu marca necesita en un solo equipo."
+  },
+  "servicios": {
+    "titular": "Cuatro elementos. Tú eliges la fórmula.",
+    "apoyo": "Puedes empezar con uno y sumar los demás cuando tu negocio los pida.",
+    "lista": [
+      {
+        "simbolo": "Sw",
+        "nombre": "Sitios web",
+        "texto": "Cargan rápido, se leen bien en el celular y llevan a tu cliente a escribirte."
+      },
+      {
+        "simbolo": "Ti",
+        "nombre": "Tiendas en línea",
+        "texto": "Catálogo, carrito y pagos conectados con tu inventario."
+      },
+      {
+        "simbolo": "Rs",
+        "nombre": "Redes sociales",
+        "texto": "Calendario del mes, fotos, videos y textos listos para publicar."
+      },
+      {
+        "simbolo": "Ma",
+        "nombre": "Marca",
+        "texto": "Logo, colores y tipografías con una guía corta para usarlos."
+      }
+    ]
+  },
+  "formula": {
+    "titular": "Arma tu fórmula.",
+    "apoyo": "Toca los elementos que tu marca necesita o arrástralos a la fórmula."
+  },
+  "rediseno": {
+    "titular": "¿Ya tienes un sitio? Lo rediseñamos para que diga qué vendes y cómo pedirlo.",
+    "apoyo": "Conservamos lo que funciona y rediseñamos el resto."
+  },
+  "proyectos": {
+    "titular": "Proyectos",
+    "lista": [
+      {
+        "id": "duches",
+        "simbolo": "Ld",
+        "nombre": "Los Duches",
+        "tipo": "Menú y pedidos en línea",
+        "url": "https://losduches.com/",
+        "texto": "Sitio para un restaurante de hamburguesas, sánduches de autor y papas cargadas en Laureles. El cliente arma su pedido en la web y lo envía listo por WhatsApp, a domicilio o para recoger.",
+        "datos": [
+          "Restaurantes",
+          "Laureles, Medellín",
+          "Menú + pedidos",
+          "Español"
+        ],
+        "hecho": [
+          "Menú digital con hamburguesas, Duches y papas cargadas",
+          "Armado del pedido directamente en la web",
+          "Envío del pedido listo por WhatsApp",
+          "Opciones de domicilio o para recoger"
+        ]
+      },
+      {
+        "id": "neuralnet",
+        "simbolo": "Nn",
+        "nombre": "NeuralNet",
+        "tipo": "Sitio corporativo de inteligencia artificial",
+        "url": "https://www.neuralnet.com.co/",
+        "texto": "Sitio del ecosistema NeuralNet, que reúne sus dos líneas de inteligencia artificial para empresas: NeuralBI y NeuralFin.",
+        "datos": [
+          "Inteligencia artificial",
+          "Colombia",
+          "Sitio corporativo"
+        ],
+        "hecho": [
+          "Portada con texto en movimiento",
+          "Entrada a las dos líneas del grupo: NeuralBI y NeuralFin",
+          "Selector de idioma"
+        ]
+      },
+      {
+        "id": "neuralbi",
+        "simbolo": "Nb",
+        "nombre": "NeuralBI",
+        "tipo": "Sitio corporativo bilingüe",
+        "url": "https://www.neuralnet.com.co/NeuralBI",
+        "texto": "Sitio corporativo bilingüe para una firma que construye tableros de Power BI, apps a medida y agentes de IA para empresas. El reto era explicar servicios muy técnicos de forma clara y verse a la altura de clientes corporativos.",
+        "datos": [
+          "Consultoría tecnológica",
+          "Colombia · clientes internacionales",
+          "Sitio corporativo / B2B",
+          "Español e inglés"
+        ],
+        "hecho": [
+          "Diseño oscuro y tecnológico con animaciones que explican cada servicio",
+          "Secciones por producto: Power BI, Power Apps, Power Automate y Copilot Studio",
+          "Proceso de trabajo en tres fases y soluciones por industria",
+          "Tablero de ejemplo interactivo y preguntas frecuentes",
+          "Formulario para agendar una auditoría"
+        ]
+      },
+      {
+        "id": "akua",
+        "simbolo": "Ak",
+        "nombre": "AKUA Residencia",
+        "tipo": "Landing de proyecto inmobiliario",
+        "url": "https://akua-apartamentos.vercel.app/",
+        "texto": "Página de ventas para un proyecto de vivienda y comercio en Medellín. Todo está pensado para captar compradores e inversionistas: tipologías con precios, galería de renders y formularios de cotización.",
+        "datos": [
+          "Finca raíz",
+          "La Pilarica, Medellín",
+          "Landing de ventas",
+          "Español"
+        ],
+        "hecho": [
+          "Formulario de cotización visible desde la primera pantalla",
+          "Comparador de apartamentos tipo A y B con áreas y precios",
+          "Galería de 14 renders interiores en pantalla completa",
+          "Mapa con sitios cercanos y argumentos de inversión",
+          "Sección de locales comerciales con disponibilidad"
+        ]
+      },
+      {
+        "id": "weedhoney",
+        "simbolo": "Wh",
+        "nombre": "Weed Honey",
+        "tipo": "Sitio de marca y tienda",
+        "url": "https://www.weedhoney.co/",
+        "texto": "Sitio para una marca de bebidas funcionales con CBD. La idea era crear una experiencia divertida y llamativa que presentara cada sabor como un producto propio y permitiera pedir por paquetes.",
+        "datos": [
+          "Bebidas",
+          "Medellín",
+          "Sitio de marca + tienda",
+          "Español"
+        ],
+        "hecho": [
+          "Portada animada con la identidad de la marca",
+          "Presentación de los tres sabores con sus beneficios",
+          "Selector de sabor y paquetes de 6, 12 o 24 latas con carrito",
+          "Tabla nutricional e ingredientes por producto",
+          "Información legal y de licencias visible"
+        ]
+      },
+      {
+        "id": "mimarte",
+        "simbolo": "Mi",
+        "nombre": "Mimarte",
+        "tipo": "Tienda en línea de jabones artesanales",
+        "url": "https://mimarte.com.co/",
+        "texto": "Tienda virtual para una marca de jabones artesanales hechos en frío. Buscábamos una experiencia cálida y sensorial que transmitiera lo natural del producto y facilitara comprar y pedir por WhatsApp.",
+        "datos": [
+          "Cuidado personal",
+          "Medellín",
+          "E-commerce",
+          "Español"
+        ],
+        "hecho": [
+          "Catálogo con filtros por categoría, favoritos y carrito de compras",
+          "Diagnóstico de piel que recomienda la barra ideal",
+          "Formulario para diseñar un jabón a la medida, enviado por WhatsApp",
+          "Sección de bodas, eventos y regalos corporativos"
+        ]
+      }
+    ]
+  },
+  "marcas": {
+    "titular": "Marcas con las que hemos trabajado en redes",
+    "apoyo": "Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok.",
+    "lista": [
+      {
+        "simbolo": "Wh",
+        "nombre": "Weed Honey",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@weedhoney.co",
+            "url": "https://www.instagram.com/weedhoney.co/"
+          },
+          {
+            "red": "TikTok",
+            "cuenta": "@weedhoney.co",
+            "url": "https://www.tiktok.com/@weedhoney.co"
+          }
+        ],
+        "frase": "Bebidas con CBD con una voz fresca y relajada, alineada con su sitio web.",
+        "texto": "Llevamos la identidad que diseñamos para su sitio web a Instagram y TikTok, para que redes y tienda hablaran el mismo idioma y vendieran juntas.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram",
+          "Contenido para TikTok",
+          "Coherencia visual entre redes y sitio web"
+        ]
+      },
+      {
+        "simbolo": "Ag",
+        "nombre": "Agilcash",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@agilcash.co",
+            "url": "https://www.instagram.com/agilcash.co/"
+          },
+          {
+            "red": "TikTok",
+            "cuenta": "@agilcash.co",
+            "url": "https://www.tiktok.com/@agilcash.co"
+          }
+        ],
+        "frase": "Una plataforma para pasar dólares digitales a pesos, explicada de forma clara y cercana.",
+        "texto": "Agilcash convierte dólares digitales a pesos colombianos. Nuestro reto fue hacer que un tema financiero se entendiera fácil y generara confianza en Instagram y TikTok.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram",
+          "Contenido para TikTok"
+        ]
+      },
+      {
+        "simbolo": "Lm",
+        "nombre": "La Miguería",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@lamigueria",
+            "url": "https://www.instagram.com/lamigueria/"
+          }
+        ],
+        "frase": "Una panadería con una comunidad de más de 280 mil seguidores en Instagram.",
+        "texto": "Acompañamos a La Miguería en Instagram, donde su comunidad supera los 280 mil seguidores, con contenido que antoja y conversaciones que no se quedan sin respuesta.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram"
+        ]
+      },
+      {
+        "simbolo": "Sp",
+        "nombre": "Speedo Colombia",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@speedocolombia",
+            "url": "https://www.instagram.com/speedocolombia/"
+          }
+        ],
+        "frase": "La marca de natación en el país, con más de 70 mil seguidores en Instagram.",
+        "texto": "Trabajamos con Speedo Colombia, la cuenta local de la marca de trajes de baño y accesorios de natación, cuidando una comunidad de más de 70 mil seguidores en Instagram.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram"
+        ]
+      },
+      {
+        "simbolo": "O'",
+        "nombre": "O'Neill Colombia",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@oneillcolombia",
+            "url": "https://www.instagram.com/oneillcolombia/"
+          }
+        ],
+        "frase": "Ropa de surf y playa con tienda en línea y envíos a toda Colombia.",
+        "texto": "Para O'Neill Colombia, la marca de ropa de surf y playa, trabajamos en Instagram para conectar el espíritu de la marca con su tienda en línea.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram"
+        ]
+      },
+      {
+        "simbolo": "Ea",
+        "nombre": "Graduados EAFIT",
+        "redes": [
+          {
+            "red": "Instagram",
+            "cuenta": "@graduadoseafit",
+            "url": "https://www.instagram.com/graduadoseafit/"
+          }
+        ],
+        "frase": "El canal de una comunidad de más de 70.000 egresados de la universidad.",
+        "texto": "Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.",
+        "hecho": [
+          "Gestión de comentarios y mensajes",
+          "Contenido para Instagram"
+        ]
+      }
+    ]
+  },
+  "proceso": {
+    "titular": "Así trabajamos contigo",
+    "lista": [
+      {
+        "simbolo": "Cn",
+        "nombre": "Conversamos",
+        "corto": "Tu negocio y tus clientes",
+        "texto": "Entendemos tu negocio, tus clientes y qué debe lograr la web."
+      },
+      {
+        "simbolo": "Di",
+        "nombre": "Diseñamos",
+        "corto": "Estilo y estructura",
+        "texto": "Proponemos el estilo y la estructura antes de programar."
+      },
+      {
+        "simbolo": "Cs",
+        "nombre": "Construimos",
+        "corto": "Rápido y adaptado a celulares",
+        "texto": "Desarrollamos un sitio rápido y adaptado a celulares."
+      },
+      {
+        "simbolo": "La",
+        "nombre": "Lanzamos",
+        "corto": "Seguimos contigo",
+        "texto": "Publicamos, te enseñamos a usarlo y seguimos contigo."
+      }
+    ]
+  },
+  "redes": {
+    "titular": "Manejo de redes sociales",
+    "apoyo": "Lo que hacemos en tus redes, en seis historias.",
+    "lista": [
+      {
+        "nombre": "Estrategia y calendario",
+        "texto": "Definimos contigo los temas, los formatos y las fechas del mes.",
+        "plus": false
+      },
+      {
+        "nombre": "Fotos y videos",
+        "texto": "Producimos el contenido: sesiones de fotos, reels y piezas gráficas.",
+        "plus": false
+      },
+      {
+        "nombre": "Motion graphics",
+        "texto": "Animamos tus ideas en reels y piezas con movimiento, hechas por nosotros.",
+        "plus": true
+      },
+      {
+        "nombre": "Contenido con IA",
+        "texto": "Usamos inteligencia artificial para producir más piezas en el estilo de tu marca.",
+        "plus": true
+      },
+      {
+        "nombre": "Community management",
+        "texto": "Publicamos, respondemos comentarios, mensajes y reseñas, y cuidamos el tono de tu marca.",
+        "plus": false
+      },
+      {
+        "nombre": "Publicación",
+        "texto": "Programamos cada pieza con su fecha y la publicamos en tus redes.",
+        "plus": false
+      }
+    ]
+  },
+  "preguntas": {
+    "titular": "Preguntas",
+    "lista": [
+      {
+        "simbolo": "Sv",
+        "pregunta": "¿Qué hacen exactamente?",
+        "respuesta": [
+          "Cuatro cosas",
+          "Sitios web, tiendas en línea, redes sociales y marca",
+          "Todo hecho por el mismo equipo"
+        ]
+      },
+      {
+        "simbolo": "Fm",
+        "pregunta": "¿Puedo empezar con una sola cosa?",
+        "respuesta": [
+          "Sí",
+          "Puedes empezar con uno de los cuatro",
+          "Y sumar los demás cuando tu negocio los pida"
+        ]
+      },
+      {
+        "simbolo": "Pc",
+        "pregunta": "¿Cómo trabajan?",
+        "respuesta": [
+          "En cuatro pasos",
+          "Conversamos: entendemos tu negocio, tus clientes y qué debe lograr la web",
+          "Diseñamos: te proponemos el estilo y la estructura antes de programar",
+          "Construimos un sitio rápido y adaptado a celulares",
+          "Y lanzamos: lo publicamos, te enseñamos a usarlo y seguimos contigo"
+        ]
+      },
+      {
+        "simbolo": "Rd",
+        "pregunta": "Ya tengo un sitio. ¿Lo pueden mejorar?",
+        "respuesta": [
+          "Sí, lo rediseñamos",
+          "Conservamos lo que funciona y rediseñamos el resto",
+          "Para que diga qué vendes y cómo pedirlo"
+        ]
+      },
+      {
+        "simbolo": "Rs",
+        "pregunta": "¿Qué incluye el manejo de redes?",
+        "respuesta": [
+          "La estrategia y el calendario del mes",
+          "Fotos, videos y piezas gráficas",
+          "Motion graphics y contenido con IA, que son nuestro plus",
+          "Y el community management: publicamos y respondemos comentarios, mensajes y reseñas"
+        ]
+      },
+      {
+        "simbolo": "La",
+        "pregunta": "¿Puedo manejar el sitio yo después?",
+        "respuesta": [
+          "Sí",
+          "Cuando lo publicamos, te enseñamos a usarlo",
+          "Y seguimos contigo"
+        ]
+      },
+      {
+        "simbolo": "Py",
+        "pregunta": "¿Con qué marcas han trabajado?",
+        "respuesta": [
+          "Hicimos los sitios de Los Duches, NeuralNet, NeuralBI, AKUA, Weed Honey y Mimarte",
+          "Y manejamos las redes de Weed Honey, Agilcash, La Miguería, Speedo Colombia, O'Neill Colombia y Graduados EAFIT"
+        ]
+      }
+    ]
+  },
+  "cierre": {
+    "titular": "El elemento que falta es tu marca."
+  },
+  "contacto": {
+    "titular": "Hablemos de tu proyecto",
+    "apoyo": "Marca lo que necesitas y te escribimos con los siguientes pasos.",
+    "opciones": [
+      {
+        "nombre": "Sitios web",
+        "simbolo": "Sw"
+      },
+      {
+        "nombre": "Tiendas en línea",
+        "simbolo": "Ti"
+      },
+      {
+        "nombre": "Redes sociales",
+        "simbolo": "Rs"
+      },
+      {
+        "nombre": "Marca",
+        "simbolo": "Ma"
+      }
+    ]
+  }
+}

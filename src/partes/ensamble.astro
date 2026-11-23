@@ -7,7 +7,7 @@ window.FINALE = (id, root, ct) => {
   offs.push(FORMS[id](ct));
   const ft = document.createElement('footer'); ft.className = 'ft ft--' + id; ft.innerHTML = window.FOOT[id]();
   root.append(ft);
-  ft.querySelector('.ft-top').addEventListener('click', () => scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }));
+  ft.querySelector('.ft-top').addEventListener('click', () => window.JUMP(0));
   if (window.FOOT_INIT && window.FOOT_INIT[id]) offs.push(window.FOOT_INIT[id](ft));
   return () => offs.forEach((f) => { if (typeof f === 'function') f(); });
 };

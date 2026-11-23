@@ -20,7 +20,7 @@ Cada sección vive en un archivo de `src/partes/`. Antes de dar un cambio por bu
 ```
 pip install -r herramientas/requirements.txt
 python -m playwright install chromium
-npm run revisar      # arma el sitio y corre las cinco revisiones
+npm run revisar      # arma el sitio y corre las seis revisiones
 ```
 
 `npm run build` deja el sitio listo para publicar en `dist/`.

@@ -24,6 +24,8 @@ Los estilos son globales (`is:global`): Astro los junta en un solo CSS, en el or
 
 Nada del contenido está escrito directamente en el `<body>`: está en plantillas, y `src/partes/arranque.astro` lo monta al cargar. Ahí también viven los enlaces internos: llevan el foco a su sección, y si la sección está a más de dos pantallas la página pasa por un velo de noche en lugar de recorrer el camino (`window.JUMP(y)`, que también usa el botón de volver arriba del pie en el celular). (Pasar cada sección a HTML que llegue ya escrito es el siguiente paso del stack: ver `docs/estado.md`.)
 
+La primera vez arma la página en dos tiempos (22 de noviembre de 2026): pone todas las secciones en su lugar y prepara solo el hero, el navegador pinta, y después prepara las demás de a pocas (unos 8 ms cada vez) para que la entrada del hero no las espere. Si no llega ningún cuadro (una pestaña abierta al fondo, un lector que corre los scripts sin dibujar), empieza a los 300 ms. Al terminar pone `window.MOUNTED = true` (las herramientas esperan eso) y quita `.is-booting` de `<html>`, que mientras tanto apaga las transiciones. Al cambiar de idioma (`REMOUNT`) lo hace todo de una vez, como antes.
+
 1. Clona la plantilla del hero (`tpl-tabla`, registrada con `VARIANTS.push` en `hero.astro`).
 2. Le agrega las secciones registradas con `addSection('tabla', plantilla, orden, init)`, de menor a mayor `orden`.
 3. Agrega el bloque de contacto (`tpl-contact`, en `arranque.astro`).
@@ -61,7 +63,9 @@ Cada una guarda la `FINALE` anterior, la llama y devuelve una limpieza que desha
 
 ## Un momento de scroll
 
-Casi todas las secciones son un **momento**: la sección es alta (`--mh`, por ejemplo `320vh`) y su contenido se queda pegado a la pantalla mientras el scroll la recorre. Fórmula (`#formula`) y Proyectos (`#proyectos`) no lo son, por decisión del usuario: son secciones normales de una pantalla (`.fx-in`, `.ru-in`, `min-height:100svh`) que el scroll pasa de largo. Las fichas de Fórmula solo responden a toques y arrastres; la rueda de Proyectos entra una vez cuando se ve (`is-pre` → `is-in`, con un `IntersectionObserver`) y después la mueve el visitante (arrastre, flechas, sus elementos).
+Cuatro secciones son un **momento**: el hero, Rediseño, Proceso y el Cierre. La sección es alta (`--mh`, por ejemplo `260vh`) y su contenido se queda pegado a la pantalla mientras el scroll la recorre. Las demás son secciones normales de una pantalla (22 de noviembre de 2026: el usuario pidió menos movimiento atado al scroll).
+
+Servicios, Marcas y Redes fueron momentos y ahora se cuentan solas: `showtime(id, área, botón, render, { dur })`, en `comun.astro`, le pasa a `render` un avance de 0 a 1 que mueve el reloj en vez del scroll. Empieza cuando el 40 % de su área está en pantalla, descansa cuando sale, su botón la pausa y `go(v, ms)` la lleva a un punto (una fila que se toca). Se cuenta una vez: al terminar se queda en su final y el botón se va, hasta que una fila la mande a otro punto. `window.SHOWS[id].seek(v)` la deja en pausa en un punto: así toman sus capturas las herramientas (`selector|avance` sigue sirviendo).
 
 ```html
 <section class="moment xx" style="--mh:320vh"><div class="moment__stick"> ... </div></section>
@@ -119,7 +123,7 @@ Para agregar un texto: escribirlo en español en la parte y agregar el par en `e
 
 ## Publicación
 
-El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`): arma con `npm run build` y sirve `dist/`, nada más. `.vercelignore` deja por fuera lo que no hace falta para armar (`herramientas/`, `archivo/`, `marca/`, `docs/`) y `engines` en `package.json` fija Node 24.
+El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`), en https://www.casestudio.com.co: arma con `npm run build` y sirve `dist/`, nada más. `site` en `astro.config.mjs` es ese dominio: de ahí salen la dirección canónica, `robots.txt`, `sitemap.xml`, `llms.txt` y `llms-full.txt` (`src/pages/*.ts`). Al armar, la hoja de estilos queda dentro de la página y los scripts se minifican (la integración `aligerar`, en `astro.config.mjs`, con terser y `toplevel: false`: los nombres que los scripts comparten no cambian). Las fuentes viajan con el armado (`@fontsource`). `.vercelignore` deja por fuera lo que no hace falta para armar (`herramientas/`, `archivo/`, `marca/`, `docs/`) y `engines` en `package.json` fija Node 24.
 
 `vercel.json` también manda estas cabeceras con cada respuesta:
 
@@ -134,6 +138,19 @@ El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`)
 Todavía no hay una política de contenido completa (`script-src`, `connect-src`): los scripts van escritos en la página y el formulario no envía. Se escribe cuando el formulario tenga a dónde enviar y el dominio sea el definitivo.
 
 El visor abre los sitios de los clientes en un marco aislado (`sandbox`, sin `allow-top-navigation`): corren, pero no pueden sacar al visitante de la página. El sitio no guarda nada en el navegador ni llama a un servidor, así que no usa llaves; si llega a usarlas van en las variables de entorno de Vercel, nunca en git (`.env` y `.vercel/` están en `.gitignore`).
+
+## Lo que leen los buscadores y los asistentes
+
+| Qué | Dónde | De dónde sale |
+|---|---|---|
+| Título, descripción, lugar | `src/datos/sitio.json` | A mano |
+| Lo que dicen las secciones | `src/datos/contenido.json` | `herramientas/contenido.py` lo copia de la página armada (`npm run contenido`); no se edita |
+| El contenido escrito en el HTML | `src/components/Plano.astro` | De `contenido.json`. Va primero en el `<body>`; con JavaScript no se ve (`.js .plano`) y `arranque.astro` lo quita |
+| Datos estructurados (schema.org) | `src/components/Datos.astro` | De los dos archivos: el estudio y sus servicios, la página, las preguntas, los proyectos y las marcas |
+| `llms.txt` y `llms-full.txt` | `src/datos/llms.ts` y `src/pages/` | De los dos archivos |
+| Imagen para compartir e iconos | `public/assets/og-case-studio.jpg`, `public/favicon.svg` y los PNG | `herramientas/compartir.py` |
+
+Sin correo, teléfono ni dirección mientras no haya unos reales. Los asistentes (GPTBot, ClaudeBot, PerplexityBot y los demás) están permitidos por nombre en `robots.txt`.
 
 ## Ayudas de trabajo que no son parte del sitio
 

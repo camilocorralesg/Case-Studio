@@ -9,16 +9,16 @@ Una página con once secciones, en español e inglés, toda con el concepto de l
 | # | Sección | Qué hace | Parte |
 |---|---|---|---|
 | 1 | Hero | La tabla periódica como un piso de casillas que se arma al entrar; en reposo se encienden elementos al azar. Al bajar, la cámara sube, la tabla se hunde y Ca y Se se juntan como el logo | `hero.astro` |
-| 2 | Servicios | Sobre papel claro, que se arma casilla a casilla al salir del hero. La lista de los cuatro a un lado; al otro, un cuadro grande con la animación del servicio que está al frente, que cuenta su frase en pasos | `servicios.astro`, `escenas.astro` |
+| 2 | Servicios | Sobre papel claro, que se arma casilla a casilla al salir del hero. La lista de los cuatro a un lado; al otro, un cuadro grande con la animación del servicio que está al frente, que cuenta su frase en pasos. Desde el 22 de noviembre de 2026 no se queda fija: se cuenta sola mientras está en pantalla (unos seis segundos por servicio), con su pausa, y tocar una fila trae su servicio | `servicios.astro`, `escenas.astro` |
 | 2b | Fórmula | Justo después, sobre el mismo papel (Con tu marca): la fórmula empieza siempre por Tú (119); los cuatro elementos esperan en una fila, cada uno con su lugar punteado, y al tocarlos o arrastrarlos caen a una bandeja y se funden con él, más grandes; debajo, lo que trae cada uno, con su frase de Servicios; "Pedir esta fórmula" lleva a Contacto con esas opciones marcadas | `formula.astro` |
 | 3 | Rediseño | El mismo negocio, una panadería, antes y después: se marcan los problemas del sitio genérico y cada uno se corrige con casillas azules que lo deshacen; el resto se va en una ola y queda el sitio rediseñado | `rediseno.astro` |
-| 4 | Proyectos | La Rueda: los seis sitios en una rueda en 3D sobre el piso de noche del hero, que se arrastra, se lanza y se mueve con sus elementos. "Ver proyecto" hace crecer la pantalla del frente hasta el detalle, donde el sitio real se abre en vivo con su historia al lado | `proyectos.astro`, `visor.astro` |
-| 5 | Marcas | Un teléfono, dentro de un encuadre con la luz del hero, muestra el perfil real de Instagram de cada marca y el scroll pasa de una a otra; al lado, las seis, con la del teléfono encendida; tocar una lleva el teléfono a su perfil. Las marcas no abren detalle | `marcas.astro` |
+| 4 | Proyectos | La Rueda: los seis sitios en una rueda en 3D sobre el piso de noche del hero, que se arrastra, se lanza y se mueve con sus elementos. "Ver proyecto" hace crecer la pantalla del frente hasta el detalle, donde el sitio real se abre en vivo con su historia al lado. El detalle no tiene barra arriba (22 de noviembre de 2026): dos casillas en la esquina, el ancho del sitio y salir | `proyectos.astro`, `visor.astro` |
+| 5 | Marcas | Un teléfono, dentro de un encuadre con la luz del hero, muestra el perfil real de Instagram de cada marca y pasa solo de una a otra, con su pausa (22 de noviembre de 2026: lo pasaba el scroll, en una sección fija); al lado, las seis, con la del teléfono encendida; tocar una lleva el teléfono a su perfil. Las marcas no abren detalle | `marcas.astro` |
 | 6 | Proceso | La Ruta, sobre papel claro (Lugares): una línea que el scroll dibuja lleva el elemento de "Tu marca" por cuatro estaciones; la ruta y el lugar punteado de cada una están desde el comienzo, y cada paso aparece, con su elemento encendido y su texto sobre el papel, solo cuando él llega; al final el Tú sale por el extremo de la línea | `proceso.astro` |
-| 7 | Redes | Historias: las seis partes del servicio como seis historias en un cubo que el scroll gira, dentro de un encuadre; cada una empieza su dibujo al quedar de frente; al lado, las seis, que llevan a cada historia | `redes.astro` |
+| 7 | Redes | Historias: las seis partes del servicio como seis historias en un cubo que gira solo, como pasan las historias, con su pausa (22 de noviembre de 2026: lo giraba el scroll, en una sección fija), dentro de un encuadre; cada una empieza su dibujo al quedar de frente; al lado, las seis, que llevan a cada historia | `redes.astro` |
 | 8 | Preguntas | Chat: las siete preguntas a un lado, cada una con el elemento de la parte del sitio que la responde, y un chat en un encuadre al otro. La pregunta que se toca entra al chat y CaSe responde en mensajes cortos, al ritmo de quien escribe; en el celular las preguntas van dentro del chat, como respuestas rápidas | `preguntas.astro` |
 | 9 | Cierre | Regreso, sobre azul: el logo se arma (Ca y Se, y Tú cae entre ellos) y vuelve a la tabla periódica, cada uno a su lugar real: Ca al 20, Se al 34 y Tú al 119, en un período 8 que se abre; después la cámara entra a ese período (Acercamiento): el Tú queda grande, con las casillas vecinas de fondo, y a su lado, en el período nuevo, "El elemento que falta es tu marca." y "Empezar mi proyecto": el último llamado antes del formulario | `cierre.astro` |
-| 10 | Contacto | Una línea, en una pantalla: los cuatro servicios como elementos para marcar y una sola barra con nombre, correo o WhatsApp y "Enviar solicitud". Lo que el visitante une en la Fórmula llega marcado | `contacto.astro` |
+| 10 | Contacto | Una línea, en una pantalla: los cuatro servicios como elementos para marcar y una sola barra con nombre, correo o WhatsApp y "Enviar por WhatsApp", que abre WhatsApp con la solicitud escrita para el +57 310 872 3020 (23 de noviembre de 2026). Lo que el visitante une en la Fórmula llega marcado | `contacto.astro` |
 | | Pie | Frente: la tabla periódica es el menú (las secciones y los servicios en sus casillas, Ca y Se en su lugar), con el contacto y la leyenda en su hueco; al llegar, la cámara la levanta de frente, y debajo el logo | `pie.astro` |
 
 Además: un menú fijo que marca la sección (una fila de casillas arriba; en el celular, "Menú" con la sección en la que vas, que abre una hoja con las siete secciones), cambio de idioma que conserva el lugar de lectura, cambios de color que se arman como mosaico, y versión quieta para quien pide menos movimiento.
@@ -826,13 +826,47 @@ El sitio se publica en Vercel como una sola aplicación de Astro (`vercel.json`,
 - **Arreglos**: salió de git `archivo/sitio-python/.impeccable/hook.cache.json` (una caché con una ruta del computador; sigue en el historial); `.gitignore` cubre esas cachés en cualquier carpeta, `.env` y `.vercel/`; y `vercel.json` manda cabeceras de seguridad (ver `docs/arquitectura.md`, "Publicación").
 - **Queda con el usuario**: el repositorio de GitHub es público, así que cualquiera ve `CLAUDE.md`, `docs/`, `archivo/` y `marca/`, con los nombres del equipo que se quitaron del sitio. Y el código de la página nombra claude.ai en un comentario y en la condición `LIVE` de `visor.astro`.
 
+### Rendimiento, scroll suave, buscadores y menos scroll fijo (22 de noviembre de 2026)
+
+El usuario trajo el informe de PageSpeed del sitio publicado (95 en rendimiento en celular: primera pintura y pintura más grande en 2,0 s, índice de velocidad 4,6 s; SEO 91) y pidió mejorarlo, sumar posicionamiento para buscadores y asistentes, scroll suave tipo Lenis, capturas nuevas de Weed Honey, el detalle sin la barra de arriba y, al final, menos movimiento atado al scroll.
+
+**Carga.** Medido con `herramientas/carga.py` (un Moto G Power con 4G lenta y el procesador cuatro veces más lento, alternando el armado de antes y el de ahora): la primera pintura pasó de unos 2,5 s a 1,4 s y la pintura más grande de unos 3,9 s a 2,0 s. Lo que cambió:
+- Las fuentes las sirve el sitio (antes Google Fonts: otra conexión y una hoja que frenaba la primera pintura); la de texto se pide por adelantado.
+- La hoja de estilos va dentro de la página (medido: 1,39 s contra 1,79 s con la hoja aparte).
+- El hero se pinta antes de preparar las otras diez secciones, que despiertan después, de a pocas. Antes todo se preparaba antes de la primera pintura: en un celular lento, más de un segundo de pantalla en blanco.
+- Los scripts se minifican al armar (de 218 a 138 KB; de paso los comentarios ya no viajan en la página).
+- Nada hace una transición hacia su primer estado al cargar, y el botón de la barra del hero ya no aparece un instante antes de esconderse.
+
+**Scroll suave** (Lenis, `suave.astro`): la rueda desliza la página y la deja asentarse. Dos números lo gobiernan, `LERP` (0,085) y `WHEEL` (0,9). El dedo en el celular y el movimiento reducido usan el scroll del navegador.
+
+**Buscadores y asistentes.** Dirección canónica, imagen para compartir (`public/assets/og-case-studio.jpg`, el hero de verdad), iconos y manifiesto, datos estructurados (el estudio y sus cuatro servicios, la página, las preguntas, los proyectos y las marcas), `robots.txt`, `sitemap.xml`, `llms.txt` y `llms-full.txt`. El contenido también llega escrito en el HTML para quien no corre JavaScript (los rastreadores de los asistentes no lo corren). El título quedó "CaSe Studio | Sitios web, tiendas, redes y marca en Medellín". Los dos enlaces del detalle que PageSpeed marcaba sin destino ya lo tienen o salieron con la barra.
+
+**El detalle de un proyecto** ya no tiene la barra de arriba; quedan dos casillas en la esquina (el ancho del sitio y salir). Salieron "volver a cargar" y "abrir en pestaña nueva": la segunda ya está en "Visitar sitio".
+
+**Weed Honey.** Su sitio cambió por completo. Tiras y póster nuevos: la portada "Soda con CBD", lo que trae cada lata, un sabor y la tienda. El sitio muestra un aviso arriba después de la verificación de edad; la herramienta lo esconde sin tocarlo.
+
+**Menos scroll fijo.** La página medía 28 pantallas de alto a 1440 y ahora 22. Servicios, Marcas y Redes pasan con el scroll normal y se cuentan solas (`showtime()`); siguen fijas el hero (2,5 pantallas), Rediseño (2,6), Proceso (2,4) y el Cierre (3).
+
+**Queda con el usuario:**
+- Mirar en vivo el scroll suave y las tres secciones que ahora corren solas: el ritmo no se juzga con capturas.
+- El formulario no envía y no hay correo ni WhatsApp reales: es lo que más pesa ahora que el sitio está publicado y se va a posicionar.
+- Si "el banner superior" que pidió quitar era otra cosa que la barra del detalle.
+- Si Rediseño (2,6 pantallas fijas) también pasa a scroll normal.
+- Confirmar los textos del proyecto Weed Honey frente a su sitio nuevo ("Tabla nutricional e ingredientes por producto" es el que no se pudo comprobar).
+- PageSpeed también lista, sin puntaje, una política de contenido completa, HSTS con subdominios, aislamiento de origen y Trusted Types: son decisiones de dominio y van con el envío del formulario.
+
+### El WhatsApp del estudio (23 de noviembre de 2026)
+
+El usuario dio el WhatsApp, +57 310 872 3020, y pidió que todo llegue allí. El formulario abre WhatsApp con la solicitud escrita (los servicios marcados, el nombre y cómo responder); el botón dice "Enviar por WhatsApp" para que el visitante sepa qué va a pasar. El número reemplaza al correo de muestra en el pie y está en los datos estructurados, el contenido sin JavaScript y `llms.txt`. En 127.0.0.1 el formulario no abre WhatsApp (las herramientas lo llenan).
+
 ## Pendiente del usuario
 
 - Decidir si el repositorio de GitHub sigue público o pasa a privado (Vercel publica igual desde uno privado).
+- El correo del estudio: va al pie, a los datos estructurados y a `llms.txt` cuando llegue.
 
 - Si se quieren preguntas de precios, tiempos, propiedad del sitio o rondas de cambios en Preguntas, dar sus respuestas.
 
-- Correo y WhatsApp reales (hoy: `hola@casestudio.example`, en el pie).
+- El correo del estudio (el WhatsApp ya está desde el 23 de noviembre de 2026).
 - Las cuentas de redes del propio estudio, para el pie.
 - Revisar el inglés. Una traducción para mirar con cuidado: "Nuestro plus" como "Our edge".
 - Cerrar el logo definitivo (`marca/`).

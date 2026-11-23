@@ -1,8 +1,9 @@
 <style is:global>
 /* ===== The detail: a project opens over the page, grown out of its screen in the wheel.
-   One bar on top: the element, the name and the address on the left; its tools and the way out on the right. Below it the site,
-   live, takes the stage over its own first screens (they hold the place while it loads), and its story stands beside it on a
-   lit panel, short; the site can take the whole width. Behind both, the table at night of the hero ===== */
+   The site, live, takes the stage over its own first screens (they hold the place while it loads), and its story stands beside
+   it on a lit panel, short; the site can take the whole width. Behind both, the table at night of the hero.
+   The bar that ran along the top went on 22 November 2026 (the user asked for it out): the element and the name are on the panel,
+   "Visitar sitio" opens the site in its own tab, and the two controls that are left float over the top corner ===== */
 html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
 .xs{position:fixed;inset:0;z-index:2147483000;color:#fff;color-scheme:dark}
 .xs[hidden]{display:none}
@@ -11,7 +12,7 @@ html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
 .xs.is-in .xs-bg{opacity:1;transition-duration:var(--d-move)}
 .xs-grid{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76'%3E%3Crect x='6.5' y='6.5' width='63' height='63' rx='11' fill='none' stroke='rgb(118,166,255)' stroke-opacity='.11'/%3E%3C/svg%3E") 0 0/76px 76px;-webkit-mask-image:radial-gradient(85% 85% at 26% 62%,#000 30%,transparent 78%);mask-image:radial-gradient(85% 85% at 26% 62%,#000 30%,transparent 78%)}
 .xs-light{position:absolute;inset:0;background:radial-gradient(55% 62% at 14% 92%,rgba(var(--glow-rgb),.34),rgba(var(--glow-rgb),0) 70%),radial-gradient(42% 52% at 96% 4%,rgba(var(--sky-rgb),.14),rgba(var(--sky-rgb),0) 70%),radial-gradient(130% 95% at 50% 50%,rgba(var(--night-rgb),0) 55%,rgba(var(--night-rgb),.74))}
-.xs-in{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr);gap:14px;height:100%;padding:max(14px,env(safe-area-inset-top,0px)) max(16px,var(--gutter),env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(16px,var(--gutter),env(safe-area-inset-left,0px))}
+.xs-in{position:relative;display:grid;grid-template-rows:minmax(0,1fr);height:100%;padding:max(14px,env(safe-area-inset-top,0px)) max(16px,var(--gutter),env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(16px,var(--gutter),env(safe-area-inset-left,0px))}
 
 /* an element lit from inside, as the hero draws them: a cobalt core, a sheen on top, an ice edge (the wheel of Proyectos uses it too) */
 .lit{position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;border-radius:14px;color:#fff;
@@ -20,16 +21,10 @@ html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
 .lit i{font:500 11px/1 var(--mono);font-style:normal;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:#fff}
 .lit b{font-family:var(--sym);font-weight:600;letter-spacing:-.045em;line-height:.8;color:#fff}
 
-/* the bar: a lit tile laid flat, with soft corners; its buttons are small tiles too */
-.xs-bar{display:flex;align-items:center;gap:12px;min-height:58px;padding:8px 8px 8px 9px;border-radius:16px;background:linear-gradient(180deg,rgba(160,196,255,.09),rgba(0,4,16,.16)),#0a1433;box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.22),inset 0 1px 0 rgba(220,232,255,.12)}
-.xs-addr{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
-.xs-mark{width:40px;height:40px;padding:4px 5px 5px;border-radius:10px}
-.xs-mark i{font-size:8.5px}
-.xs-mark b{font-size:18px}
-.xs-where{display:grid;gap:2px;min-width:0;line-height:1.2}
-.xs-where b{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.xs-where span{font-size:13px;color:#9fb3d9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.xs-tools{display:flex;align-items:center;gap:6px;flex:none}
+/* the way out and the width of the site: two small tiles over the top corner, on the panel; when the site takes the whole
+   width they are over its corner, so they are solid and read on any site */
+.xs-ctl{position:absolute;z-index:6;top:calc(max(14px,env(safe-area-inset-top,0px)) + 12px);right:calc(max(16px,var(--gutter),env(safe-area-inset-right,0px)) + 12px);display:flex;gap:6px;opacity:0;transition:opacity var(--d-state) ease}
+.xs.is-in .xs-ctl{opacity:1}
 .xs-tool{display:grid;place-items:center;flex:none;width:42px;height:42px;padding:0;border:0;border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.16);color:#fff;text-decoration:none;cursor:pointer;transition:background-color var(--d-hover) ease,transform var(--d-hover) var(--ease-out)}
 .xs-tool svg{width:16px;height:16px}
 /* each tool says what it does: its name, the same as its label, comes under it with the cursor or the focus */
@@ -39,7 +34,7 @@ html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
 .xs-tool:focus-visible::after{opacity:1;transform:none}
 .xs-tool:active{transform:scale(.94)}
 .xs-tool[aria-pressed="true"]{background:var(--cobalt-deep);box-shadow:inset 0 0 0 1px rgba(170,204,255,.6)}
-.xs-sep{flex:none;width:1px;height:24px;margin:0 4px;background:rgba(var(--edge-rgb),.22)}
+.xs-ctl .xs-wide{background:var(--cell);box-shadow:inset 0 0 0 1px rgba(var(--edge-rgb),.34)}
 .xs-close{background:#fff;color:var(--night);box-shadow:none}
 
 .xs-main{display:grid;grid-template-columns:minmax(0,1fr) clamp(320px,25vw,400px);gap:clamp(14px,1.4vw,22px);min-height:0;transition:grid-template-columns var(--d-move) var(--ease-io)}
@@ -108,48 +103,42 @@ html.xs-on{overflow:hidden;padding-right:var(--xs-sbw,0px)}
 
 /* the bar and the story come in after the site has grown; they leave first */
 @keyframes xsUp{from{opacity:0;transform:translate3d(0,14px,0)}}
-.xs.is-told :is(.xs-bar,.xs-panel){animation:xsUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 70ms + 150ms)}
+.xs.is-told .xs-panel{animation:xsUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 70ms + 150ms)}
 .xs.is-told .xs-panel-in>*{animation:xsUp var(--d-enter) var(--ease-out) both;animation-delay:calc(var(--k,0) * 45ms + 240ms)}
-.xs:not(.is-in) :is(.xs-bar,.xs-panel){opacity:0;transition:opacity var(--d-hover) ease}
+.xs:not(.is-in) .xs-panel{opacity:0;transition:opacity var(--d-hover) ease}
 .xs.is-swap :is(.xs-panel-in,.xs-view,.xs-addr){opacity:0;transition:opacity var(--d-hover) ease}
-@media (prefers-reduced-motion:reduce){.xs-bg,.xs-main,.xs-view .xs-live,.xs-view.is-live .xs-live{transition:none}.xs.is-told :is(.xs-bar,.xs-panel,.xs-panel-in>*){animation:none}}
+@media (prefers-reduced-motion:reduce){.xs-bg,.xs-main,.xs-view .xs-live,.xs-view.is-live .xs-live{transition:none}.xs.is-told :is(.xs-panel,.xs-panel-in>*){animation:none}}
 
 /* a tour fills its frame; the strip inside moves by itself */
 .tour{display:block;position:relative;overflow:hidden;background:#0b0c10}
 .tour>img{position:absolute;left:50%;top:0;height:calc(100% * var(--f,5));width:auto;max-width:none;transform:translate3d(-50%,0,0);will-change:transform}
 
-/* on a phone the detail is one sheet that scrolls: the bar stays on top, then the name, the site and its story */
+/* on a phone the detail is one sheet that scrolls: the name, the site and its story; the way out stays in its corner */
 @media (max-width:900px){
   .xs-in{display:block;overflow-y:auto;overscroll-behavior:contain;padding:0 0 max(32px,env(safe-area-inset-bottom,0px))}
-  .xs-bar{position:sticky;top:max(10px,env(safe-area-inset-top,0px));z-index:4;margin:10px 12px 0;min-height:54px}
   .xs-main{display:flex;flex-direction:column;gap:16px;padding:18px 16px 0}
   .xs-panel,.xs-panel-in{display:contents}
-  .xs-head{order:1;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px}
+  .xs-ctl{top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px))}
+  .xs-head{order:1;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding-right:50px}
   .xs-view{order:2;flex:none;height:min(72vh,640px)}
   /* on a phone the finger scrolls the site: no numbers over it, and the note sits on solid ground */
   .xs-ticks{display:none}
   .xs-note{background:#04091a}
   .xs-lead,.xs-chips,.xs-more,.xs-acts{order:3}
-  .xs-wide,.xs-sep{display:none}
+  .xs-wide{display:none}
   .xs-el{width:76px;height:76px;padding:8px 9px 10px;border-radius:15px}
   .xs-el b{font-size:36px}
   .xs.is-told .xs-panel-in>*{animation:none}
 }
 </style>
 
-<div class="xs" hidden role="dialog" aria-modal="true" aria-labelledby="xs-name">
+<div class="xs" hidden role="dialog" aria-modal="true" aria-labelledby="xs-name" data-lenis-prevent>
   <div class="xs-bg" aria-hidden="true"><span class="xs-grid"></span><span class="xs-light"></span></div>
+  <div class="xs-ctl">
+    <button class="xs-tool xs-wide" type="button" aria-pressed="false" aria-label="Ver el sitio a todo el ancho"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="xs-tool xs-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+  </div>
   <div class="xs-in">
-    <div class="xs-bar" style="--k:0">
-      <span class="xs-addr"><span class="lit xs-mark" aria-hidden="true"><i></i><b></b></span><span class="xs-where"><b></b><span></span></span></span>
-      <span class="xs-tools">
-        <button class="xs-tool xs-reload" type="button" aria-label="Volver a cargar el sitio"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13 2.6v2.9h-2.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <a class="xs-tool xs-new" target="_blank" rel="noopener" aria-label="Abrir el sitio en una pestaña nueva"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <button class="xs-tool xs-wide" type="button" aria-pressed="false" aria-label="Ver el sitio a todo el ancho"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <span class="xs-sep" aria-hidden="true"></span>
-        <button class="xs-tool xs-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
-      </span>
-    </div>
     <div class="xs-main">
       <div class="xs-view">
         <div class="xs-scroll" tabindex="0"><div class="xs-strip"></div></div>
@@ -224,7 +213,6 @@ window.BRANDS = [
     tag: 'El canal de una comunidad de más de 70.000 egresados de la universidad.', lead: 'Graduados EAFIT reúne a más de 70.000 egresados de la universidad en Medellín. En Instagram trabajamos para mantener esa comunidad cerca, informada y conectada.',
     did: ['Gestión de comentarios y mensajes', 'Contenido para Instagram'] }
 ];
-const host = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 /* the real site opens live inside the detail. Not inside claude.ai, which does not let a page show other sites, and not on
    127.0.0.1, where the tools check the built page and must not load other sites. On localhost (npm run dev) it does */
 const LIVE = !/claude|anthropic|^127\.0\.0\.1$/.test(location.hostname);
@@ -335,9 +323,8 @@ const Viewer = (() => {
   PHONE.addEventListener('change', () => { if (!el.hidden) setStrip(); });
   const fill = () => {
     const p = item(), N = list.length;
-    el.querySelectorAll('.xs-mark, .xs-el').forEach((e) => { e.firstElementChild.textContent = zOf(p.sym); e.lastElementChild.textContent = p.sym; });
-    $('.xs-where b').textContent = p.name; $('.xs-where span').textContent = host(p.url);
-    $('.xs-new').href = p.url; $('.xs-out').href = p.url;
+    el.querySelectorAll('.xs-el').forEach((e) => { e.firstElementChild.textContent = zOf(p.sym); e.lastElementChild.textContent = p.sym; });
+    $('.xs-out').href = p.url;
     $('#xs-name').textContent = p.name; $('.xs-kind').textContent = p.kind; $('.xs-lead').textContent = firstLine(p.lead);
     $('.xs-chips').innerHTML = p.facts.slice(0, 3).filter(Boolean).map((f) => `<li>${f}</li>`).join('');
     $('.xs-feats').innerHTML = p.feats.map((x) => `<li>${x}</li>`).join('');
@@ -374,6 +361,8 @@ const Viewer = (() => {
   const lock = (on) => {
     if (on) root.style.setProperty('--xs-sbw', `${Math.max(0, innerWidth - root.clientWidth)}px`);
     root.classList.toggle('xs-on', on);
+    /* the smooth scroll of the page rests too (suave.astro) */
+    if (window.LENIS) { if (on) window.LENIS.stop(); else window.LENIS.start(); }
   };
   const show = (i, from, items, onBack) => {
     if (open) return false;
@@ -422,10 +411,11 @@ const Viewer = (() => {
       el.classList.remove('is-swap'); tell(); goLive(); startAuto();
     }, RM ? 0 : 150);
   };
+  /* the link of the note always leads somewhere, also before the first project is opened */
+  $('.xs-out').href = PROJECTS[0].url;
   $('.xs-close').addEventListener('click', close);
   $('.xs-prev').addEventListener('click', () => go(-1));
   $('.xs-next').addEventListener('click', () => go(1));
-  $('.xs-reload').addEventListener('click', () => { if (framed()) goLive(); else { scroll.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); startAuto(); } });
   wide.addEventListener('click', () => setWide(!el.classList.contains('is-wide')));
   /* while it is open the detail owns the keyboard: Esc closes, the arrows go to the neighbours, Tab stays inside */
   addEventListener('keydown', (e) => {

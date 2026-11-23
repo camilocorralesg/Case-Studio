@@ -4,6 +4,7 @@ Variables de entorno (todas opcionales):
   CASE_URL      otra dirección para el sitio (por defecto se sirve dist/, lo que deja npm run build, en http://127.0.0.1:8765)
   CASE_CHROME   ruta a otro Chrome/Chromium (por defecto, el Chromium de Playwright)
   CASE_SIN_RED  si vale 1, no se piden las fuentes de Google (para trabajar sin conexión; se ven las de reserva)
+  CASE_SIN_GPU  si vale 1, el navegador se abre sin las opciones de GPU (cuando el equipo está muy cargado y se cuelga)
 """
 import functools, http.server, os, socket, sys, tempfile, threading
 from pathlib import Path
@@ -31,6 +32,17 @@ class _Servidor(http.server.ThreadingHTTPServer):
 
 
 class _Callado(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        # lo que solo existe en Vercel (el script de Web Analytics, /_vercel/insights/script.js): aquí responde vacío, para que
+        # la consola no muestre un 404 que en el sitio publicado no pasa
+        if self.path.startswith("/_vercel/"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/javascript")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        super().do_GET()
+
     def log_message(self, *a):
         pass
 
@@ -50,14 +62,16 @@ def _servir():
 _servir()
 
 # Lleva el scroll a un punto de una sección: avance 0 = empieza, 1 = termina (las secciones altas se recorren con el scroll).
-IR = "([s, p]) => { const m = document.querySelector('#stage ' + s); if (!m) return false; const top = m.getBoundingClientRect().top + scrollY; scrollTo({ top: top + Math.max(0, m.offsetHeight - innerHeight) * p, behavior: 'instant' }); return true; }"
+# Las que se cuentan solas (Servicios, Marcas, Redes: showtime, en comun.astro) quedan en pausa en ese punto de lo que cuentan.
+IR = "([s, p]) => { const m = document.querySelector('#stage ' + s); if (!m) return false; const top = m.getBoundingClientRect().top + scrollY; scrollTo({ top: top + Math.max(0, m.offsetHeight - innerHeight) * p, behavior: 'instant' }); const sh = window.SHOWS && window.SHOWS[m.id]; if (sh) sh.seek(p); return true; }"
 # La sección que está en la mitad de la pantalla y qué tanto de ella se ha recorrido.
 DONDE = "() => { const mid = innerHeight / 2; let id = '', r = 0; document.querySelectorAll('#stage .v > section').forEach((s) => { const b = s.getBoundingClientRect(); if (b.top <= mid) { id = s.id || s.className.split(' ').pop(); r = (mid - b.top) / b.height; } }); return [id, Math.round(r * 100) / 100]; }"
 
 
 async def navegador(pw):
     exe = os.environ.get("CASE_CHROME")
-    args = ["--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
+    # el sitio no usa WebGL; con el equipo muy cargado estas opciones cuelgan el navegador (23 de noviembre de 2026): CASE_SIN_GPU=1 las quita
+    args = [] if os.environ.get("CASE_SIN_GPU") == "1" else ["--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
     if exe:
         return await pw.chromium.launch(executable_path=exe, args=args + ["--use-angle=swiftshader"])
     return await pw.chromium.launch(args=args)
@@ -76,7 +90,10 @@ async def fuentes(page):
 
 
 async def listo(page):
+    """La página está armada: el hero se pinta primero y las secciones se preparan después, de a pocas (arranque.astro);
+    cuando terminan, la página lo dice con window.MOUNTED."""
     await page.wait_for_selector("#stage #proceso", state="attached", timeout=20000)
+    await page.wait_for_function("window.MOUNTED === true", timeout=20000)
 
 
 async def pagina(b, ancho=1440, alto=900, reducido=False, ingles=False, sin_ayudas=True):

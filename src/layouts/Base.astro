@@ -1,23 +1,61 @@
 ---
 /* The page shell: head, fonts, colour tokens, base styles and the shared runtime every part uses */
+/* the fonts are served by the site itself (22 November 2026): their files come from the Fontsource packages and travel with the
+   build, so nothing waits on another server. Only the Latin part of each; the extended Latin of the text font is fetched if a
+   word ever needs it */
+import sgLatin from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
+import sgExt from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-ext-wght-normal.woff2?url';
+import mono400 from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url';
+import mono500 from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2?url';
+import Datos from '../components/Datos.astro';
+/* Vercel Web Analytics (23 November 2026): page views, counted by Vercel on the published site; it does nothing locally */
+import Analytics from '@vercel/analytics/astro';
+import S from '../datos/sitio.json';
+import C from '../datos/contenido.json';
+
+const LATIN = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const LATIN_EXT = 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
+const face = (family: string, weight: string, url: string, range: string) =>
+  `@font-face{font-family:"${family}";font-style:normal;font-weight:${weight};font-display:swap;src:url(${url}) format("woff2");unicode-range:${range}}`;
+const FONTS = face('Schibsted Grotesk', '400 900', sgLatin, LATIN) + face('Schibsted Grotesk', '400 900', sgExt, LATIN_EXT)
+  + face('IBM Plex Mono', '400', mono400, LATIN) + face('IBM Plex Mono', '500', mono500, LATIN);
+
+/* where the site lives: the canonical address and the picture a link shows when it is shared */
+const sitio = Astro.site ?? new URL('https://www.casestudio.com.co');
+const canonica = new URL(Astro.url.pathname, sitio).href;
+const imagen = new URL('/assets/og-case-studio.jpg', sitio).href;
 ---
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CaSe Studio | Sitios web, tiendas en línea, redes y marca</title>
-<meta name="description" content="CaSe Studio es un estudio de Medellín: sitios web, tiendas en línea, redes sociales y marca, hechos por el mismo equipo.">
+<title>{S.titulo}</title>
+<meta name="description" content={S.descripcion}>
+<link rel="canonical" href={canonica}>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#02040a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CaSe Studio">
 <meta property="og:locale" content="es_CO">
-<meta property="og:title" content="CaSe Studio | Sitios web, tiendas en línea, redes y marca">
-<meta property="og:description" content="CaSe Studio es un estudio de Medellín: sitios web, tiendas en línea, redes sociales y marca, hechos por el mismo equipo.">
-<meta name="twitter:card" content="summary">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 208 100'%3E%3Crect width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='108' width='100' height='100' rx='12' fill='%23171717'/%3E%3Crect x='122' y='14' width='72' height='72' rx='5' fill='%23fff'/%3E%3C/svg%3E">
+<meta property="og:url" content={canonica}>
+<meta property="og:title" content={S.titulo}>
+<meta property="og:description" content={S.descripcion}>
+<meta property="og:image" content={imagen}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content={C.hero.titular}>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href={sgLatin} crossorigin>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<style is:inline set:html={FONTS}></style>
+{/* with scripts the page is put together by them: the written copy of the content (Plano.astro), for readers without scripts,
+    steps aside; and while the page is being put together nothing animates into its first state */}
+<script is:inline>document.documentElement.className = 'js is-booting';</script>
+<Datos />
 <style is:global>
 :root{
   /* CaSe Studio: white, black and blue. Full-bleed pages with thin gutters */
@@ -65,6 +103,9 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;color-scheme:light}
+/* while the page is being put together (arranque.astro) nothing animates into its first state: a row that starts lit is lit,
+   it does not turn on. Entrances are keyframes, so the hero's is not touched */
+.is-booting *,.is-booting *::before,.is-booting *::after{transition:none!important}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;caret-color:var(--cobalt);
   scrollbar-color:#c4c4c4 transparent;scrollbar-width:thin}
@@ -216,8 +257,13 @@ function moment(section, update) {
   return () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
 }
 </script>
+<script is:inline define:vars={{ CT: { wa: S.whatsapp, show: S.whatsappVisible } }}>
+/* how to reach the studio (src/datos/sitio.json): the form and the footer take it from here */
+window.CONTACTO = { ...CT, link: (text) => `https://wa.me/${CT.wa}${text ? '?text=' + encodeURIComponent(text) : ''}` };
+</script>
 </head>
 <body>
 <slot />
+<Analytics />
 </body>
 </html>

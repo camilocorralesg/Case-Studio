@@ -31,7 +31,7 @@ import D from './en.json';
     [/^(.+) no se deja abrir dentro de otra página\. Este es su recorrido\.$/, (m) => `${m[1]} can't be opened inside another page. This is its tour.`],
     [/^(.+) está tardando en cargar\. Mientras tanto, este es su recorrido\.$/, (m) => `${m[1]} is taking a while to load. Meanwhile, this is its tour.`],
     /* the answer of the contact form */
-    [/^Listo, (.+?)\. Pediste: (.+)\. En este prototipo la solicitud todavía no se envía\.$/, (m) => `Done, ${m[1]}. You asked for: ${m[2].split(', ').map(one).join(', ')}. In this prototype the request is not sent yet.`]
+    [/^Listo, (.+?)\. Se abrió WhatsApp con tu solicitud: envíala desde allí y te respondemos\.$/, (m) => `Done, ${m[1]}. WhatsApp opened with your request: send it from there and we'll reply.`]
   ];
   const tr = (s) => {
     const k = s.replace(/\s+/g, ' ').trim(); if (k.length < 2) return null;

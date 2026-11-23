@@ -46,6 +46,7 @@
 .contact.is-sent [type="submit"]{opacity:.45;pointer-events:none}
 .ck-ok{display:flex;justify-content:center;align-items:flex-start;gap:10px;min-height:1.5em;margin:0;font-size:15px;line-height:1.45;color:var(--ice);text-align:center;text-wrap:balance}
 .contact.is-sent .ck-ok{color:#fff}
+.ck-ok a{display:inline-flex;align-items:center;min-height:40px;margin-left:6px;color:#fff;font-weight:600;text-underline-offset:.2em;text-decoration-color:var(--focus)}
 .contact.is-sent .ck-ok::before{content:"";flex:none;width:22px;height:22px;margin-top:-1px;border-radius:6px;background:var(--cobalt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.4 6.3 4.9 8.7 9.6 3.6' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50%/13px no-repeat;box-shadow:inset 0 0 0 1px var(--ice)}
 @media (max-width:860px){
   .contact--tabla .ck-form{grid-column:1/-1}
@@ -70,7 +71,7 @@ const FORMS = {
     const say = (t) => (window.LANG && LANG.cur === 'en' && window.I18N && I18N.tr(t)) || t;
     const form = ct.querySelector('.contact__form');
     form.innerHTML = `<fieldset class="ck-need"><legend>¿Qué necesitas?</legend><div class="ck-ch">${NEEDS.map(([t, s], i) => `<label class="ck-c"><input type="checkbox" name="need" value="${t}" data-sym="${s}"><span><b aria-hidden="true"><i>${zOf(s)}</i>${s}</b>${t}</span></label>`).join('')}</div></fieldset>
-      <div class="ck-bar"><div class="ck-in"><label for="c-name">Nombre</label><input id="c-name" name="name" autocomplete="name" aria-describedby="c-ok" required></div><div class="ck-in"><label for="c-mail">Correo o WhatsApp</label><input id="c-mail" name="contact" autocapitalize="off" spellcheck="false" enterkeyhint="send" aria-describedby="c-ok" required></div><button class="btn btn--white" type="submit">Enviar solicitud <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <div class="ck-bar"><div class="ck-in"><label for="c-name">Nombre</label><input id="c-name" name="name" autocomplete="name" aria-describedby="c-ok" required></div><div class="ck-in"><label for="c-mail">Correo o WhatsApp</label><input id="c-mail" name="contact" autocapitalize="off" spellcheck="false" enterkeyhint="send" aria-describedby="c-ok" required></div><button class="btn btn--white" type="submit">Enviar por WhatsApp <svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <p class="contact__ok ck-ok" id="c-ok" role="status" aria-live="polite"></p>`;
     const ok = form.querySelector('.ck-ok'), need = form.querySelector('.ck-need'), name = form.querySelector('#c-name'), mail = form.querySelector('#c-mail'), send = form.querySelector('[type=submit]');
     const mark = (el, bad) => { if (bad) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid'); };
@@ -78,7 +79,7 @@ const FORMS = {
     const reachable = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || v.replace(/\D/g, '').length >= 7;
     /* any change clears the answer and the mark of what it fixes, and wakes the button */
     const input = (e) => {
-      ct.classList.remove('is-sent'); send.removeAttribute('aria-disabled'); ok.textContent = '';
+      ct.classList.remove('is-sent'); send.removeAttribute('aria-disabled'); ok.replaceChildren();
       const t = e && e.target;
       if (t && t.name === 'need') need.classList.remove('is-missing');
       else if (t && t.value.trim()) mark(t, false);
@@ -94,7 +95,19 @@ const FORMS = {
       if (!c) { ok.textContent = say('Deja un correo o un WhatsApp para responderte.'); mail.focus(); return; }
       if (!reachable(c)) { ok.textContent = say('Revisa el correo o el número para poder responderte.'); mail.focus(); return; }
       ct.classList.add('is-sent'); send.setAttribute('aria-disabled', 'true');
-      ok.textContent = say(`Listo, ${n}. Pediste: ${needs.map((x) => x.value).join(', ')}. En este prototipo la solicitud todavía no se envía.`);
+      /* the request goes to the studio's WhatsApp (23 November 2026): WhatsApp opens with the message written, and the visitor sends
+         it from there. Not on 127.0.0.1, where the tools fill the form and must not open other sites */
+      const what = needs.map((x) => x.value).join(', ');
+      const text = window.LANG && LANG.cur === 'en'
+        ? `Hi, CaSe Studio. I'm ${n} and I'd like to start my project. I need: ${what}. You can reply to ${c}.`
+        : `Hola, CaSe Studio. Soy ${n} y quiero empezar mi proyecto. Necesito: ${what}. Pueden responderme a ${c}.`;
+      const url = window.CONTACTO.link(text);
+      if (!/^127\.0\.0\.1$/.test(location.hostname)) { const w = window.open(url, '_blank'); if (w) w.opener = null; else location.href = url; }
+      /* the answer, with the way to WhatsApp in case it did not open (the name is written as text, never as markup) */
+      const t = document.createElement('span'), a = document.createElement('a');
+      t.textContent = say(`Listo, ${n}. Se abrió WhatsApp con tu solicitud: envíala desde allí y te respondemos.`);
+      a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = say('Abrir WhatsApp');
+      t.append(' ', a); ok.replaceChildren(t);
     };
     form.addEventListener('input', input); form.addEventListener('submit', submit);
     return () => { form.removeEventListener('input', input); form.removeEventListener('submit', submit); };

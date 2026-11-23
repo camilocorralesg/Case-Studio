@@ -1,6 +1,7 @@
 ---
 /* The one page. The order matters: a part can override the styles of the ones before it, and color and menu wrap a function ensamble defines */
 import Base from '../layouts/Base.astro';
+import Plano from '../components/Plano.astro';
 import Logo from '../partes/logo.astro';
 import Comun from '../partes/comun.astro';
 import Encuadre from '../partes/encuadre.astro';
@@ -23,9 +24,11 @@ import Uniones from '../partes/uniones.astro';
 import Color from '../partes/color.astro';
 import Menu from '../partes/menu.astro';
 import Idioma from '../i18n/idioma.astro';
+import Suave from '../partes/suave.astro';
 import Arranque from '../partes/arranque.astro';
 ---
 <Base>
+  <Plano />
   <Logo />
   <Comun />
   <Encuadre />
@@ -48,5 +51,6 @@ import Arranque from '../partes/arranque.astro';
   <Color />
   <Menu />
   <Idioma />
+  <Suave />
   <Arranque />
 </Base>

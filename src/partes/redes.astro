@@ -1,8 +1,13 @@
+---
+import Pausa from '../components/Pausa.astro';
+---
 <style is:global>
-/* ===== Social media: the six parts of the service as six stories, on the cube the scroll turns (the way stories pass from one to
-   the next). The story stands in the encuadre; the bars on top fill as the page scrolls, and each story starts its drawing when
-   it arrives in front. Beside it, the six as a list that goes to any of them ===== */
-.sm{background:var(--night);color:#fff}
+/* ===== Social media: the six parts of the service as six stories, on a cube that turns from one to the next, the way stories
+   pass. They pass by themselves, as stories do (22 November 2026: the scroll of the page turned the cube, in a section fixed on
+   screen; now the page scrolls past it). The story stands in the encuadre; the bars on top fill with its time, and each story
+   starts its drawing when it arrives in front. Beside it, the six as a list that goes to any of them ===== */
+.sm{position:relative;background:var(--night);color:#fff}
+.sm-pause{position:absolute;z-index:4;right:var(--fx);bottom:var(--fx)}
 .sm-stick{--pt:clamp(76px,11vh,108px);--pb:clamp(28px,4.4vh,48px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;align-items:center;padding:var(--pt) var(--gutter) var(--pb)}
 .sm-side{grid-column:1/5;display:grid;gap:18px;align-content:center}
 .sm-lead{max-width:24em;color:#b3bfd3}
@@ -12,7 +17,7 @@
 .sm-el b{margin-top:auto;font:600 calc(var(--z) * .44)/.84 var(--sym);letter-spacing:-.045em}
 .sm-el.is-lit,.sm-row.is-on .sm-el{background:var(--lit);box-shadow:inset 0 0 0 1px rgba(170,204,255,.62),inset 0 1px 0 rgba(232,240,255,.4)}
 .sm-el.is-lit i,.sm-row.is-on .sm-el i{color:#fff}
-/* the six: where the scroll is, and a way to go to any of them */
+/* the six: which story is in front, and a way to go to any of them */
 .sm-rows{display:grid;gap:2px}
 .sm-row{display:flex;align-items:center;gap:14px;min-height:48px;padding:4px 12px 4px 4px;border:0;border-radius:14px;background:none;color:#8fa6d6;font:500 clamp(15px,1.1vw,18px)/1.2 var(--body);text-align:left;cursor:pointer;transition:background-color var(--d-fade) ease,color var(--d-fade) ease,transform var(--d-hover) var(--ease-out)}
 .sm-row .plus{margin-left:2px}
@@ -131,6 +136,7 @@
   .sm-row.is-on{background:none}
   .sm-stage{--fx:14px;--fh:min(calc(100svh - var(--pt) - var(--pb) - 150px - 2 * var(--fx)),calc((100vw - 2 * var(--gutter) - 2 * var(--fx)) * 16 / 9));width:100%}
   .sm-tap{top:calc(var(--fx) + 54px)}
+  .sm-pause{right:calc(50% - var(--fw) / 2 + 8px);bottom:auto;top:calc(var(--fx) + 20px)}
   .sm-arrow{display:none}
   .sm-f{padding:10px 13px 16px;gap:10px}
   .sm-txt{gap:7px}
@@ -153,12 +159,13 @@
 @media (prefers-reduced-motion:reduce){.sm-f *,.sm-f *::before{animation:none!important}}
 </style>
 
-<template id="tpl-sm"><section class="moment sm" id="redes" aria-labelledby="sm-h" style="--mh:300vh"><div class="moment__stick sm-stick">
+<template id="tpl-sm"><section class="sm" id="redes" aria-labelledby="sm-h"><div class="moment__stick sm-stick">
   <div class="sm-side"><h2 class="h2" id="sm-h">Manejo de redes sociales</h2><p class="lead sm-lead">Lo que hacemos en tus redes, en seis historias.</p><div class="sm-rows"></div><ol class="sm-say sr-only"></ol></div>
   <div class="sm-stage"><div class="sm-wrap" aria-hidden="true"><div class="sm-cube"></div></div>
     <span class="sm-tap sm-tap--prev" aria-hidden="true"></span><span class="sm-tap sm-tap--next" aria-hidden="true"></span>
     <button type="button" class="sm-arrow sm-arrow--prev" aria-label="Historia anterior"><svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <button type="button" class="sm-arrow sm-arrow--next" aria-label="Historia siguiente"><svg class="arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <Pausa clase="sm-pause pause--dark" />
   </div>
 </div></section></template>
 
@@ -174,8 +181,8 @@ const SOCIAL = [
 ];
 const PLUS = ' <em class="plus">Nuestro plus</em>';
 
-/* six stories on a cube the scroll turns. Each story rests while its bar fills and then the cube turns to the next; the story
-   that arrives starts its drawing once it is in front. The posts are real ones from the brands in Marcas, in cobalt
+/* six stories on a cube that turns by itself (showtime, comun.astro). Each story rests while its bar fills and then the cube turns
+   to the next; the story that arrives starts its drawing once it is in front. The posts are real ones from the brands in Marcas, in cobalt
    (herramientas/publicaciones.py) */
 addSection('tabla', 'tpl-sm', 4, (root) => {
   const sec = root.querySelector('.sm'), stick = sec.querySelector('.sm-stick'), stage = sec.querySelector('.sm-stage'), cube = sec.querySelector('.sm-cube');
@@ -252,8 +259,14 @@ addSection('tabla', 'tpl-sm', 4, (root) => {
     kk = k;
   };
   const layout = () => { hz = (front ? front.offsetWidth : 0) / 2; cube.style.setProperty('--hz', `${hz.toFixed(1)}px`); render(last); };
-  /* go to a story: the point of the scroll where it rests in front */
-  const go = (i) => { const j = Math.max(0, Math.min(N - 1, i)); scrollTo({ top: sec.getBoundingClientRect().top + scrollY + (.03 + (j + .3) / N * .94) * (sec.offsetHeight - innerHeight), behavior: 'smooth' }); };
+  /* go to a story: the point of the telling where it starts. To the one beside it the cube turns; to any other it is there at
+     once, out of a short fade, so the cube does not spin past the ones in between */
+  const go = (i) => {
+    const j = Math.max(0, Math.min(N - 1, i)), v = .03 + (j + .02) / N * .94;
+    if (Math.abs(j - kk) === 1) { show.go(v, 800); return; }
+    show.go(v);
+    if (cube.animate) cube.animate([{ opacity: 0 }, { opacity: 1 }], { duration: MOTION.d('state'), easing: MOTION.ease('out') });
+  };
   rows.forEach((r, i) => on(r, 'click', () => go(i)));
   on(prev, 'click', () => go(kk - 1)); on(next, 'click', () => go(kk + 1));
   on(sec.querySelector('.sm-tap--prev'), 'click', () => go(kk - 1)); on(sec.querySelector('.sm-tap--next'), 'click', () => go(kk + 1));
@@ -261,7 +274,8 @@ addSection('tabla', 'tpl-sm', 4, (root) => {
   /* the first story starts its drawing when the section comes into view, not before */
   const io = new IntersectionObserver((es) => { const e = es[es.length - 1]; if (e.isIntersecting && !live) { live = true; if (front) front.classList.add('is-cur'); } }, { threshold: .35 });
   io.observe(stage);
-  const stop = moment(sec, render); layout();
-  return () => { stop(); off(); io.disconnect(); offs.forEach((fn) => fn()); };
+  /* 34 seconds for the six: about five and a half for each, as a story lasts */
+  const show = showtime('redes', stage, sec.querySelector('.sm-pause'), render, { dur: 34 }); layout();
+  return () => { show.cleanup(); off(); io.disconnect(); offs.forEach((fn) => fn()); };
 });
 </script>

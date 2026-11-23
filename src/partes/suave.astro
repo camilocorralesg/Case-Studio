@@ -1,0 +1,26 @@
+---
+/* The smooth scroll (Lenis, 22 November 2026): the wheel does not move the page in jumps; the page glides after it and settles,
+   slow, like the sites made in Framer. Lenis moves the real scroll of the page, so the moments fixed on screen and everything
+   that reads the scroll go on as they were, and each frame draws the page exactly where the scroll is.
+   A finger scrolls as the phone does it. With reduced motion Lenis is not started: the page scrolls as the browser does. */
+---
+<style is:global>
+/* Lenis moves the page itself: the browser's own smooth scroll steps aside, and what scrolls on its own keeps its wheel */
+html.lenis,html.lenis body{height:auto}
+html.lenis{scroll-behavior:auto}
+html.lenis.lenis-stopped{overflow:clip}
+.lenis [data-lenis-prevent]{overscroll-behavior:contain}
+</style>
+<script>
+import Lenis from 'lenis';
+
+/* how it feels, in two numbers: LERP is how much of the way left the page covers each frame (smaller, a longer glide) and
+   WHEEL is how far a notch of the wheel sends it (smaller, a slower page) */
+const LERP = 0.085, WHEEL = 0.9;
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const lenis = new Lenis({ lerp: LERP, wheelMultiplier: WHEEL, smoothWheel: true, syncTouch: false, autoRaf: true });
+  /* arranque.astro (GO and JUMP) and the detail of a project (which stops the page while it is open) find it here */
+  (window as unknown as { LENIS?: Lenis }).LENIS = lenis;
+}
+</script>

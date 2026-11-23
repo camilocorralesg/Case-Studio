@@ -1,0 +1,83 @@
+---
+/* What the page says, written out: for whoever arrives without scripts (the search engines and assistants that do not run them,
+   a reader who has them off). With scripts it is never seen: the head marks the page (.js) and arranque.astro takes it away as
+   it puts the real page together. Its words are the sections' own, from src/datos/contenido.json (herramientas/contenido.py). */
+import C from '../datos/contenido.json';
+import S from '../datos/sitio.json';
+const seguido = (partes: string[]) => partes.map((p) => (/[.?!]$/.test(p) ? p : p + '.')).join(' ');
+---
+<style is:global>
+.js .plano{display:none}
+.plano{min-height:100vh;padding:clamp(48px,9vw,112px) var(--gutter) clamp(72px,11vw,136px);background:var(--night);color:#fff}
+.plano-in{display:grid;gap:clamp(56px,8vw,96px);max-width:68ch;margin-inline:auto}
+.plano h1{font:var(--head-w) clamp(38px,6vw,68px)/1.02 var(--head);letter-spacing:-.04em}
+.plano h2{font:var(--head-w) clamp(26px,3.4vw,38px)/1.1 var(--head);letter-spacing:-.03em}
+.plano h3{font:600 19px/1.3 var(--font);letter-spacing:-.01em}
+.plano p,.plano dd,.plano li li{color:var(--ice)}
+.plano header,.plano section{display:grid;gap:12px}
+.plano section>ul,.plano section>ol{display:grid;gap:24px;margin-top:10px}
+.plano li{display:grid;gap:4px}
+.plano li ul{display:block;margin-top:6px;padding-left:1.1em;list-style:disc}
+.plano dl{margin:0}
+.plano dt{margin-top:24px;font-weight:600}
+.plano dd{margin:4px 0 0}
+.plano a{color:#fff;text-underline-offset:.2em;text-decoration-color:var(--focus)}
+.plano :focus-visible{outline-color:var(--focus)}
+</style>
+<div class="plano" id="plano">
+  <div class="plano-in">
+    <header>
+      <h1>{C.hero.titular}</h1>
+      <p>{C.hero.apoyo} {C.hero.frase}</p>
+    </header>
+    <section>
+      <h2>{C.servicios.titular}</h2>
+      <p>{C.servicios.apoyo}</p>
+      <ul>{C.servicios.lista.map((s) => <li><h3>{s.nombre}</h3><p>{s.texto}</p></li>)}</ul>
+    </section>
+    <section>
+      <h2>{C.rediseno.titular}</h2>
+      <p>{C.rediseno.apoyo}</p>
+    </section>
+    <section>
+      <h2>{C.proyectos.titular}</h2>
+      <ul>{C.proyectos.lista.map((p) => (
+        <li>
+          <h3><a href={p.url} rel="noopener">{p.nombre}</a></h3>
+          <p>{p.tipo}. {p.datos.join(' · ')}.</p>
+          <p>{p.texto}</p>
+          <ul>{p.hecho.map((h) => <li>{h}</li>)}</ul>
+        </li>
+      ))}</ul>
+    </section>
+    <section>
+      <h2>{C.marcas.titular}</h2>
+      <p>{C.marcas.apoyo}</p>
+      <ul>{C.marcas.lista.map((m) => (
+        <li>
+          <h3>{m.nombre}</h3>
+          <p>{m.texto}</p>
+          <p>{m.redes.map((r, i) => <>{i ? ' · ' : ''}<a href={r.url} rel="noopener">{r.red} {r.cuenta}</a></>)}</p>
+        </li>
+      ))}</ul>
+    </section>
+    <section>
+      <h2>{C.proceso.titular}</h2>
+      <ol>{C.proceso.lista.map((s) => <li><h3>{s.nombre}</h3><p>{s.texto}</p></li>)}</ol>
+    </section>
+    <section>
+      <h2>{C.redes.titular}</h2>
+      <p>{C.redes.apoyo}</p>
+      <ul>{C.redes.lista.map((s) => <li><h3>{s.nombre}</h3><p>{s.texto}</p></li>)}</ul>
+    </section>
+    <section>
+      <h2>{C.preguntas.titular}</h2>
+      <dl>{C.preguntas.lista.map((q) => <><dt>{q.pregunta}</dt><dd>{seguido(q.respuesta)}</dd></>)}</dl>
+    </section>
+    <section>
+      <h2>{C.contacto.titular}</h2>
+      <p>{C.contacto.apoyo}</p>
+      <p><a href={`https://wa.me/${S.whatsapp}`} rel="noopener">WhatsApp {S.whatsappVisible}</a></p>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+---
+/* What the page says, written for machines (schema.org): the studio and its four services, the page, its questions, the sites it
+   built and the brands whose social media it ran. Everything comes from src/datos/: sitio.json is written by hand and
+   contenido.json is the copy of what the sections say (herramientas/contenido.py). Nothing here is on screen.
+   The WhatsApp is the studio's (23 November 2026); no mail or street yet. */
+import S from '../datos/sitio.json';
+import C from '../datos/contenido.json';
+
+const base = (Astro.site ?? new URL('https://www.casestudio.com.co')).href;
+const id = (k: string) => `${base}#${k}`;
+const frase = (partes: string[]) => partes.map((p) => (/[.?!]$/.test(p) ? p : p + '.')).join(' ');
+
+const estudio = {
+  '@type': 'ProfessionalService',
+  '@id': id('estudio'),
+  name: S.nombre,
+  url: base,
+  description: S.resumen,
+  slogan: C.hero.titular,
+  telephone: S.whatsappVisible,
+  contactPoint: { '@type': 'ContactPoint', contactType: 'sales', telephone: S.whatsappVisible, url: `https://wa.me/${S.whatsapp}`, availableLanguage: ['es', 'en'], areaServed: 'CO' },
+  image: new URL('/assets/og-case-studio.jpg', base).href,
+  logo: new URL('/icon-512.png', base).href,
+  address: { '@type': 'PostalAddress', addressLocality: S.ciudad, addressRegion: S.region, addressCountry: S.pais },
+  areaServed: [{ '@type': 'City', name: S.ciudad }, { '@type': 'Country', name: 'Colombia' }],
+  knowsLanguage: S.idiomas,
+  knowsAbout: C.servicios.lista.map((s) => s.nombre),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios',
+    itemListElement: C.servicios.lista.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.nombre, description: s.texto, provider: { '@id': id('estudio') }, areaServed: S.ciudad }
+    }))
+  }
+};
+const sitio = { '@type': 'WebSite', '@id': id('sitio'), url: base, name: S.nombre, inLanguage: 'es', publisher: { '@id': id('estudio') } };
+const pagina = {
+  '@type': 'WebPage',
+  '@id': id('pagina'),
+  url: base,
+  name: S.titulo,
+  description: S.descripcion,
+  inLanguage: 'es',
+  isPartOf: { '@id': id('sitio') },
+  about: { '@id': id('estudio') },
+  primaryImageOfPage: new URL('/assets/og-case-studio.jpg', base).href
+};
+const preguntas = {
+  '@type': 'FAQPage',
+  '@id': id('preguntas'),
+  isPartOf: { '@id': id('pagina') },
+  mainEntity: C.preguntas.lista.map((p) => ({ '@type': 'Question', name: p.pregunta, acceptedAnswer: { '@type': 'Answer', text: frase(p.respuesta) } }))
+};
+const proyectos = {
+  '@type': 'ItemList',
+  '@id': id('proyectos'),
+  name: C.proyectos.titular,
+  itemListElement: C.proyectos.lista.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: { '@type': 'CreativeWork', name: p.nombre, url: p.url, genre: p.tipo, description: p.texto, creator: { '@id': id('estudio') } }
+  }))
+};
+const marcas = {
+  '@type': 'ItemList',
+  '@id': id('marcas'),
+  name: C.marcas.titular,
+  itemListElement: C.marcas.lista.map((m, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: { '@type': 'Brand', name: m.nombre, description: m.frase, sameAs: m.redes.map((r) => r.url) }
+  }))
+};
+const grafo = { '@context': 'https://schema.org', '@graph': [estudio, sitio, pagina, preguntas, proyectos, marcas] };
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(grafo)}></script>

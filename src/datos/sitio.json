@@ -1,0 +1,15 @@
+{
+  "nombre": "CaSe Studio",
+  "titulo": "CaSe Studio | Sitios web, tiendas, redes y marca en Medellín",
+  "descripcion": "CaSe Studio es un estudio de Medellín: sitios web, tiendas en línea, redes sociales y marca, hechos por el mismo equipo. Empieza con uno y suma los demás.",
+  "resumen": "CaSe Studio es un estudio de Medellín, Colombia, que hace sitios web, tiendas en línea, redes sociales y marca con un mismo equipo. Se puede empezar con un servicio y sumar los demás cuando el negocio los pida.",
+  "ciudad": "Medellín",
+  "region": "Antioquia",
+  "pais": "CO",
+  "idiomas": [
+    "es",
+    "en"
+  ],
+  "whatsapp": "573108723020",
+  "whatsappVisible": "+57 310 872 3020"
+}

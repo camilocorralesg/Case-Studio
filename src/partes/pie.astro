@@ -39,6 +39,10 @@
 .ft-gap{grid-area:1/3/4/13;align-self:center;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;padding:0 clamp(10px,2vw,36px);color:var(--ft-dim)}
 .ft-me{display:grid;gap:12px}
 .ft-me p:first-child{color:#fff}
+/* the WhatsApp: a link that reads as the line it is, and big enough for a finger */
+.ft-wa{display:inline-flex;align-items:center;min-height:40px;color:#fff;text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 calc(100% - 8px)/0 1px no-repeat;transition:background-size var(--d-hover) var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.ft-wa:hover{background-size:100% 1px}}
+.ft-wa:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 /* available: a small square in the blue of the page */
 .ft-free{display:inline-flex;align-items:center;gap:10px;color:var(--ice)}
 .ft-free::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--sky)}
@@ -111,10 +115,12 @@
 /* the sections, with the symbols of the fixed menu (the fourth is its English one), the four services (with where each leads) and
    the sample contact. Redes is not among the sections: its service, Redes sociales (Rs), already leads there, and in a table a
    symbol is one cell */
+/* the studio's WhatsApp (window.CONTACTO, from src/datos/sitio.json), as a link that opens it */
+const ftWa = () => `<a class="ft-wa" href="${window.CONTACTO.link()}" target="_blank" rel="noopener">WhatsApp ${window.CONTACTO.show}</a>`;
 const FT = {
   nav: [['Servicios', '#servicios', 'Sv'], ['Rediseño', '#rediseno', 'Rd'], ['Proyectos', '#proyectos', 'Py', 'Pj'], ['Marcas', '#marcas', 'Mc', 'Br'], ['Proceso', '#proceso', 'Pc'], ['Preguntas', '#preguntas', 'Pr', 'Qs'], ['Contacto', '#contacto', 'Co']],
   svc: [['Sitios web', 'Sw', '#servicios'], ['Tiendas en línea', 'Ti', '#servicios'], ['Redes sociales', 'Rs', '#redes'], ['Marca', 'Ma', '#servicios']],
-  mail: 'hola@casestudio.example', place: 'Medellín, Colombia', free: 'Disponibles para nuevos proyectos'
+  place: 'Medellín, Colombia', free: 'Disponibles para nuevos proyectos'
 };
 /* the real table, periods one to five, and where each atomic number sits in it */
 const FT_PT = 'H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe'.split(' ');
@@ -150,9 +156,9 @@ window.FOOT = {
     const navZ = FT.nav.map(([, href], i) => (href === '#contacto' ? 27 : 37 + i)), svcZ = FT.svc.map((_, i) => 21 + i);
     const mob = `<div class="ft-mob"><div class="ft-map" aria-hidden="true">${map}</div>
       <nav class="ft-lists" aria-label="Pie de página"><div><p class="ft-lk">Secciones</p><ul>${navZ.map(row).join('')}</ul></div><div><p class="ft-lk">Servicios</p><ul>${svcZ.map(row).join('')}</ul></div></nav>
-      <div class="ft-mme"><p class="ft-mail">${FT.mail}</p><p>${FT.place}</p><p class="ft-free">${FT.free}</p></div>
+      <div class="ft-mme"><p class="ft-mail">${ftWa()}</p><p>${FT.place}</p><p class="ft-free">${FT.free}</p></div>
       <button class="ft-back" type="button">${FT_UP}<span>Volver arriba</span></button></div>`;
-    return `<div class="ft-in"><div class="ft-stage"><nav class="ft-plane ft-table" aria-label="Pie de página">${cells}<div class="ft-gap"><div class="ft-me"><p>${FT.mail}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${key}</div></nav></div>
+    return `<div class="ft-in"><div class="ft-stage"><nav class="ft-plane ft-table" aria-label="Pie de página">${cells}<div class="ft-gap"><div class="ft-me"><p>${ftWa()}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${key}</div></nav></div>
       ${mob}<div class="ft-logo"><svg class="ft-mark" role="img" aria-label="CaSe Studio" viewBox="0 0 959.36 250"><use href="#logo-cut"></use></svg></div>
       <p class="ft-legal">© 2026 CaSe Studio</p></div>`;
   }

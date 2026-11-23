@@ -11,39 +11,80 @@
 
 <script is:inline>
 /* Puts the page together: the hero, the sections in their order, the contact block and what FINALE adds
-   (form, last line, footer, colour edges and menu). REMOUNT draws it again; the language switch uses it. */
+   (form, footer, colour edges and menu). REMOUNT draws it again; the language switch uses it. */
 (() => {
   const page = window.VARIANTS[0];
-  const stage = document.getElementById('stage');
-  let cleanup = null, first = true;
+  const stage = document.getElementById('stage'), html = document.documentElement;
+  let cleanup = null, first = true, turn = 0;
+
+  /* the page is laid out and the hero starts: what the first screen needs. It gives back what is left to do, one piece each:
+     every section, and then what closes the page */
+  function lay() {
+    const frag = document.getElementById(page.tpl).content.cloneNode(true);
+    const pages = (window.PAGES[page.id] || []).slice().sort((x, y) => x.order - y.order);
+    pages.forEach((pg) => frag.firstElementChild.appendChild(document.getElementById(pg.tpl).content.cloneNode(true)));
+    frag.firstElementChild.appendChild(document.getElementById('tpl-contact').content.cloneNode(true));
+    stage.appendChild(frag);
+    const root = stage.firstElementChild;
+    if (window.I18N) window.I18N.node(root);
+    root.classList.add('is-entering');
+    html.style.background = getComputedStyle(root).backgroundColor;
+    const off = { hero: page.init ? page.init(root) : null, secs: [], tours: null, fin: null }, call = (f) => { if (typeof f === 'function') f(); };
+    cleanup = () => { call(off.fin); call(off.tours); call(off.hero); off.secs.forEach(call); };
+    const steps = pages.map((pg) => () => off.secs.push(pg.init(root)));
+    steps.push(() => {
+      const ct = root.querySelector('.contact');
+      ct.classList.add('contact--' + page.id);
+      off.tours = window.Tours ? Tours.start(root) : null;
+      off.fin = window.FINALE ? window.FINALE(page.id, root, ct) : null;
+    });
+    return steps;
+  }
+  /* the page is whole: MOUNTED says so to whoever waits for it (the tools), and from here on things may animate */
+  const whole = () => {
+    window.MOUNTED = true;
+    /* a link to a section (index.html#contacto) lands on it the first time the page is drawn */
+    if (first) { first = false; let t = null; try { t = location.hash.length > 1 ? stage.querySelector(location.hash) : null; } catch (e) {} if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); }
+    requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove('is-booting')));
+  };
 
   function mount() {
+    const mine = ++turn;
+    window.MOUNTED = false;
     if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
     stage.innerHTML = '';
     window.scrollTo({ top: 0, behavior: 'instant' });
-    requestAnimationFrame(() => {
-      const frag = document.getElementById(page.tpl).content.cloneNode(true);
-      const pages = (window.PAGES[page.id] || []).slice().sort((x, y) => x.order - y.order);
-      pages.forEach((pg) => frag.firstElementChild.appendChild(document.getElementById(pg.tpl).content.cloneNode(true)));
-      frag.firstElementChild.appendChild(document.getElementById('tpl-contact').content.cloneNode(true));
-      stage.appendChild(frag);
-      const root = stage.firstElementChild;
-      if (window.I18N) window.I18N.node(root);
-      root.classList.add('is-entering');
-      document.documentElement.style.background = getComputedStyle(root).backgroundColor;
-      const done = page.init ? page.init(root) : null;
-      const done2 = pages.map((pg) => pg.init(root));
-      const ct = root.querySelector('.contact');
-      ct.classList.add('contact--' + page.id);
-      const stopTours = window.Tours ? Tours.start(root) : null;
-      const fin = window.FINALE ? window.FINALE(page.id, root, ct) : null;
-      cleanup = () => { if (fin) fin(); if (stopTours) stopTours(); if (typeof done === 'function') done(); done2.forEach((f) => { if (typeof f === 'function') f(); }); };
-      /* a link to a section (index.html#contacto) lands on it the first time the page is drawn */
-      if (first) { first = false; let t = null; try { t = location.hash.length > 1 ? stage.querySelector(location.hash) : null; } catch (e) {} if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); }
-    });
+    if (first) {
+      /* the first time, the hero is on screen before anything else (22 November 2026): the page is laid out right now, the browser
+         paints it, and the sections wake up after that, a few milliseconds at a time, so the entrance of the hero never waits
+         for them. Before, everything was set up ahead of the first paint: on a slow phone, a second and a half of white screen */
+      const plano = document.getElementById('plano'); if (plano) plano.remove();
+      const steps = lay();
+      const some = () => {
+        if (mine !== turn) return;
+        const t0 = performance.now();
+        do steps.shift()(); while (steps.length && performance.now() - t0 < 8);
+        if (steps.length) setTimeout(some, 0); else whole();
+      };
+      /* after the first frame; or after a moment if no frame comes (a tab opened in the background, a reader that runs the
+         scripts without drawing): the page is put together all the same */
+      let gone = false;
+      const start = () => { if (gone) return; gone = true; setTimeout(some, 0); };
+      requestAnimationFrame(start); setTimeout(start, 300);
+      return;
+    }
+    requestAnimationFrame(() => { if (mine !== turn) return; lay().forEach((f) => f()); whole(); });
   }
 
   window.REMOUNT = mount;
+
+  /* the page goes to y: with the smooth scroll when it is on (suave.astro), with the browser's own when it is not. window.GO(y)
+     is the same for any other code that moves the page a short way */
+  const go = (y, instant) => {
+    if (window.LENIS) window.LENIS.scrollTo(y, { immediate: !!instant || RM, force: true });
+    else scrollTo({ top: y, behavior: instant ? 'instant' : RM ? 'auto' : 'smooth' });
+  };
+  window.GO = go;
 
   /* a long way (more than two screens) is not scrolled through: the screen goes to the night for a moment and opens on the place,
      so the sections fixed on the way do not race past it (17 November 2026: "Ver proyectos" crossed 9.500 px of moments in a
@@ -53,11 +94,11 @@
   veil.style.cssText = 'position:fixed;inset:0;z-index:59;pointer-events:none;opacity:0;background:var(--night)';
   let jumping = false;
   const jump = (y, then) => {
-    if (RM || jumping || Math.abs(y - scrollY) < innerHeight * 2.2 || !veil.animate) { scrollTo({ top: y, behavior: RM ? 'auto' : 'smooth' }); if (then) then(); return; }
+    if (RM || jumping || Math.abs(y - scrollY) < innerHeight * 2.2 || !veil.animate) { go(y); if (then) then(); return; }
     jumping = true;
     const dim = veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: MOTION.d('fade'), easing: MOTION.ease('out'), fill: 'forwards' });
     dim.onfinish = () => {
-      scrollTo({ top: y, behavior: 'instant' }); if (then) then();
+      go(y, true); if (then) then();
       /* two frames for the sections to draw themselves where it landed, then the night opens */
       requestAnimationFrame(() => requestAnimationFrame(() => {
         const open = veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: MOTION.d('enter'), easing: MOTION.ease('out'), fill: 'forwards' });
@@ -85,5 +126,7 @@
   });
 
   mount();
+  /* if something stops the page from being put together, things still animate */
+  setTimeout(() => html.classList.remove('is-booting'), 4000);
 })();
 </script>

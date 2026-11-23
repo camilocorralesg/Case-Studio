@@ -38,12 +38,27 @@ SALIDA = comun.RAIZ / 'public' / 'assets'
 PUNTOS = {('neuralnet', 'cel'): [0, .27, .727], ('neuralbi', 'cel'): [0, .182, .636, .727],
           # en el computador, NeuralNet hace crecer una esfera turquesa a la mitad: la portada, "Decisiones." y el tablero
           ('neuralnet', 'pc'): [0, .182, .636],
-          # Weed Honey abre con una portada larga que se queda fija mientras cambian las latas y sus textos se cruzan: dos momentos
-          # limpios de la portada, y después el producto y el cierre
-          ('weedhoney', 'cel'): [0, .4545, .824, .909], ('weedhoney', 'pc'): [0, .4545, .909, 1]}
+          # Weed Honey (el sitio nuevo, 22 de noviembre de 2026) cuenta sus sabores en una sola escena larga que el scroll va
+          # cambiando: la portada, lo que trae cada lata, un sabor ya armado (entre uno y otro pasa una gota a toda pantalla) y la tienda
+          ('weedhoney', 'cel'): [0, .174, .609, .826], ('weedhoney', 'pc'): [0, .174, .609, .783]}
 # sitios que piden la edad: se pasa con la fecha de un adulto de prueba, nunca la de una persona (el usuario lo autorizó el 16 de
 # noviembre de 2026 para hacer el recorrido de Weed Honey)
 EDAD = {'weedhoney': ('01', '01', '1990')}
+# avisos de primera visita que tapan la portada de un sitio, por el texto de su botón: se esconden sin tocarlos (no se acepta nada
+# por nadie y el sitio no guarda nada), para que la primera pantalla muestre el sitio y no su aviso. Weed Honey cambió la casilla de
+# la edad por un aviso arriba con "Entendido" (22 de noviembre de 2026)
+AVISO = {'weedhoney': 'Entendido'}
+SIN_AVISO = """(texto) => {
+  let n = 0;
+  for (const b of document.querySelectorAll('button, [role=button], a')) {
+    if (b.textContent.trim() !== texto || !b.getBoundingClientRect().height || getComputedStyle(b).visibility === 'hidden') continue;
+    let e = b;
+    while (e.parentElement && e.parentElement !== document.body && e.getBoundingClientRect().width < innerWidth * .9) e = e.parentElement;
+    if (e.getBoundingClientRect().height > innerHeight * .3) continue;        /* eso no es un aviso: es una ventana o la página */
+    e.style.setProperty('display', 'none', 'important'); n++;
+  }
+  return n > 0;
+}"""
 
 
 def proyectos():
@@ -149,19 +164,27 @@ async def recorrer(b, modo, pid, url, n, muestra=False):
         gate = await edad(page, pid)
         await page.wait_for_timeout(1500)                               # la entrada del sitio
         cookies = await sin_cookies(page)
+        aviso = False
         m = await page.evaluate(MEDIR)
         if muestra:
-            pos = [round(i * max(0, m['h'] - H) / 11) for i in range(12)]
+            pos = [round(i * max(0, m['h'] - H) / (muestra - 1)) for i in range(muestra)]
         else:
             pos = puntos(m['h'], H, m['anchors'], n, PUNTOS.get((pid, modo)))
         shots, y0, barras = [], 0, 0
         for i, y in enumerate(pos):
             await bajar(page, H, y0, y); y0 = y
             await page.wait_for_timeout(2400)                           # lo que aparece al llegar y las imágenes que cargan tarde
+            if pid in AVISO and not aviso:                              # el aviso llega unos segundos después de abrir: se le espera
+                for _ in range(12 if i == 0 else 1):
+                    aviso = await page.evaluate(SIN_AVISO, AVISO[pid])
+                    if aviso:
+                        await page.wait_for_timeout(700)
+                        break
+                    await page.wait_for_timeout(500)
             if i:
                 barras = max(barras, await page.evaluate(SIN_BARRA))
             shots.append(await page.screenshot())
-        return shots, {'alto': m['h'], 'puntos': pos, 'cookies': cookies, 'edad': gate, 'barras': barras}
+        return shots, {'alto': m['h'], 'puntos': pos, 'cookies': cookies, 'edad': gate, 'aviso': aviso, 'barras': barras}
     finally:
         await ctx.close()
 
@@ -197,11 +220,12 @@ def muestra_hoja(shots, modo, pid):
     for i, im in enumerate(ims):
         out.paste(im, ((i % cols) * (w + 6), (i // cols) * (im.height + 6)))
     out.save(comun.SALIDA + f'/muestra-{pid}-{modo}.png')
-    print(f'{pid} ({modo}): muestra en herramientas/salida/muestra-{pid}-{modo}.png (doce pantallas, de 0 a 1 en pasos de 1/11)')
+    print(f'{pid} ({modo}): muestra en herramientas/salida/muestra-{pid}-{modo}.png ({len(ims)} pantallas, de 0 a 1 en pasos de 1/{len(ims) - 1})')
 
 
 async def main():
-    muestra = '--muestra' in sys.argv
+    # --muestra deja doce pantallas; --muestra=24, las que se pidan
+    muestra = next((int(a.split('=')[1]) if '=' in a else 12 for a in sys.argv if a.startswith('--muestra')), 0)
     modos = [m for m, flag in (('cel', '--celular'), ('pc', '--computador')) if flag in sys.argv] or ['cel', 'pc']
     quiero = {a for a in sys.argv[1:] if not a.startswith('--')}
     todos = [p for p in proyectos() if not quiero or p[0] in quiero]
@@ -221,7 +245,7 @@ async def main():
                 files = guardar(shots, modo, pid)
                 hechas.append(files[0][1])
                 print(f"{pid} ({modo}): {len(shots)} pantallas + la primera | alto {info['alto']} px | puntos {info['puntos']}"
-                      f" | edad: {'pasada con fecha de prueba' if info['edad'] else 'no pide'} | cookies rechazadas: {'sí' if info['cookies'] else 'no había'}"
+                      f" | edad: {'pasada con fecha de prueba' if info['edad'] else 'no pide'} | aviso escondido: {'sí' if info['aviso'] else 'no'} | cookies rechazadas: {'sí' if info['cookies'] else 'no había'}"
                       f" | barras escondidas: {info['barras']} | " + ', '.join(f'{f.name} {f.stat().st_size // 1024} KB' for f, _ in files))
             if hechas:
                 w = 200
