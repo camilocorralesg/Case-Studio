@@ -64,7 +64,7 @@ python herramientas/capturar.py quieto.png 1440 900 2 720 "#redes|.5;.zb|.5" rm
 python herramientas/capturar.py ingles.png 1440 900 2 720 ".hx|0;#contacto|.2" en
 ```
 
-Cada cuadro es `selector|avance`: una sección y qué tanto de ella se ha recorrido, de 0 a 1. En las que se cuentan solas (Servicios, Marcas, Redes) el avance es el punto de lo que cuentan, y quedan en pausa ahí.
+Cada cuadro es `selector|avance`: una sección y qué tanto de ella se ha recorrido, de 0 a 1. En las que se cuentan solas (Servicios, Marcas) el avance es el punto de lo que cuentan, y quedan en pausa ahí. Redes se despliega una vez cuando llega: para verlo abierto, se espera unos 4 s.
 Los selectores de las secciones: `.hx` (hero), `#servicios`, `#rediseno`, `#proyectos`, `#marcas`, `#proceso`, `#redes`, `.zb` (cierre), `#contacto`, `.ft` (pie).
 
 | Herramienta | Qué deja |

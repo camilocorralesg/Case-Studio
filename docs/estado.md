@@ -15,7 +15,7 @@ Una página con once secciones, en español e inglés, toda con el concepto de l
 | 4 | Proyectos | La Rueda: los seis sitios en una rueda en 3D sobre el piso de noche del hero, que se arrastra, se lanza y se mueve con sus elementos. "Ver proyecto" hace crecer la pantalla del frente hasta el detalle, donde el sitio real se abre en vivo con su historia al lado. El detalle no tiene barra arriba (22 de noviembre de 2026): dos casillas en la esquina, el ancho del sitio y salir | `proyectos.astro`, `visor.astro` |
 | 5 | Marcas | Un teléfono, dentro de un encuadre con la luz del hero, muestra el perfil real de Instagram de cada marca y pasa solo de una a otra, con su pausa (22 de noviembre de 2026: lo pasaba el scroll, en una sección fija); al lado, las seis, con la del teléfono encendida; tocar una lleva el teléfono a su perfil. Las marcas no abren detalle | `marcas.astro` |
 | 6 | Proceso | La Ruta, sobre papel claro (Lugares): una línea que el scroll dibuja lleva el elemento de "Tu marca" por cuatro estaciones; la ruta y el lugar punteado de cada una están desde el comienzo, y cada paso aparece, con su elemento encendido y su texto sobre el papel, solo cuando él llega; al final el Tú sale por el extremo de la línea | `proceso.astro` |
-| 7 | Redes | Historias: las seis partes del servicio como seis historias en un cubo que gira solo, como pasan las historias, con su pausa (22 de noviembre de 2026: lo giraba el scroll, en una sección fija), dentro de un encuadre; cada una empieza su dibujo al quedar de frente; al lado, las seis, que llevan a cada historia | `redes.astro` |
+| 7 | Redes | Cubo abierto (23 de noviembre de 2026): las seis partes del servicio son las seis caras de un cubo desplegado en escalera (2-2-2), que se abre cara por cara cuando la sección llega; cada cara, con su elemento, su dibujo y su frase, empieza su dibujo al quedar plana. El título va en las dos casillas libres de arriba y "Abrir el cubo otra vez" en las de abajo. En el celular la red se pone de pie (3-3, en dos columnas) y la frase de la cara que se abre o se toca va en un pie bajo el cubo | `redes.astro` |
 | 8 | Preguntas | Chat: las siete preguntas a un lado, cada una con el elemento de la parte del sitio que la responde, y un chat en un encuadre al otro. La pregunta que se toca entra al chat y CaSe responde en mensajes cortos, al ritmo de quien escribe; en el celular las preguntas van dentro del chat, como respuestas rápidas | `preguntas.astro` |
 | 9 | Cierre | Regreso, sobre azul: el logo se arma (Ca y Se, y Tú cae entre ellos) y vuelve a la tabla periódica, cada uno a su lugar real: Ca al 20, Se al 34 y Tú al 119, en un período 8 que se abre; después la cámara entra a ese período (Acercamiento): el Tú queda grande, con las casillas vecinas de fondo, y a su lado, en el período nuevo, "El elemento que falta es tu marca." y "Empezar mi proyecto": el último llamado antes del formulario | `cierre.astro` |
 | 10 | Contacto | Una línea, en una pantalla: los cuatro servicios como elementos para marcar y una sola barra con nombre, correo o WhatsApp y "Enviar por WhatsApp", que abre WhatsApp con la solicitud escrita para el +57 310 872 3020 (23 de noviembre de 2026). Lo que el visitante une en la Fórmula llega marcado | `contacto.astro` |
@@ -858,6 +858,21 @@ El usuario trajo el informe de PageSpeed del sitio publicado (95 en rendimiento 
 ### El WhatsApp del estudio (23 de noviembre de 2026)
 
 El usuario dio el WhatsApp, +57 310 872 3020, y pidió que todo llegue allí. El formulario abre WhatsApp con la solicitud escrita (los servicios marcados, el nombre y cómo responder); el botón dice "Enviar por WhatsApp" para que el visitante sepa qué va a pasar. El número reemplaza al correo de muestra en el pie y está en los datos estructurados, el contenido sin JavaScript y `llms.txt`. En 127.0.0.1 el formulario no abre WhatsApp (las herramientas lo llenan).
+
+### Redes: Cubo abierto (23 de noviembre de 2026)
+
+El usuario pidió cambiar la presentación vertical de Redes (las historias de 9:16) por un bento o algo parecido, conservando los dibujos de cada parte, y al menos cinco propuestas. Se prototiparon cinco sobre el sitio armado, con un selector (https://claude.ai/artifact/W2LzsmTizBCJK1X3tWdYJ8; las fuentes en la carpeta `proto/` del scratchpad de la sesión: `redes.js`, `redes.css` y `armar2.py`, que arma un prototipo con el sitio de hoy):
+- **A · Mosaico**: un bento sobre la luz del encuadre, cada parte con el tamaño que pide su dibujo.
+- **B · Cubo abierto**: el cubo de las historias desplegado en escalera, que se abre al llegar.
+- **C · Perfil**: la sección como el perfil de una cuenta, con las seis partes como publicaciones y destacados.
+- **D · Molécula**: las seis partes enlazadas a Rs 23 en el centro; los dos plus con doble enlace.
+- **E · Columnas**: seis columnas, una abierta con su dibujo, que pasan solas con pausa.
+
+**Elegida: B · Cubo abierto.** Ya está en `redes.astro`. Frente al prototipo:
+- La frase de cada cara pasa a un pie bajo el cubo cuando la cara mide menos de 262 px (en el celular, siempre); en la cara se queda para el lector de pantalla.
+- Con movimiento reducido el cubo queda abierto y quieto, sin el botón de volver a abrirlo; donde las caras son pequeñas, las seis frases se escriben en una lista debajo.
+- Redes ya no lleva encuadre ni pausa: el cubo es la pieza y se despliega en unos 3,4 s.
+- Textos nuevos en `en.json`: "Lo que hacemos en tus redes, en seis partes." y "Abrir el cubo otra vez". Salieron "…en seis historias.", "Historia anterior" e "Historia siguiente".
 
 ## Pendiente del usuario
 

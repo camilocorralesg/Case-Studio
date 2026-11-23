@@ -32,7 +32,7 @@ Ca (20) y Se (34) son los números reales del calcio y el selenio. Cv es el elem
 | Proyectos | Proyectos |   |
 | Marcas | Marcas con las que hemos trabajado en redes | Además de la web, hemos manejado la comunidad y creado el contenido de estas marcas en Instagram y TikTok. |
 | Proceso | Así trabajamos contigo |   |
-| Redes | Manejo de redes sociales | Lo que hacemos en tus redes, en seis historias. |
+| Redes | Manejo de redes sociales | Lo que hacemos en tus redes, en seis partes. |
 | Cierre | El elemento que falta es tu marca. | Junto al Tú, en la tabla: "119 · Tu marca" (el 119 es el primer elemento que todavía no existe: la tabla llega hasta el 118). |
 | Contacto | Hablemos de tu proyecto | Marca lo que necesitas y te escribimos con los siguientes pasos. |
 
@@ -72,7 +72,7 @@ Palabras dentro de los dibujos (de interfaz, no son afirmaciones; están en `esc
 
 ### Lo que cubre el manejo de redes
 
-En el sitio son seis historias. Las fotos que se ven en ellas son publicaciones reales de las marcas de la lista de abajo, recortadas de las capturas de sus perfiles y pasadas a cobalto (`herramientas/publicaciones.py`); las burbujas de la conversación no llevan frases.
+En el sitio son las seis caras de un cubo que se despliega ("Abrir el cubo otra vez" lo repite). Las fotos que se ven en ellas son publicaciones reales de las marcas de la lista de abajo, recortadas de las capturas de sus perfiles y pasadas a cobalto (`herramientas/publicaciones.py`); las burbujas de la conversación no llevan frases.
 
 
 - **Estrategia y calendario**: Definimos contigo los temas, los formatos y las fechas del mes.
