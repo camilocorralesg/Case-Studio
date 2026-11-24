@@ -5,7 +5,7 @@ import C from './contenido.json';
 
 const seguido = (partes: string[]) => partes.map((p) => (/[.?!]$/.test(p) ? p : p + '.')).join(' ');
 const wa = `https://wa.me/${S.whatsapp}`;
-const cabeza = (base: string) => [`# ${S.nombre}`, '', `> ${S.resumen}`, '', `- Sitio: ${base}`, `- WhatsApp: [${S.whatsappVisible}](${wa})`, `- Lugar: ${S.ciudad}, Colombia`, '- Idiomas del sitio: español e inglés', ''];
+const cabeza = (base: string) => [`# ${S.nombre}`, '', `> ${S.resumen}`, '', `- Sitio: ${base}`, `- WhatsApp: [${S.whatsappVisible}](${wa})`, `- Correo: [${S.correo}](mailto:${S.correo})`, `- Lugar: ${S.ciudad}, Colombia`, '- Idiomas del sitio: español e inglés', ''];
 
 export function corto(base: string) {
   const en = (ancla: string) => `${base}#${ancla}`;
@@ -31,6 +31,7 @@ export function corto(base: string) {
     '',
     `- [${C.contacto.titular}](${en('contacto')}): ${C.contacto.apoyo}`,
     `- [WhatsApp ${S.whatsappVisible}](${wa}): todas las solicitudes llegan aquí`,
+    `- [${S.correo}](mailto:${S.correo}): el correo del estudio`,
     '',
     '## Optional',
     '',
@@ -106,6 +107,7 @@ export function completo(base: string) {
     '',
     `Formulario: ${base}#contacto (abre WhatsApp con la solicitud)`,
     `WhatsApp: [${S.whatsappVisible}](${wa})`,
+    `Correo: [${S.correo}](mailto:${S.correo})`,
     ''
   ].join('\n');
 }

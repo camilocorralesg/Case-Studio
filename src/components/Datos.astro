@@ -2,7 +2,7 @@
 /* What the page says, written for machines (schema.org): the studio and its four services, the page, its questions, the sites it
    built and the brands whose social media it ran. Everything comes from src/datos/: sitio.json is written by hand and
    contenido.json is the copy of what the sections say (herramientas/contenido.py). Nothing here is on screen.
-   The WhatsApp is the studio's (23 November 2026); no mail or street yet. */
+   The WhatsApp and the email are the studio's (23 November 2026); no street yet. */
 import S from '../datos/sitio.json';
 import C from '../datos/contenido.json';
 
@@ -18,7 +18,8 @@ const estudio = {
   description: S.resumen,
   slogan: C.hero.titular,
   telephone: S.whatsappVisible,
-  contactPoint: { '@type': 'ContactPoint', contactType: 'sales', telephone: S.whatsappVisible, url: `https://wa.me/${S.whatsapp}`, availableLanguage: ['es', 'en'], areaServed: 'CO' },
+  email: S.correo,
+  contactPoint: { '@type': 'ContactPoint', contactType: 'sales', telephone: S.whatsappVisible, email: S.correo, url: `https://wa.me/${S.whatsapp}`, availableLanguage: ['es', 'en'], areaServed: 'CO' },
   image: new URL('/assets/og-case-studio.jpg', base).href,
   logo: new URL('/icon-512.png', base).href,
   address: { '@type': 'PostalAddress', addressLocality: S.ciudad, addressRegion: S.region, addressCountry: S.pais },

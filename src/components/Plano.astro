@@ -77,7 +77,7 @@ const seguido = (partes: string[]) => partes.map((p) => (/[.?!]$/.test(p) ? p : 
     <section>
       <h2>{C.contacto.titular}</h2>
       <p>{C.contacto.apoyo}</p>
-      <p><a href={`https://wa.me/${S.whatsapp}`} rel="noopener">WhatsApp {S.whatsappVisible}</a></p>
+      <p><a href={`https://wa.me/${S.whatsapp}`} rel="noopener">WhatsApp {S.whatsappVisible}</a> · <a href={`mailto:${S.correo}`}>{S.correo}</a></p>
     </section>
   </div>
 </div>

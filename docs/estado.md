@@ -859,6 +859,10 @@ El usuario trajo el informe de PageSpeed del sitio publicado (95 en rendimiento 
 
 El usuario dio el WhatsApp, +57 310 872 3020, y pidió que todo llegue allí. El formulario abre WhatsApp con la solicitud escrita (los servicios marcados, el nombre y cómo responder); el botón dice "Enviar por WhatsApp" para que el visitante sepa qué va a pasar. El número reemplaza al correo de muestra en el pie y está en los datos estructurados, el contenido sin JavaScript y `llms.txt`. En 127.0.0.1 el formulario no abre WhatsApp (las herramientas lo llenan).
 
+### El correo del estudio (23 de noviembre de 2026)
+
+El usuario dio el correo, ventas@casestudio.com.co. Va en el pie, debajo del WhatsApp (los dos como enlaces), en los datos estructurados (`email`), en el contenido sin JavaScript y en `llms.txt`. Vive en `src/datos/sitio.json` (`correo`). Las solicitudes del formulario siguen llegando al WhatsApp.
+
 ### Redes: Cubo abierto (23 de noviembre de 2026)
 
 El usuario pidió cambiar la presentación vertical de Redes (las historias de 9:16) por un bento o algo parecido, conservando los dibujos de cada parte, y al menos cinco propuestas. Se prototiparon cinco sobre el sitio armado, con un selector (https://claude.ai/artifact/W2LzsmTizBCJK1X3tWdYJ8; las fuentes en la carpeta `proto/` del scratchpad de la sesión: `redes.js`, `redes.css` y `armar2.py`, que arma un prototipo con el sitio de hoy):
@@ -877,7 +881,6 @@ El usuario pidió cambiar la presentación vertical de Redes (las historias de 9
 ## Pendiente del usuario
 
 - Decidir si el repositorio de GitHub sigue público o pasa a privado (Vercel publica igual desde uno privado).
-- El correo del estudio: va al pie, a los datos estructurados y a `llms.txt` cuando llegue.
 
 - Si se quieren preguntas de precios, tiempos, propiedad del sitio o rondas de cambios en Preguntas, dar sus respuestas.
 

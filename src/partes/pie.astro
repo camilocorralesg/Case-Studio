@@ -117,6 +117,8 @@
    symbol is one cell */
 /* the studio's WhatsApp (window.CONTACTO, from src/datos/sitio.json), as a link that opens it */
 const ftWa = () => `<a class="ft-wa" href="${window.CONTACTO.link()}" target="_blank" rel="noopener">WhatsApp ${window.CONTACTO.show}</a>`;
+/* and its email (23 November 2026) */
+const ftMail = () => `<a class="ft-wa" href="mailto:${window.CONTACTO.mail}">${window.CONTACTO.mail}</a>`;
 const FT = {
   nav: [['Servicios', '#servicios', 'Sv'], ['Rediseño', '#rediseno', 'Rd'], ['Proyectos', '#proyectos', 'Py', 'Pj'], ['Marcas', '#marcas', 'Mc', 'Br'], ['Proceso', '#proceso', 'Pc'], ['Preguntas', '#preguntas', 'Pr', 'Qs'], ['Contacto', '#contacto', 'Co']],
   svc: [['Sitios web', 'Sw', '#servicios'], ['Tiendas en línea', 'Ti', '#servicios'], ['Redes sociales', 'Rs', '#redes'], ['Marca', 'Ma', '#servicios']],
@@ -156,9 +158,9 @@ window.FOOT = {
     const navZ = FT.nav.map(([, href], i) => (href === '#contacto' ? 27 : 37 + i)), svcZ = FT.svc.map((_, i) => 21 + i);
     const mob = `<div class="ft-mob"><div class="ft-map" aria-hidden="true">${map}</div>
       <nav class="ft-lists" aria-label="Pie de página"><div><p class="ft-lk">Secciones</p><ul>${navZ.map(row).join('')}</ul></div><div><p class="ft-lk">Servicios</p><ul>${svcZ.map(row).join('')}</ul></div></nav>
-      <div class="ft-mme"><p class="ft-mail">${ftWa()}</p><p>${FT.place}</p><p class="ft-free">${FT.free}</p></div>
+      <div class="ft-mme"><p class="ft-mail">${ftWa()}</p><p class="ft-mail">${ftMail()}</p><p>${FT.place}</p><p class="ft-free">${FT.free}</p></div>
       <button class="ft-back" type="button">${FT_UP}<span>Volver arriba</span></button></div>`;
-    return `<div class="ft-in"><div class="ft-stage"><nav class="ft-plane ft-table" aria-label="Pie de página">${cells}<div class="ft-gap"><div class="ft-me"><p>${ftWa()}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${key}</div></nav></div>
+    return `<div class="ft-in"><div class="ft-stage"><nav class="ft-plane ft-table" aria-label="Pie de página">${cells}<div class="ft-gap"><div class="ft-me"><p>${ftWa()}<br>${ftMail()}<br>${FT.place}</p><p class="ft-free">${FT.free}</p></div>${key}</div></nav></div>
       ${mob}<div class="ft-logo"><svg class="ft-mark" role="img" aria-label="CaSe Studio" viewBox="0 0 959.36 250"><use href="#logo-cut"></use></svg></div>
       <p class="ft-legal">© 2026 CaSe Studio</p></div>`;
   }

@@ -257,7 +257,7 @@ function moment(section, update) {
   return () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
 }
 </script>
-<script is:inline define:vars={{ CT: { wa: S.whatsapp, show: S.whatsappVisible } }}>
+<script is:inline define:vars={{ CT: { wa: S.whatsapp, show: S.whatsappVisible, mail: S.correo } }}>
 /* how to reach the studio (src/datos/sitio.json): the form and the footer take it from here */
 window.CONTACTO = { ...CT, link: (text) => `https://wa.me/${CT.wa}${text ? '?text=' + encodeURIComponent(text) : ''}` };
 </script>

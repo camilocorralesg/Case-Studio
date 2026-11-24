@@ -220,5 +220,5 @@ Si falta algo, dice lo primero que falta: "Elige al menos una opción de lo que 
 ## Datos de contacto
 
 - WhatsApp: +57 310 872 3020 (del usuario, 23 de noviembre de 2026). Ahí llegan las solicitudes del formulario.
-- Correo: falta; el usuario lo va a dar.
+- Correo: ventas@casestudio.com.co (del usuario, 23 de noviembre de 2026). Va en el pie, debajo del WhatsApp.
 - Redes del estudio: no hay
